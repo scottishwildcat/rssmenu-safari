@@ -1,50 +1,92 @@
-<!-- Logic for toolbar button -->
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<script type="text/javascript">
 
-   <script type="text/javascript">
+//safari.application.addEventListener("validate", validateHandler, false); // Just before menu is displayed		
+safari.application.addEventListener("menu", menuHandler, false); // Just before menu is displayed
+safari.application.addEventListener("command", cmdHandler, false); // Clicked on menu item
+safari.application.addEventListener("message", msgHandler, false); // Received list of feeds from web page
 
-		safari.application.addEventListener("command", performCommand, false);
-		safari.application.addEventListener("message", msgHandler, false);
-	   	   
-		function disableButton(id){
-			var itemArray = safari.extension.toolbarItems;
-			for (var i = 0; i < itemArray.length; ++i) {
-	    		var item = itemArray[i];
-			    if (item.identifier == id)
-					item.enabled = false;
-	   }
+/*
+function disableButton(id){
+	var itemArray = safari.extension.toolbarItems;
+	for (var i = 0; i < itemArray.length; ++i) {
+		var item = itemArray[i];
+	    if (item.identifier == id)
+			item.enabled = false;
+	}
+}
 
-		function enableButton(id){
-			var itemArray = safari.extension.toolbarItems;
-			for (var i = 0; i < itemArray.length; ++i) {
-	    		var item = itemArray[i];
-			    if (item.identifier == id)
-					item.enabled = true;
-	   }
-	   
-	   
-	   function performCommand(event){
+function enableButton(id){
+	var itemArray = safari.extension.toolbarItems;
+	for (var i = 0; i < itemArray.length; ++i) {
+		var item = itemArray[i];
+	    if (item.identifier == id)
+			item.enabled = true;
+	}
+}
 
-		   if (event.command == "showFeeds"){
-		   		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("toolbarbutton", null);
-		   }
-	   }
-	   
+*/
 
-	   function msgHandler(event){
-		   	if (event.name == "foundFeeds"){
-		   		feeds = event.message;
+function getToolbarBtnByID(id){
+	var itemArray = safari.extension.toolbarItems;
+		for (var i = 0; i < itemArray.length; ++i) {
+    		var item = itemArray[i];
+		    if (item.identifier == id)
+				return item;
+		}
+	return null;
+}
+
+function getMenuByID(id){
+	var itemArray = safari.extension.menus;
+		for (var i = 0; i < itemArray.length; ++i) {
+    		var item = itemArray[i];
+		    if (item.identifier == id)
+				return item;
+		}
+	return null;
+}
+
+function cmdHandler(event){
+   	if (event.command == "feedMenuBtnClicked"){
+   		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("toolbarbutton", null);
+   	}
+	else
+		feedURL = event.command.split('-')[1];
+		alert(feedURL);
+}
+
+function validateHandler(event){
+		alert("validate ",event.command);
+}
+
+function menuHandler(event){
+		//alert("menuHandler");
+}
+
+function msgHandler(event){
+	//alert("msgHandler");
+   	if (event.name == "foundFeeds"){
+   		feeds = event.message;
+   		
+   		//if (feeds != []){
+   		
+	   		// TODO: Disable toolbar button until we get to here
 		   		
-		   		// TODO: Enable toolbar button
-		   		
-		   		var feedMenu = safari.extension.createMenu(feedMenu);
-		   		// Assign a menu to a toolbar item by setting the toolbar item’s menu property to the menu.
-		   		for (i=0; i < feeds.length; i++)
-		   			appendMenuItem(feedMenu,feeds[i][0]);
-		   		
-		   	}
-	   }
-
-    </script>
-
-</html>
+	   		var btn = getToolbarBtnByID('feedMenuBtn');
+	   		var feedMenu = getMenuByID('feedMenu');
+	   		
+	   		if (feedMenu.menuItems.length>0)
+	   			for (var i=0; i<feedMenu.menuItems.length;i++)
+	   				feedMenu.removeMenuItem(0); // or remove item i?
+	   		
+	   		btn.menu = feedMenu;
+	   		for (i=0; i < feeds.length; i++)
+	   			feedMenu.appendMenuItem('feed'+i,feeds[i][0],'location-'+feeds[i][1]);
+	   		feedMenu.visible = true;
+   		//}
+   	}
+}
+</script></head>
+<body></body></html>

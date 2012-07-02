@@ -9,7 +9,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>RSS Menu</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.scottishwildcat.rssmenu</string>
+	<string>com.scottishwildcat.feedmenu</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
@@ -33,7 +33,7 @@
 				<key>Command</key>
 				<string></string>
 				<key>Identifier</key>
-				<string>feed_menu</string>
+				<string>feedMenuBtn</string>
 				<key>Image</key>
 				<string>toolbarBtn.png</string>
 				<key>Label</key>

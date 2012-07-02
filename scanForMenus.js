@@ -1,10 +1,10 @@
 
-safari.self.addEventListener("message", msgHandler, false); // Listen for click events sent by global.html
+//safari.self.addEventListener("message", msgHandler, false); // Listen for click events sent by global.html
 
-function msgHandler(event){
+//function msgHandler(event){
 	// Look for <link rel="alternate" type="application/rss|atom+xml"> nodes in <head>
 
-	if (event.name == "toolbarbutton"){
+	//if (event.name == "toolbarbutton"){
 			
 		var feeds = [];
 		var c, v;
@@ -22,5 +22,5 @@ function msgHandler(event){
 		}
 		
 		safari.self.tab.dispatchMessage("foundFeeds",feeds);
-	}
-}
+	//}
+//}
