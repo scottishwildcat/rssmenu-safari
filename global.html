@@ -1,0 +1,50 @@
+<!-- Logic for toolbar button -->
+<html>
+
+   <script type="text/javascript">
+
+		safari.application.addEventListener("command", performCommand, false);
+		safari.application.addEventListener("message", msgHandler, false);
+	   	   
+		function disableButton(id){
+			var itemArray = safari.extension.toolbarItems;
+			for (var i = 0; i < itemArray.length; ++i) {
+	    		var item = itemArray[i];
+			    if (item.identifier == id)
+					item.enabled = false;
+	   }
+
+		function enableButton(id){
+			var itemArray = safari.extension.toolbarItems;
+			for (var i = 0; i < itemArray.length; ++i) {
+	    		var item = itemArray[i];
+			    if (item.identifier == id)
+					item.enabled = true;
+	   }
+	   
+	   
+	   function performCommand(event){
+
+		   if (event.command == "showFeeds"){
+		   		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("toolbarbutton", null);
+		   }
+	   }
+	   
+
+	   function msgHandler(event){
+		   	if (event.name == "foundFeeds"){
+		   		feeds = event.message;
+		   		
+		   		// TODO: Enable toolbar button
+		   		
+		   		var feedMenu = safari.extension.createMenu(feedMenu);
+		   		// Assign a menu to a toolbar item by setting the toolbar item’s menu property to the menu.
+		   		for (i=0; i < feeds.length; i++)
+		   			appendMenuItem(feedMenu,feeds[i][0]);
+		   		
+		   	}
+	   }
+
+    </script>
+
+</html>
