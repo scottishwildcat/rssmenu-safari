@@ -2,31 +2,18 @@
 <html><head>
 <script type="text/javascript">
 
-//safari.application.addEventListener("validate", validateHandler, false); // Just before menu is displayed		
+alert("Loaded Global.html");
+
+//safari.application.addEventListener("validate", validateHandler, false);
 safari.application.addEventListener("menu", menuHandler, false); // Just before menu is displayed
 safari.application.addEventListener("command", cmdHandler, false); // Clicked on menu item
 safari.application.addEventListener("message", msgHandler, false); // Received list of feeds from web page
 
-/*
-function disableButton(id){
-	var itemArray = safari.extension.toolbarItems;
-	for (var i = 0; i < itemArray.length; ++i) {
-		var item = itemArray[i];
-	    if (item.identifier == id)
-			item.enabled = false;
-	}
-}
+// Associative array used to store menus for each open tab. 
+// afeeds['url']=[['fname','furl'],['fname','furl'],…]]
+var afeeds = new Object();
 
-function enableButton(id){
-	var itemArray = safari.extension.toolbarItems;
-	for (var i = 0; i < itemArray.length; ++i) {
-		var item = itemArray[i];
-	    if (item.identifier == id)
-			item.enabled = true;
-	}
-}
-
-*/
+/* Utilities */
 
 function getToolbarBtnByID(id){
 	var itemArray = safari.extension.toolbarItems;
@@ -48,44 +35,67 @@ function getMenuByID(id){
 	return null;
 }
 
+/* Safari Extension handlers */
+
 function cmdHandler(event){
-   	if (event.command == "feedMenuBtnClicked"){
+   	/*if (event.command == "feedMenuBtnClicked"){
    		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("toolbarbutton", null);
    	}
-	else
+	else*/
+	{
 		feedURL = event.command.split('-')[1];
 		alert(feedURL);
+	}
 }
 
 function validateHandler(event){
-		alert("validate ",event.command);
+	console.log("Validate - "+event.target.identifier);
+	
+	/*
+	if (event.target.identifier == "feedMenuBtn"){
+		if (event.target.menu.menuItems.length == 0)
+			event.target.disabled = true;
+		else
+			event.target.disabled = false;
+	}
+	*/
+	
 }
 
 function menuHandler(event){
-		//alert("menuHandler");
+		
+	var btn = getToolbarBtnByID('feedMenuBtn');
+	var feedMenu = getMenuByID('feedMenu');
+	var feedsToAdd = afeeds[safari.application.activeBrowserWindow.activeTab.url];
+
+	// Must hide menu before making any dynamic changes
+	feedMenu.visible=false;
+	
+	// Clear the existing menu
+	var l = feedMenu.menuItems.length;
+	if (l>0)
+		for (var i=0; i<l; i++)
+			feedMenu.removeMenuItem(0); // or remove item 0?
+	
+	// Add the feeds (or the "No feeds found" menu item
+	btn.menu = feedMenu;		
+	
+	for (i=0; i < feedsToAdd.length; i++)
+			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],'location-'+feedsToAdd[i][1]);
+			
+	console.log(afeeds);
 }
 
 function msgHandler(event){
-	//alert("msgHandler");
+
    	if (event.name == "foundFeeds"){
-   		feeds = event.message;
    		
-   		//if (feeds != []){
+		var f = event.message[0];
+		if (f.length == 0)
+			f = [["No feeds found on this page","#"]];
+		
+		afeeds[event.target.url] = f;
    		
-	   		// TODO: Disable toolbar button until we get to here
-		   		
-	   		var btn = getToolbarBtnByID('feedMenuBtn');
-	   		var feedMenu = getMenuByID('feedMenu');
-	   		
-	   		if (feedMenu.menuItems.length>0)
-	   			for (var i=0; i<feedMenu.menuItems.length;i++)
-	   				feedMenu.removeMenuItem(0); // or remove item i?
-	   		
-	   		btn.menu = feedMenu;
-	   		for (i=0; i < feeds.length; i++)
-	   			feedMenu.appendMenuItem('feed'+i,feeds[i][0],'location-'+feeds[i][1]);
-	   		feedMenu.visible = true;
-   		//}
    	}
 }
 </script></head>

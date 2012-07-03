@@ -53,7 +53,7 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>scanForMenus.js</string>
+				<string>getFeeds.js</string>
 			</array>
 		</dict>
 	</dict>
