@@ -9,6 +9,10 @@ safari.application.addEventListener("menu", menuHandler, false); // Just before 
 safari.application.addEventListener("command", cmdHandler, false); // Clicked on menu item
 safari.application.addEventListener("message", msgHandler, false); // Received list of feeds from web page
 
+// These two only work in Safari 5.1 and later. They don't bubble, hence second param=true.
+safari.application.addEventListener("close", deleteMenuHandler, true);
+safari.application.addEventListener("beforeNavigate", deleteMenuHandler, true);
+
 // Associative array used to store menus for each open tab. 
 // afeeds['url']=[['fname','furl'],['fname','furl'],…]]
 var afeeds = new Object();
@@ -38,16 +42,17 @@ function getMenuByID(id){
 /* Safari Extension handlers */
 
 function cmdHandler(event){
-   	/*if (event.command == "feedMenuBtnClicked"){
-   		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("toolbarbutton", null);
-   	}
-	else*/
-	{
-		feedURL = event.command.split('-')[1];
+
+	if (event.command.substr(0,4)=="http"){
+		// Menu item clicked
+		feedURL = 'feed:'+event.command.split(':')[1];
+		alert(feedURL);
+		/*
 		var newWindow = safari.application.openBrowserWindow();
 		var newTab = newWindow.activeTab;
 		newTab.url = feedURL;
 		setTimeout(newWindow.close, 5000);
+		*/
 	}
 }
 
@@ -58,7 +63,9 @@ function validateHandler(event){
 	
 	if (event.target.identifier == "feedMenuBtn"){
 	
-		if (thisUrl != ''){
+		if (typeof afeeds[thisUrl] != 'undefined'){
+			// We have already scanned this page
+			
 			if (afeeds[thisUrl].length >0){
 				// Set badge to number of feeds on page
 				event.target.disabled = false;
@@ -98,11 +105,7 @@ function menuHandler(event){
 	
 	if (feedsToAdd.length > 0)
 		for (i=0; i < feedsToAdd.length; i++)
-			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],'location-'+feedsToAdd[i][1]);
-	//else
-	//	feedMenu.appendMenuItem('feed-0', 'No feeds found', 'location-#');
-			
-	console.log(afeeds);
+			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],feedsToAdd[i][1]);
 }
 
 function msgHandler(event){
@@ -110,6 +113,16 @@ function msgHandler(event){
    	if (event.name == "foundFeeds"){
 		afeeds[event.target.url] = event.message[0];
    	}
+}
+
+function deleteMenuHandler(event){
+	// Called when tab is closed, or a different URL is loaded into an existing tab.
+	// Want to delete afeeds[event.target.url], if it exists.
+	if (typeof afeeds[event.target.url] != 'undefined')
+		delete afeeds[event.target.url];
+	var btn = getToolbarBtnByID('feedMenuBtn');
+	btn.disabled = true;
+	btn.badge = 0;
 }
 </script></head>
 <body></body></html>

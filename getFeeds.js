@@ -1,15 +1,15 @@
 
-safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
+//safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 
-findFeedsOnPage(); // Run when any page has finished loading
 
-function msgHandler(event){
+/*function msgHandler(event){
 
 	if (event.name == "getfeeds")
 		console.log("Got explicit find feeds");
 		findFeedsOnPage();
 		
 }
+*/
 
 function findFeedsOnPage(){
 
@@ -42,3 +42,5 @@ function findFeedsOnPage(){
 		safari.self.tab.dispatchMessage("foundFeeds",[feeds,document.URL]);
 	}
 }
+
+findFeedsOnPage(); // Run when any page has finished loading
