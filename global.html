@@ -56,20 +56,26 @@ function validateHandler(event){
 	
 	var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
 	
-	if (event.target.identifier == "feedMenuBtn")
-		if (thisUrl != '')
-			event.target.badge = afeeds[thisUrl].length;
-		else
-			event.target.badge = 0;
-			
-	/*
-		if (event.target.menu.menuItems.length == 0)
-			event.target.disabled = true;
-		else
-			event.target.disabled = false;
-	}
-	*/
+	if (event.target.identifier == "feedMenuBtn"){
 	
+		if (thisUrl != ''){
+			if (afeeds[thisUrl].length >0){
+				// Set badge to number of feeds on page
+				event.target.disabled = false;
+				event.target.badge = afeeds[thisUrl].length;
+			}
+			else{
+				// No feeds found on this page
+				event.target.disabled = true;
+				event.target.badge = 0;
+			}
+		}
+		else{
+			// Tab contains blank page
+			event.target.disabled = true;
+			event.target.badge = 0;
+		}
+	}
 }
 
 function menuHandler(event){
@@ -93,8 +99,8 @@ function menuHandler(event){
 	if (feedsToAdd.length > 0)
 		for (i=0; i < feedsToAdd.length; i++)
 			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],'location-'+feedsToAdd[i][1]);
-	else
-		feedMenu.appendMenuItem('feed-0', 'No feeds found', 'location-#');
+	//else
+	//	feedMenu.appendMenuItem('feed-0', 'No feeds found', 'location-#');
 			
 	console.log(afeeds);
 }
