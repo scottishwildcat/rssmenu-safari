@@ -4,15 +4,16 @@
 <array>
 	<dict>
 		<key>DefaultValue</key>
-		<string>defaultapp</string>
+		<string>alwaysask</string>
 		<key>Key</key>
 		<string>feed_action</string>
 		<key>Title</key>
-		<string>Selected feed action</string>
+		<string>Open feed in</string>
 		<key>Titles</key>
 		<array>
-			<string>Preview in Google Reader</string>
-			<string>Open in default application</string>
+			<string>Google Reader</string>
+			<string>Default application</string>
+			<string>Always ask</string>
 		</array>
 		<key>Type</key>
 		<string>RadioButtons</string>
@@ -20,6 +21,7 @@
 		<array>
 			<string>google</string>
 			<string>defaultapp</string>
+			<string>alwaysask</string>
 		</array>
 	</dict>
 	<dict>

@@ -51,10 +51,13 @@ function cmdHandler(event){
 			feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
 			safari.application.activeBrowserWindow.openTab().url=feedURL;
 		}
-		else if (safari.extension.settings.feed_action == 'defaultapp'){
+		else if (safari.extension.settings.feed_action == 'defaultapp' ||
+				safari.extension.settings.feed_action == 'alwaysask'){
 			// Open feed in default reader application
 			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
-					("openFeedInDefaultApp",[event.command, safari.extension.settings.banner_timeout * 1000]);
+				("showFeedBanner",[event.command,
+				safari.extension.settings.feed_action,
+				safari.extension.settings.banner_timeout * 1000]);
 		}
 		else
 			console.log('Unrecognised feed action: '+safari.extension.settings.feed_action);

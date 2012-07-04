@@ -1,40 +1,85 @@
 /** Safari Extension End Script **/
 
-"use strict";
+//"use strict";
 
 safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 
 findFeedsOnPage(); // Run when any page has finished loading
 
-function msgHandler(event){
-
-	if (event.name == "openFeedInDefaultApp"){
+function openFeedInApp(url){
 		// We open feed in default app by adding an invisible iframe to the page
 		// whose src is the feed URL.
 		
 		// TODO: If we've already added an iframe, don't keep adding new ones, just
 		// change the src.
-		
-		var url = event.message[0]; // URL of feed to view
-		var timeout = event.message[1]; // Timeout (ms) before "adding feed" message disappears
-		
-		var newdiv = document.createElement('div');
-		newdiv.setAttribute('class','addingfeed');
-		newdiv.setAttribute('id','addingfeed-popup');
-		newdiv.innerHTML = "<h1>Loading <a href='"+url+"'>"+url+"</a> into your default RSS application…</h1>";
-		newdiv.innerHTML += '<p>This may take a few seconds.</p>';
-		document.body.insertBefore(newdiv, document.body.firstChild);
-		
-		setTimeout(function(){document.body.removeChild(newdiv);}, timeout);
-		
 		var ifrm = document.createElement('IFRAME');
 		ifrm.src = url;
 		ifrm.style.width = 0+'px';
 		ifrm.style.height = 0+'px';
 		document.body.appendChild(ifrm);
-	}	
+
 }
 
+function openFeedInReader(url){
+	closePopup();
+	window.open('http://www.google.com/reader/view/feed/'+encodeURIComponent(url), '_blank');
+}
+
+function closePopup(){
+	var popup = document.getElementById('addingfeed-popup');
+	popup.parentElement.removeChild(popup);
+}
+
+function msgHandler(event){
+
+	var url = event.message[0]; // URL of feed to view
+	var action = event.message[1];
+	var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
+
+	if (event.name == "showFeedBanner"){
+				
+		var popup = document.createElement('div');
+		popup.setAttribute('class','addingfeed');
+		popup.setAttribute('id','addingfeed-popup');
+		popup.innerHTML = "<h1><a href='"+url+"'>"+url+"</a>";
+				
+		if (action == 'defaultapp'){
+			popup.innerHTML += '<p>Loading feed into your default newsreader app… this might take a few seconds, even after this message disappears.</p>';
+			document.body.insertBefore(popup, document.body.firstChild);
+			window.scroll(0,0);
+			setTimeout(closePopup, timeout);
+			openFeedInApp(url);
+		}
+		
+		if (action == 'alwaysask'){
+			var googleButton = document.createElement('button');
+			googleButton.setAttribute('type','button');
+			googleButton.setAttribute('id','googleBtn');
+			googleButton.innerText='Google Reader';
+			popup.insertBefore(googleButton, null); // null = insert as last child of popup
+
+			var appButton = document.createElement('button');
+			appButton.setAttribute('type','button');
+			appButton.setAttribute('id','appBtn');
+			appButton.innerText='Application';
+			popup.insertBefore(appButton, null); // null = insert as last child of popup
+
+			var closeButton = document.createElement('button');
+			closeButton.setAttribute('type','button');
+			closeButton.setAttribute('id','closeBtn');
+			closeButton.innerText='Cancel';
+			popup.insertBefore(closeButton, null); // null = insert as last child of popup
+			
+			document.body.insertBefore(popup, document.body.firstChild);
+			window.scroll(0,0);
+			
+			// Not sure why the onclicks can't be set until this point, but anyway…
+			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url)};
+			document.getElementById('appBtn').onclick = function(){openFeedInApp(url)};
+			document.getElementById('closeBtn').onclick = function(){closePopup()};
+		}
+	}	
+}
 
 function findFeedsOnPage(){
 

@@ -1,24 +1,41 @@
 /** Safari Extension Injected Stylesheet **/
 
 .addingfeed {
+	margin: 4px !important;
+	border-color: #666666 !important;
+	padding-right: 8px !important;
+	padding-left: 8px !important;
+	padding-bottom: 4px !important;
+	padding-top: 4px !important;
+	border-style: solid !important;
+	border-width: thin !important;
 	font-size: small !important;
-	padding: 12px !important;
-	width: 100% !important;
 	left: 0px !important;
 	top: 0px !important;
 	display: block !important;
 	background-color: #ffcc66 !important;
+	z-index: 99 !important;
 }
 
 .addingfeed h1 {
+	font-family: sans-serif !important;
 	font-size: medium !important;
 	padding-bottom: 8px !important;
 }
 
 .addingfeed p {
+	color: black !important;
+	font-family: sans-serif !important;
 	font-size: small !important;
 }
 
 .addingfeed a {
-	color: #ff6600 !important;
+	color: black !important;
+	font-family: sans-serif !important;
+	padding-left: 18px !important;
+	background:url(rss-color.png) 0% 50% no-repeat !important;
+}
+
+.addingfeed a:link {
+	text-decoration: underline !important;
 }
