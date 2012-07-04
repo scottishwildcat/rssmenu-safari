@@ -58,7 +58,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>List RSS and Atom feeds available on the web page being viewed</string>
+	<string>List RSS and Atom feeds available on the web page being viewed.</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>

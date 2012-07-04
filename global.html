@@ -39,17 +39,25 @@ function getMenuByID(id){
 	return null;
 }
 
-/* Safari Extension handlers */
+/* Safari Extension message handlers */
 
 function cmdHandler(event){
 
 	if (event.command.substr(0,4)=="http"){
 		// Menu item clicked.
-		// Just open feed URL in a new tab in Google Reader for now.
 
-		//feedURL = 'feed:'+event.command.split(':')[1];
-		feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
-		safari.application.activeBrowserWindow.openTab().url=feedURL;
+		if (safari.extension.settings.feed_action == 'google'){
+			// Open feed URL in a new tab in Google Reader for now.
+			feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
+			safari.application.activeBrowserWindow.openTab().url=feedURL;
+		}
+		else if (safari.extension.settings.feed_action == 'defaultapp'){
+			// Open feed in default reader application
+			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
+															("openFeedInDefaultApp",event.command);
+		}
+		else
+			console.log('Unrecognised feed action: '+safari.extension.settings.feed_action);
 	}
 }
 
@@ -103,6 +111,10 @@ function menuHandler(event){
 	if (feedsToAdd.length > 0)
 		for (i=0; i < feedsToAdd.length; i++)
 			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],feedsToAdd[i][1]);
+			
+	// Clear badge when button clicked, if user preference dictates.
+	if (safari.extension.settings.hide_badge == true)
+		btn.badge = 0;
 }
 
 function msgHandler(event){

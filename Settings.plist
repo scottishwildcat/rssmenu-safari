@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<array/>
+<array>
+	<dict>
+		<key>DefaultValue</key>
+		<string>google</string>
+		<key>Key</key>
+		<string>feed_action</string>
+		<key>Title</key>
+		<string>When selecting a feed</string>
+		<key>Titles</key>
+		<array>
+			<string>Open feed in Google Reader</string>
+			<string>Open feed in default app</string>
+		</array>
+		<key>Type</key>
+		<string>RadioButtons</string>
+		<key>Values</key>
+		<array>
+			<string>google</string>
+			<string>defaultapp</string>
+		</array>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<true/>
+		<key>Key</key>
+		<string>hide_badge</string>
+		<key>Title</key>
+		<string>Hide badge after clicking toolbar button</string>
+		<key>Type</key>
+		<string>CheckBox</string>
+	</dict>
+</array>
 </plist>
