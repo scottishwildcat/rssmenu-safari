@@ -34,7 +34,10 @@ function findFeedsOnPage(){
 					
 					v = c.attributes.getNamedItem("type").value;
 				
-					if (v == "application/rss+xml" || v == "application/atom+xml")
+					if (v == "application/rss+xml" || 
+						v == "application/atom+xml" ||
+						v == "text/xml")
+						
 						feeds.push([c.attributes.getNamedItem("title").value, c.attributes.getNamedItem("href").value]);
 				}
 			}
