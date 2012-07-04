@@ -43,7 +43,7 @@
 				<key>Palette Label</key>
 				<string>Feed Menu</string>
 				<key>Tool Tip</key>
-				<string>RSS and Atom feeds</string>
+				<string>Show available RSS/Atom feeds</string>
 			</dict>
 		</array>
 	</dict>

@@ -44,15 +44,12 @@ function getMenuByID(id){
 function cmdHandler(event){
 
 	if (event.command.substr(0,4)=="http"){
-		// Menu item clicked
-		feedURL = 'feed:'+event.command.split(':')[1];
-		alert(feedURL);
-		/*
-		var newWindow = safari.application.openBrowserWindow();
-		var newTab = newWindow.activeTab;
-		newTab.url = feedURL;
-		setTimeout(newWindow.close, 5000);
-		*/
+		// Menu item clicked.
+		// Just open feed URL in a new tab in Google Reader for now.
+
+		//feedURL = 'feed:'+event.command.split(':')[1];
+		feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
+		safari.application.activeBrowserWindow.openTab().url=feedURL;
 	}
 }
 
