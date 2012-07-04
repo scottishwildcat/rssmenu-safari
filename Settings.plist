@@ -4,15 +4,15 @@
 <array>
 	<dict>
 		<key>DefaultValue</key>
-		<string>google</string>
+		<string>defaultapp</string>
 		<key>Key</key>
 		<string>feed_action</string>
 		<key>Title</key>
-		<string>When selecting a feed</string>
+		<string>Selected feed action</string>
 		<key>Titles</key>
 		<array>
-			<string>Open feed in Google Reader</string>
-			<string>Open feed in default app</string>
+			<string>Preview in Google Reader</string>
+			<string>Open in default application</string>
 		</array>
 		<key>Type</key>
 		<string>RadioButtons</string>
@@ -31,6 +31,18 @@
 		<string>Hide badge after clicking toolbar button</string>
 		<key>Type</key>
 		<string>CheckBox</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<real>5</real>
+		<key>Key</key>
+		<string>banner_timeout</string>
+		<key>MaximumValue</key>
+		<real>10</real>
+		<key>Title</key>
+		<string>"Loading" message timeout (secs)</string>
+		<key>Type</key>
+		<string>TextField</string>
 	</dict>
 </array>
 </plist>

@@ -54,7 +54,7 @@ function cmdHandler(event){
 		else if (safari.extension.settings.feed_action == 'defaultapp'){
 			// Open feed in default reader application
 			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
-															("openFeedInDefaultApp",event.command);
+					("openFeedInDefaultApp",[event.command, safari.extension.settings.banner_timeout * 1000]);
 		}
 		else
 			console.log('Unrecognised feed action: '+safari.extension.settings.feed_action);

@@ -1,0 +1,24 @@
+/** Safari Extension Injected Stylesheet **/
+
+.addingfeed {
+	font-size: small !important;
+	padding: 12px !important;
+	width: 100% !important;
+	left: 0px !important;
+	top: 0px !important;
+	display: block !important;
+	background-color: #ffcc66 !important;
+}
+
+.addingfeed h1 {
+	font-size: medium !important;
+	padding-bottom: 8px !important;
+}
+
+.addingfeed p {
+	font-size: small !important;
+}
+
+.addingfeed a {
+	color: #ff6600 !important;
+}

@@ -56,6 +56,10 @@
 				<string>getFeeds.js</string>
 			</array>
 		</dict>
+		<key>Stylesheets</key>
+		<array>
+			<string>styles.css</string>
+		</array>
 	</dict>
 	<key>Description</key>
 	<string>List RSS and Atom feeds available on the web page being viewed.</string>
