@@ -38,7 +38,15 @@ function findFeedsOnPage(){
 						v == "application/atom+xml" ||
 						v == "text/xml")
 						
-						feeds.push([c.attributes.getNamedItem("title").value, c.attributes.getNamedItem("href").value]);
+						var title = c.attributes.getNamedItem("title").value;
+						var href = c.attributes.getNamedItem("href").value;
+						
+						if (href[0]=='/'){
+							// Specified link is relative, construct the full URI
+							href = 'http://' + document.domain + href;
+						}
+						
+						feeds.push([title, href]);
 				}
 			}
 		}
