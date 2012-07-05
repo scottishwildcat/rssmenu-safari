@@ -53,7 +53,7 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>getFeeds.js</string>
+				<string>pageEndScript.js</string>
 			</array>
 		</dict>
 		<key>Stylesheets</key>

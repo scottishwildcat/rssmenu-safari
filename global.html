@@ -55,7 +55,7 @@ function cmdHandler(event){
 				safari.extension.settings.feed_action == 'alwaysask'){
 			// Open feed in default reader application
 			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
-				("showFeedBanner",[event.command,
+				("showFeedPopup",[event.command,
 				safari.extension.settings.feed_action,
 				safari.extension.settings.banner_timeout * 1000]);
 		}
