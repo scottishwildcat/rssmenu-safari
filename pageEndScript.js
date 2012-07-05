@@ -28,12 +28,10 @@ function openFeedInApp(url){
 		document.body.appendChild(appiframe);
 	}	
 	appiframe.src = url;
-	closePopup();
 }
 
 function openFeedInReader(url){
 	// Pass feed url to Google Reader in a new tab/window (according to browser prefs).
-	closePopup();
 	window.open('http://www.google.com/reader/view/feed/'+encodeURIComponent(url), '_blank');
 }
 
@@ -54,7 +52,8 @@ function showPopup (url,content){
 function closePopup(){
 	// Close the popup that's used to 'always ask' or indicate 'now loading in default app'.
 	var popup = document.getElementById('addingfeed-popup');
-	popup.parentElement.removeChild(popup);
+	if (popup != null)
+		popup.parentElement.removeChild(popup);
 }
 
 function msgHandler(event){
@@ -106,8 +105,8 @@ function msgHandler(event){
 			popup.insertBefore(closeButton, null); // null = insert as last child of popup
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
-			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url)};
-			document.getElementById('appBtn').onclick = function(){openFeedInApp(url)};
+			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
+			document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
 			document.getElementById('closeBtn').onclick = function(){closePopup()};
 		}
 	}	
