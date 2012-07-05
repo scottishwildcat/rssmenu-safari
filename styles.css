@@ -2,20 +2,30 @@
 
 .addingfeed {
 	margin: 4px !important;
+
 	border-color: #666666 !important;
+	border-style: solid !important;
+	border-width: thin !important;
+	-webkit-box-shadow: 4px 4px 4px #999;
+
 	padding-right: 8px !important;
 	padding-left: 8px !important;
 	padding-bottom: 4px !important;
 	padding-top: 4px !important;
-	border-style: solid !important;
-	border-width: thin !important;
-	font-size: small !important;
+
+	font-family: sans-serif !important;
 	text-align: center !important;
+
+	position: fixed !important;
 	left: 0px !important;
 	top: 0px !important;
 	display: block !important;
+
 	background-color: #ffcc66 !important;
 	z-index: 99 !important;
+	
+	opacity: 0; /* We'll set this to '1' at runtime to make the div fade in */
+	-webkit-transition: opacity .25s ease-in-out;
 }
 
 .addingfeed h1 {
@@ -32,7 +42,6 @@
 
 .addingfeed a {
 	color: black !important;
-	font-family: sans-serif !important;
 	padding-left: 18px !important;
 	background:url(rss-color.png) 0% 50% no-repeat !important;
 }

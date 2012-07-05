@@ -41,19 +41,30 @@ function showPopup (url,content){
 
 		popup.setAttribute('class','addingfeed');
 		popup.setAttribute('id','addingfeed-popup');
+		popup.style['opacity'] = '0';
+		
 		popup.innerHTML = "<h1><a href='"+url+"'>"+url+"</a>";
 		popup.innerHTML += content;
 		
 		document.body.insertBefore(popup, document.body.firstChild);
-		window.scroll(0,0);		
+		
+		// If we don't wrap the opacity change in a timeout, the fade transition
+		// doesn't happen, for some reason...
+		setTimeout(function(){popup.style['opacity']='1'},0);
 		return popup;
 }
 
 function closePopup(){
 	// Close the popup that's used to 'always ask' or indicate 'now loading in default app'.
 	var popup = document.getElementById('addingfeed-popup');
-	if (popup != null)
-		popup.parentElement.removeChild(popup);
+	if (popup != null){
+		// If we don't wrap the opacity change in a timeout, the fade transition
+		// doesn't happen, for some reason...
+		setTimeout(function(){popup.style['opacity']='0'},0);
+		
+		// Don't remove the div immediately, or it will cut the fadeout short
+		setTimeout(function(){popup.parentElement.removeChild(popup)},1000);
+	}
 }
 
 function msgHandler(event){
