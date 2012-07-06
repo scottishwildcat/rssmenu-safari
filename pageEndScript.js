@@ -37,20 +37,26 @@ function openFeedInReader(url){
 
 function showPopup (url,content){
 
-		var popup = document.createElement('div');
+		var popup = null;
+		
+		if (window.top === window) {
+			// Don't show the popup in any iframes on the page
+			popup = document.createElement('div');
 
-		popup.setAttribute('class','addingfeed');
-		popup.setAttribute('id','addingfeed-popup');
-		popup.style['opacity'] = '0';
-		
-		popup.innerHTML = "<h1><a href='"+url+"'>"+url+"</a>";
-		popup.innerHTML += content;
-		
-		document.body.insertBefore(popup, document.body.firstChild);
-		
-		// If we don't wrap the opacity change in a timeout, the fade transition
-		// doesn't happen, for some reason...
-		setTimeout(function(){popup.style['opacity']='1'},0);
+			popup.setAttribute('class','addingfeed');
+			popup.setAttribute('id','addingfeed-popup');
+			popup.style['opacity'] = '0';
+			
+			popup.innerHTML = "<h1><a href='"+url+"'>"+url+"</a>";
+			popup.innerHTML += content;
+			
+			//document.body.insertBefore(popup, document.body.firstChild);
+			document.body.insertBefore(popup, null);
+			
+			// If we don't wrap the opacity change in a timeout, the fade transition
+			// doesn't happen, for some reason...
+			setTimeout(function(){popup.style['opacity']='1'},0);
+		}
 		return popup;
 }
 
@@ -85,7 +91,8 @@ function msgHandler(event){
 			popupContent += 'this might take a few seconds, even after this message disappears.</p>';
 			
 			var popup = showPopup(url,popupContent);
-			setTimeout(closePopup, timeout);
+			if (popup!=null)
+				setTimeout(closePopup, timeout);
 
 			openFeedInApp(url);
 		}
@@ -94,31 +101,34 @@ function msgHandler(event){
 
 			var popup = showPopup(url,"");
 			
-			//TODO: Add the buttons before showing the popup.
+			if (popup != null){
 			
-			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
-			var googleButton = document.createElement('button');
-			googleButton.setAttribute('type','button');
-			googleButton.setAttribute('id','googleBtn');
-			googleButton.innerText='Google Reader';
-			popup.insertBefore(googleButton, null); // null = insert as last child of popup
-
-			var appButton = document.createElement('button');
-			appButton.setAttribute('type','button');
-			appButton.setAttribute('id','appBtn');
-			appButton.innerText='Application';
-			popup.insertBefore(appButton, null); // null = insert as last child of popup
-
-			var closeButton = document.createElement('button');
-			closeButton.setAttribute('type','button');
-			closeButton.setAttribute('id','closeBtn');
-			closeButton.innerText='Cancel';
-			popup.insertBefore(closeButton, null); // null = insert as last child of popup
-			
-			// Not sure why the onclicks can't be set until this point, but here we go…			
-			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
-			document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
-			document.getElementById('closeBtn').onclick = function(){closePopup()};
+				//TODO: Add the buttons before showing the popup.
+				
+				// Show three buttons in the popup -- Google Reader, Application, and Cancel.
+				var googleButton = document.createElement('button');
+				googleButton.setAttribute('type','button');
+				googleButton.setAttribute('id','googleBtn');
+				googleButton.innerText='Google Reader';
+				popup.insertBefore(googleButton, null); // null = insert as last child of popup
+	
+				var appButton = document.createElement('button');
+				appButton.setAttribute('type','button');
+				appButton.setAttribute('id','appBtn');
+				appButton.innerText='Application';
+				popup.insertBefore(appButton, null); // null = insert as last child of popup
+	
+				var closeButton = document.createElement('button');
+				closeButton.setAttribute('type','button');
+				closeButton.setAttribute('id','closeBtn');
+				closeButton.innerText='Cancel';
+				popup.insertBefore(closeButton, null); // null = insert as last child of popup
+				
+				// Not sure why the onclicks can't be set until this point, but here we go…			
+				document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
+				document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
+				document.getElementById('closeBtn').onclick = function(){closePopup()};
+			}
 		}
 	}	
 }

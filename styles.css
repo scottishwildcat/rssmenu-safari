@@ -13,16 +13,16 @@
 	padding-bottom: 4px !important;
 	padding-top: 4px !important;
 
-	font-family: sans-serif !important;
-	text-align: center !important;
+	font-family: sans-serif;
+	text-align: center;
 
 	position: fixed !important;
 	left: 0px !important;
 	top: 0px !important;
 	display: block !important;
 
-	background-color: #ffcc66 !important;
-	z-index: 99 !important;
+	background-color: #ffcc66;
+	z-index: 99999;
 	
 	opacity: 0; /* We'll set this to '1' at runtime to make the div fade in */
 	-webkit-transition: opacity .25s ease-in-out;
