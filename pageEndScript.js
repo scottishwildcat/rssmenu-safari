@@ -11,8 +11,6 @@ findFeedsOnPage(); // Run when any page has finished loading
  * Helper functions
  */
 
-
-
 function openFeedInApp(url){
 	// We open a feed in the default app by adding an invisible iframe to the page
 	// whose src is the feed URL.
@@ -50,8 +48,7 @@ function showPopup (url,content){
 			popup.innerHTML = "<h1><a href='"+url+"'>"+url+"</a>";
 			popup.innerHTML += content;
 			
-			//document.body.insertBefore(popup, document.body.firstChild);
-			document.body.insertBefore(popup, null);
+			document.body.insertBefore(popup, document.body.firstChild);
 			
 			// If we don't wrap the opacity change in a timeout, the fade transition
 			// doesn't happen, for some reason...
@@ -63,6 +60,7 @@ function showPopup (url,content){
 function closePopup(){
 	// Close the popup that's used to 'always ask' or indicate 'now loading in default app'.
 	var popup = document.getElementById('addingfeed-popup');
+	
 	if (popup != null){
 		// If we don't wrap the opacity change in a timeout, the fade transition
 		// doesn't happen, for some reason...
@@ -103,7 +101,7 @@ function msgHandler(event){
 			
 			if (popup != null){
 			
-				//TODO: Add the buttons before showing the popup.
+				//TODO: Figure out how to add the buttons before showing the popup.
 				
 				// Show three buttons in the popup -- Google Reader, Application, and Cancel.
 				var googleButton = document.createElement('button');
@@ -174,6 +172,6 @@ function findFeedsOnPage(){
 				}
 			}
 		}
-		safari.self.tab.dispatchMessage("foundFeeds",[foundFeeds,document.URL]);
+		safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
 	}
 }
