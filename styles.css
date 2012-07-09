@@ -1,51 +1,60 @@
 /** Safari Extension Injected Stylesheet **/
 
-.addingfeed {
-	margin: 4px !important;
+.popup {
 
+	/*margin: 4px !important;*/
+
+	background-color: #ffcc66 !important;
 	border-color: #666666 !important;
 	border-style: solid !important;
-	border-width: thin !important;
-	-webkit-box-shadow: 4px 4px 4px #999;
+	border-width: 0 0 thin 0 !important;
+	width:100% !important;
+	-webkit-box-shadow: 0px 4px 4px #999;
 
-	padding-right: 8px !important;
-	padding-left: 8px !important;
-	padding-bottom: 4px !important;
-	padding-top: 4px !important;
+	margin: 0 0 !important;
+	padding: 4px 0px !important;
 
-	font-family: sans-serif;
-	text-align: center;
+	font-family: sans-serif; 
+	text-align: center !important;
 
 	position: fixed !important;
 	left: 0px !important;
 	top: 0px !important;
-	display: block !important;
+	/*display: block !important;*/
 
-	background-color: #ffcc66;
-	z-index: 99999;
+	z-index: 99999 !important;
+
 	
-	opacity: 0; /* We'll set this to '1' at runtime to make the div fade in */
 	-webkit-transition: opacity .25s ease-in-out;
+	opacity: 0; /* Set this to '1' at runtime to make the div fade in */
+
 }
 
-.addingfeed h1 {
-	font-family: sans-serif !important;
-	font-size: medium !important;
-	padding-bottom: 8px !important;
+.url {
+	float: left !important;
+	padding: 4px 0 0 4px !important;
+	font-size: 12px !important;
 }
 
-.addingfeed p {
-	color: black !important;
-	font-family: sans-serif !important;
-	font-size: small !important;
-}
-
-.addingfeed a {
-	color: black !important;
+.url a {
 	padding-left: 18px !important;
 	background:url(rss-color.png) 0% 50% no-repeat !important;
 }
 
-.addingfeed a:link {
+.url a:link {
 	text-decoration: underline !important;
+}
+
+.action {
+	float:right !important;
+	padding: 0 4px 0 0 !important;
+	font-size: 12px !important;
+
+}
+
+
+.action button {
+	margin:4px !important;
+	font: webkit-small-control;
+
 }

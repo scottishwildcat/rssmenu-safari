@@ -4,6 +4,10 @@
 
 console.log("Loaded Global.html");
 
+// Associative array used to store menus for each open tab. 
+// afeeds['url']=[['fname','furl'],['fname','furl'],...]]
+var afeeds = new Object();
+
 safari.application.addEventListener("validate", validateHandler, false);
 safari.application.addEventListener("menu", menuHandler, false); // Just before menu is displayed
 safari.application.addEventListener("command", cmdHandler, false); // Clicked on menu item
@@ -13,9 +17,26 @@ safari.application.addEventListener("message", msgHandler, false); // Received l
 safari.application.addEventListener("close", deleteMenuHandler, true);
 safari.application.addEventListener("beforeNavigate", deleteMenuHandler, true);
 
-// Associative array used to store menus for each open tab. 
-// afeeds['url']=[['fname','furl'],['fname','furl'],...]]
-var afeeds = new Object();
+/**
+if (window.webkitNotifications) {
+//Notifications are supported!
+
+	alert("Supported!");
+	if (window.webkitNotifications.checkPermission() == 0) {
+	//You have permissions 
+	  alert("Granted!");
+	  window.webkitNotifications.createNotification('rss-color.png', 'RSS Feeds', 'By Calum Benson');
+	}
+	else{
+		alert("Denied!");
+		 window.webkitNotifications.requestPermission();//requesting the permissions
+	}
+}
+else{
+	//Notification is not supported.
+	alert("Not supported :(");
+}
+**/
 
 /* Utilities */
 

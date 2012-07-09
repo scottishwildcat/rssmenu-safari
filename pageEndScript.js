@@ -41,12 +41,12 @@ function showPopup (url,content){
 			// Don't show the popup in any iframes on the page
 			popup = document.createElement('div');
 
-			popup.setAttribute('class','addingfeed');
-			popup.setAttribute('id','addingfeed-popup');
+			popup.setAttribute('class','popup');
+			popup.setAttribute('id','addfeed-popup');
 			popup.style['opacity'] = '0';
 			
-			popup.innerHTML = "<h1><a href='"+url+"'>"+url+"</a>";
-			popup.innerHTML += content;
+			popup.innerHTML = "<div class='url'><a href='"+url+"'>"+url+"</a></div>";
+			popup.innerHTML += "<div class='action'>" + content + "</div>";
 			
 			document.body.insertBefore(popup, document.body.firstChild);
 			
@@ -59,7 +59,7 @@ function showPopup (url,content){
 
 function closePopup(){
 	// Close the popup that's used to 'always ask' or indicate 'now loading in default app'.
-	var popup = document.getElementById('addingfeed-popup');
+	var popup = document.getElementById('addfeed-popup');
 	
 	if (popup != null){
 		// If we don't wrap the opacity change in a timeout, the fade transition
@@ -85,8 +85,8 @@ function msgHandler(event){
 		
 			// Use popup to show a transient message that the feed will load in
 			// the default app shortly, but it can take a few moments.
-			popupContent += '<p>Loading feed into your default newsreader app… ';
-			popupContent += 'this might take a few seconds, even after this message disappears.</p>';
+			popupContent += 'Loading feed into your default newsreader app… ';
+			popupContent += 'this might take a few seconds, even after this message disappears.';
 			
 			var popup = showPopup(url,popupContent);
 			if (popup!=null)
@@ -96,37 +96,34 @@ function msgHandler(event){
 		}
 		
 		else if (action == 'alwaysask'){
+			
+			var buttons = document.createElement('div');
+			
+			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
+			var googleButton = document.createElement('button');
+			googleButton.setAttribute('type','button');
+			googleButton.setAttribute('id','googleBtn');
+			googleButton.innerText='Google Reader';
+			buttons.insertBefore(googleButton, null); // null = insert as last child of popup
 
-			var popup = showPopup(url,"");
+			var appButton = document.createElement('button');
+			appButton.setAttribute('type','button');
+			appButton.setAttribute('id','appBtn');
+			appButton.innerText='Application';
+			buttons.insertBefore(appButton, null); // null = insert as last child of popup
+
+			var closeButton = document.createElement('button');
+			closeButton.setAttribute('type','button');
+			closeButton.setAttribute('id','closeBtn');
+			closeButton.innerText='Cancel';
+			buttons.insertBefore(closeButton, null); // null = insert as last child of popup
 			
-			if (popup != null){
+			showPopup(url, buttons.innerHTML);
 			
-				//TODO: Figure out how to add the buttons before showing the popup.
-				
-				// Show three buttons in the popup -- Google Reader, Application, and Cancel.
-				var googleButton = document.createElement('button');
-				googleButton.setAttribute('type','button');
-				googleButton.setAttribute('id','googleBtn');
-				googleButton.innerText='Google Reader';
-				popup.insertBefore(googleButton, null); // null = insert as last child of popup
-	
-				var appButton = document.createElement('button');
-				appButton.setAttribute('type','button');
-				appButton.setAttribute('id','appBtn');
-				appButton.innerText='Application';
-				popup.insertBefore(appButton, null); // null = insert as last child of popup
-	
-				var closeButton = document.createElement('button');
-				closeButton.setAttribute('type','button');
-				closeButton.setAttribute('id','closeBtn');
-				closeButton.innerText='Cancel';
-				popup.insertBefore(closeButton, null); // null = insert as last child of popup
-				
-				// Not sure why the onclicks can't be set until this point, but here we go…			
-				document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
-				document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
-				document.getElementById('closeBtn').onclick = function(){closePopup()};
-			}
+			// Not sure why the onclicks can't be set until this point, but here we go…			
+			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
+			document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
+			document.getElementById('closeBtn').onclick = function(){closePopup()};
 		}
 	}	
 }

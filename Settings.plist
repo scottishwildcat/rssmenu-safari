@@ -4,7 +4,7 @@
 <array>
 	<dict>
 		<key>DefaultValue</key>
-		<string>google</string>
+		<string>alwaysask</string>
 		<key>Key</key>
 		<string>feed_action</string>
 		<key>Title</key>
