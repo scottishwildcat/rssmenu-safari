@@ -1,4 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<!-- Global Page for Safari RSS Feed Extension
+     © 2012 Calum Benson
+     Licence: None - public domain -->
+
 <html><head>
 <script type="text/javascript">
 
@@ -16,27 +21,6 @@ safari.application.addEventListener("message", msgHandler, false); // Received l
 // These two only work in Safari 5.1 and later. They don't bubble, hence second param=true.
 safari.application.addEventListener("close", deleteMenuHandler, true);
 safari.application.addEventListener("beforeNavigate", deleteMenuHandler, true);
-
-/**
-if (window.webkitNotifications) {
-//Notifications are supported!
-
-	alert("Supported!");
-	if (window.webkitNotifications.checkPermission() == 0) {
-	//You have permissions 
-	  alert("Granted!");
-	  window.webkitNotifications.createNotification('rss-color.png', 'RSS Feeds', 'By Calum Benson');
-	}
-	else{
-		alert("Denied!");
-		 window.webkitNotifications.requestPermission();//requesting the permissions
-	}
-}
-else{
-	//Notification is not supported.
-	alert("Not supported :(");
-}
-**/
 
 /* Utilities */
 

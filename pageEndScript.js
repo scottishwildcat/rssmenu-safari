@@ -1,4 +1,6 @@
-/** Safari Extension End Script **/
+/** End Script for Safari RSS Feed Extension **/
+/** © 2012 Calum Benson                      **/
+/** Licence: None - public domain            **/      
 
 //"use strict";
 
@@ -85,8 +87,8 @@ function msgHandler(event){
 		
 			// Use popup to show a transient message that the feed will load in
 			// the default app shortly, but it can take a few moments.
-			popupContent += 'Loading feed into your default newsreader app… ';
-			popupContent += 'this might take a few seconds, even after this message disappears.';
+			popupContent += "<span class='loadmsg'>Loading feed into your default newsreader app… ";
+			popupContent += "might take a few seconds after this message disappears.</span>";
 			
 			var popup = showPopup(url,popupContent);
 			if (popup!=null)
@@ -155,17 +157,22 @@ function findFeedsOnPage(){
 				
 					if (t == "application/rss+xml" || 
 						t == "application/atom+xml" ||
-						t == "text/xml")
+						t == "text/xml"){
 						
 						title = c.attributes.getNamedItem("title").value;
-						href = c.attributes.getNamedItem("href").value;
-						
+						if (!title)
+							title = 'Untitled Feed';
+
+						href = c.attributes.getNamedItem("href").value;						
 						if (href[0]=='/'){
 							// Specified link is relative, construct the full URI
 							href = 'http://' + document.domain + href;
 						}
 						
-						foundFeeds.push([title, href]);
+						// Only add feed if href isn't undefined
+						if (href)
+							foundFeeds.push([title, href]);
+					}
 				}
 			}
 		}

@@ -1,4 +1,6 @@
-/** Safari Extension Injected Stylesheet **/
+/** Injected stylesheet for Safari RSS Feed Extension **/
+/** © 2012 Calum Benson                               **/
+/** Licence: None - public domain                     **/ 
 
 .popup {
 
@@ -14,8 +16,10 @@
 	margin: 0 0 !important;
 	padding: 4px 0px !important;
 
+	font-size: inherit !important;
 	font-family: sans-serif; 
 	text-align: center !important;
+	vertical-align: baseline !important;
 
 	position: fixed !important;
 	left: 0px !important;
@@ -23,7 +27,6 @@
 	/*display: block !important;*/
 
 	z-index: 99999 !important;
-
 	
 	-webkit-transition: opacity .25s ease-in-out;
 	opacity: 0; /* Set this to '1' at runtime to make the div fade in */
@@ -52,6 +55,11 @@
 
 }
 
+.action .loadmsg {
+	padding: 4px 0px !important;
+	font-size: 12px !important;
+
+}
 
 .action button {
 	margin:4px !important;
