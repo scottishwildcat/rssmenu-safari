@@ -8,8 +8,8 @@
 
 .popup {
 
-	/*margin: 4px !important;*/
-
+	display: block !important;
+	
 	background-color: #ffcc66 !important;
 	border-color: #666666 !important;
 	border-style: solid !important;
@@ -28,10 +28,10 @@
 	position: fixed !important;
 	left: 0px !important;
 	top: 0px !important;
-	/*display: block !important;*/
 
 	z-index: 99999 !important;
 	
+
 	-webkit-transition: opacity .25s ease-in-out;
 	opacity: 0; /* Set this to '1' at runtime to make the div fade in */
 
