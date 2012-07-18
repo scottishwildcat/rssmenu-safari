@@ -53,7 +53,7 @@ function showPopup (url,content){
 			document.body.insertBefore(popup, document.body.firstChild);
 			
 			// If we don't wrap the opacity change in a timeout, the fade transition
-			// doesn't happen, for some reason...
+			// doesn't happen...
 			setTimeout(function(){popup.style['opacity']='1'},0);
 		}
 		return popup;
@@ -65,7 +65,7 @@ function closePopup(){
 	
 	if (popup != null){
 		// If we don't wrap the opacity change in a timeout, the fade transition
-		// doesn't happen, for some reason...
+		// doesn't happen...
 		setTimeout(function(){popup.style['opacity']='0'},0);
 		
 		// Don't remove the div immediately, or it will cut the fadeout short
@@ -88,7 +88,7 @@ function msgHandler(event){
 			// Use popup to show a transient message that the feed will load in
 			// the default app shortly, but it can take a few moments.
 			popupContent += "<span class='loadmsg'>Loading feed into your default newsreader app… ";
-			popupContent += "might take a few seconds after this message disappears.</span>";
+			popupContent += "this can sometimes take a while.</span>";
 			
 			var popup = showPopup(url,popupContent);
 			if (popup!=null)
@@ -101,25 +101,19 @@ function msgHandler(event){
 			
 			var buttons = document.createElement('div');
 			
-			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
-			var googleButton = document.createElement('div');
-			googleButton.setAttribute('class','bannerbutton');
-			googleButton.setAttribute('id','googleBtn');
-			googleButton.innerText='Google Reader';
-			buttons.insertBefore(googleButton, null); // null = insert as last child of popup
-
-			var appButton = document.createElement('div');
-			appButton.setAttribute('class','bannerbutton');
-			appButton.setAttribute('id','appBtn');
-			appButton.innerText='Application';
-			buttons.insertBefore(appButton, null); // null = insert as last child of popup
-
-			var closeButton = document.createElement('div');
-			closeButton.setAttribute('class','bannerbutton');
-			closeButton.setAttribute('id','closeBtn');
-			closeButton.innerText='Cancel';
-			buttons.insertBefore(closeButton, null); // null = insert as last child of popup
+			var createButton = function(i,t){
+				var b = document.createElement('div');
+				b.setAttribute('class','bannerbutton');
+				b.setAttribute('id',i);
+				b.innerText=t;
+				buttons.insertBefore(b,null); // null = insert as last child of popup 
+			}
 			
+			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
+			createButton('googleBtn','Google Reader');
+			createButton('appBtn', 'Application');
+			createButton('closeBtn', 'Cancel');
+						
 			showPopup(url, buttons.innerHTML);
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
