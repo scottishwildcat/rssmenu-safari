@@ -2,6 +2,10 @@
 /** © 2012 Calum Benson                               **/
 /** Licence: None - public domain                     **/ 
 
+/** Sites that are still causing problems:
+    stackoverflow.com (no popup at all)
+ **/
+
 .popup {
 
 	/*margin: 4px !important;*/
@@ -61,8 +65,28 @@
 
 }
 
-.action button {
-	margin:4px !important;
-	font: webkit-small-control;
+.action .bannerbutton {
 
+	display: inline-block !important;
+	padding: 2px 4px !important;
+	margin: 0px 4px !important;
+
+	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
+	-webkit-border-radius: 2sourpx !important;
+
+	font: webkit-small-control !important;
+	height: auto !important;
+	text-indent: 0px !important;
+	color: #333 !important;
+	-webkit-user-select: none !important;
+	
+	border-top: thin outset black !important;
+	border-left: thin outset black !important;
+	border-right: thin outset gray !important;
+	border-bottom: thin outset gray !important;
+	cursor:pointer !important;
+}
+
+.action .bannerbutton:active {
+	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
 }

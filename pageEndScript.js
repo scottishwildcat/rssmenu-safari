@@ -102,20 +102,20 @@ function msgHandler(event){
 			var buttons = document.createElement('div');
 			
 			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
-			var googleButton = document.createElement('button');
-			googleButton.setAttribute('type','button');
+			var googleButton = document.createElement('div');
+			googleButton.setAttribute('class','bannerbutton');
 			googleButton.setAttribute('id','googleBtn');
 			googleButton.innerText='Google Reader';
 			buttons.insertBefore(googleButton, null); // null = insert as last child of popup
 
-			var appButton = document.createElement('button');
-			appButton.setAttribute('type','button');
+			var appButton = document.createElement('div');
+			appButton.setAttribute('class','bannerbutton');
 			appButton.setAttribute('id','appBtn');
 			appButton.innerText='Application';
 			buttons.insertBefore(appButton, null); // null = insert as last child of popup
 
-			var closeButton = document.createElement('button');
-			closeButton.setAttribute('type','button');
+			var closeButton = document.createElement('div');
+			closeButton.setAttribute('class','bannerbutton');
 			closeButton.setAttribute('id','closeBtn');
 			closeButton.innerText='Cancel';
 			buttons.insertBefore(closeButton, null); // null = insert as last child of popup
