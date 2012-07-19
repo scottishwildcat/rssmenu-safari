@@ -25,6 +25,7 @@
 	border-color: #666666 !important;
 	border-style: solid !important;
 	border-width: 0 0 thin 0 !important;
+	border-radius: 0px !important;
 	width:100% !important;
 	-webkit-box-shadow: 0px 4px 4px #999;
 
