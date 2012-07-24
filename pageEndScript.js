@@ -87,8 +87,8 @@ function msgHandler(event){
 		
 			// Use popup to show a transient message that the feed will load in
 			// the default app shortly, but it can take a few moments.
-			popupContent += "<span class='loadmsg'>Loading feed into your default newsreader app… ";
-			popupContent += "this can sometimes take a while.</span>";
+			popupContent += "<span class='loadmsg'>Opening your default newsreader app… ";
+			popupContent += "<img src='"+safari.extension.baseURI+"progress_wheel.gif'></span>";
 			
 			var popup = showPopup(url,popupContent);
 			if (popup!=null)

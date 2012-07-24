@@ -36,7 +36,7 @@
 	</dict>
 	<dict>
 		<key>DefaultValue</key>
-		<real>5</real>
+		<real>8</real>
 		<key>Key</key>
 		<string>banner_timeout</string>
 		<key>MaximumValue</key>

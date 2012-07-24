@@ -74,6 +74,10 @@
 	padding: 4px 0px !important;
 }
 
+.action .loadmsg img {
+	padding:0px 8px !important;
+}
+
 .action .bannerbutton {
 	display: inline-block !important;
 	padding: 2px 4px !important;
