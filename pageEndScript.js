@@ -39,10 +39,17 @@ function showPopup (url,content){
 	// Show a popup banner at the top of the web page.
 	// url = the url of the RSS feed for which the banner is being shown.
 	// content = action buttons or 'loading in default app' message, depending on current preferences.
-	var popup = null;
+
+	var popup = document.getElementById('addfeed-popup'); // Will be 'null' if no existing popup being shown.
 	
 	if (window.top === window) {
 		// Don't show the popup in any iframes on the page
+		
+		if (popup != null){
+		// If there's already a popup, remove it first.
+			popup.parentElement.removeChild(popup);
+		}
+
 		popup = document.createElement('div');
 
 		popup.setAttribute('class','popup');
