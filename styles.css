@@ -50,10 +50,7 @@
 
 .popup img {
 	vertical-align: middle !important;
-}
-
-.url img {
-	padding: 0px 8px;
+	padding: 0px 8px !important;
 }
 
 .url {
@@ -70,11 +67,6 @@
 	float:right !important;
 	padding: 0 4px 0 0 !important;
 
-}
-
-.action #spinner {
-	padding:0px 8px !important;
-	vertical-align: middle !important;
 }
 
 .action .bannerbutton {
