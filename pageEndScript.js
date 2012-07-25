@@ -159,7 +159,7 @@ function findFeedsOnPage(){
 		for (var i=0; i < docHead.childElementCount; i++){
 			
 			c = docHead.children[i];
-						
+			
 			//TODO: This detection code is really clunky…			
 			if (c.nodeName == "LINK"){
 				

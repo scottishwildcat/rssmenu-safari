@@ -74,11 +74,11 @@ function cmdHandler(event){
 
 function validateHandler(event){
 // Called automatically when an extension component needs to revalidate itself, e.g. when tab re-gains focus.
-
+	
 	var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
 	
 	if (event.target.identifier == "feedMenuBtn"){
-	
+
 		//Update button enabled/disabled state, badge count and badge visibility.
 		var btn = event.target;
 	
@@ -127,9 +127,8 @@ function menuHandler(event){
 		for (i=0; i < feedsToAdd.length; i++)
 			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],feedsToAdd[i][1]);
 			
-	// Clear badge when button clicked, if user preference dictates.
-	if (safari.extension.settings.hide_badge == true)
-		btn.badge = 0;
+	// Clear badge when button clicked
+	btn.badge = 0;
 }
 
 function msgHandler(event){
@@ -160,6 +159,20 @@ function settingsChangeHandler(event){
 	// hide the popup banner if it's visible at the time.
 		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
 				("feedActionChanged", 0);
+	
+	}
+	
+	if (event.key == "show_badge"){
+	// If the show_badge setting is changed, show or hide the badge immediately.
+		var btn = getToolbarBtnByID('feedMenuBtn');
+		var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
+		
+		if (safari.extension.settings.show_badge == true){
+			btn.badge = afeeds[thisUrl].length;
+		}
+		else{
+			btn.badge = 0;
+		}
 	}
 }
 
