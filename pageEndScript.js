@@ -41,7 +41,7 @@ function showPopup (url,content){
 	// content = action buttons or 'loading in default app' message, depending on current preferences.
 
 	var popup = document.getElementById('addfeed-popup'); // Will be 'null' if no existing popup being shown.
-	
+		
 	if (window.top === window) {
 		// Don't show the popup in any iframes on the page
 		
@@ -171,9 +171,19 @@ function findFeedsOnPage(){
 						t == "application/atom+xml" ||
 						t == "text/xml"){
 						
-						title = c.attributes.getNamedItem("title").value;
-						if (!title)
-							title = 'Untitled Feed';
+						title = c.attributes.getNamedItem("title");
+						
+						if (title!=null){
+							title = title.value;
+						}
+						else{
+							if (t.indexOf("rss")!=-1)
+								title = "RSS Feed";
+							else if (t.indexOf("atom")!=-1)
+								title = "Atom Feed";
+							else
+								title = 'Untitled Feed';
+						}
 
 						href = c.attributes.getNamedItem("href").value;						
 						if (href[0]=='/'){
