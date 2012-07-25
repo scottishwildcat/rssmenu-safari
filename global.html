@@ -17,6 +17,7 @@ safari.application.addEventListener("validate", validateHandler, false);
 safari.application.addEventListener("menu", menuHandler, false); // Just before menu is displayed
 safari.application.addEventListener("command", cmdHandler, false); // Clicked on menu item
 safari.application.addEventListener("message", msgHandler, false); // Received list of feeds from web page
+safari.extension.settings.addEventListener("change", settingsChangeHandler, false); // Settings changed in prefs window
 
 // These two only work in Safari 5.1 and later. They don't bubble, hence second param=true.
 safari.application.addEventListener("close", deleteMenuHandler, true);
@@ -151,5 +152,17 @@ function deleteMenuHandler(event){
 	btn.disabled = true;
 	btn.badge = 0;
 }
+
+function settingsChangeHandler(event){
+// Called when extension settings are changed in the Safari Preferences dialog.
+
+	if (event.key == "feed_action"){
+	// If 'default action' setting is changed, we inform the injected script so it can
+	// hide the popup banner if it's visible at the time.
+		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
+				("feedActionChanged", 0);
+	}
+}
+
 </script></head>
 <body></body></html>

@@ -36,28 +36,30 @@ function openFeedInReader(url){
 }
 
 function showPopup (url,content){
+	// Show a popup banner at the top of the web page.
+	// url = the url of the RSS feed for which the banner is being shown.
+	// content = action buttons or 'loading in default app' message, depending on current preferences.
+	var popup = null;
+	
+	if (window.top === window) {
+		// Don't show the popup in any iframes on the page
+		popup = document.createElement('div');
 
-		var popup = null;
+		popup.setAttribute('class','popup');
+		popup.setAttribute('id','addfeed-popup');
+		popup.style['opacity'] = '0';
 		
-		if (window.top === window) {
-			// Don't show the popup in any iframes on the page
-			popup = document.createElement('div');
-
-			popup.setAttribute('class','popup');
-			popup.setAttribute('id','addfeed-popup');
-			popup.style['opacity'] = '0';
-			
-			popup.innerHTML = "<div class='url'><img src='"
-							+ safari.extension.baseURI +"rss-color.png'/><a href='"+url+"'>"+url+"</a></div>";
-			popup.innerHTML += "<div class='action'>" + content + "</div>";
-			
-			document.body.insertBefore(popup, document.body.firstChild);
-			
-			// If we don't wrap the opacity change in a timeout, the fade transition
-			// doesn't happen...
-			setTimeout(function(){popup.style['opacity']='1'},0);
-		}
-		return popup;
+		popup.innerHTML = "<div class='url'><img src='"
+						+ safari.extension.baseURI +"rss-color.png'/><a href='"+url+"'>"+url+"</a></div>";
+		popup.innerHTML += "<div class='action'>" + content + "</div>";
+		
+		document.body.insertBefore(popup, document.body.firstChild);
+		
+		// If we don't wrap the opacity change in a timeout, the fade transition
+		// doesn't happen...
+		setTimeout(function(){popup.style['opacity']='1'},0);
+	}
+	return popup;
 }
 
 function closePopup(){
@@ -75,7 +77,9 @@ function closePopup(){
 }
 
 function msgHandler(event){
-	// Only event we currently deal with is "showFeedPopup", sent from global page.
+	// Messages we currently expect are:
+	// "showFeedPopup", sent from global page.
+	// "feedActionChanged", sent from global page.
 
 	var url = event.message[0]; // URL of feed to view
 	var action = event.message[1];
@@ -122,7 +126,13 @@ function msgHandler(event){
 			document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
 			document.getElementById('closeBtn').onclick = function(){closePopup()};
 		}
-	}	
+	}
+	
+	if (event.name == "feedActionChanged"){
+	// User changed default action in preferences, so hide the popup banner 
+	// (if currently shown) to avoid confusion.
+		closePopup();
+	}
 }
 
 function findFeedsOnPage(){
