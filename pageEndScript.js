@@ -160,6 +160,7 @@ function findFeedsOnPage(){
 			
 			c = docHead.children[i];
 						
+			//TODO: This detection code is really clunky…			
 			if (c.nodeName == "LINK"){
 				
 				if (c.attributes.getNamedItem("rel")!==null && 

@@ -7,8 +7,6 @@
 <html><head>
 <script type="text/javascript">
 
-console.log("Loaded Global.html");
-
 // Associative array used to store menus for each open tab. 
 // afeeds['url']=[['fname','furl'],['fname','furl'],...]]
 var afeeds = new Object();
@@ -38,7 +36,6 @@ function getToolbarBtnByID(id){
 
 function getMenuByID(id){
 // Return the menu object with the specified id.
-
 	var itemArray = safari.extension.menus;
 		for (var i = 0; i < itemArray.length; ++i) {
     		var item = itemArray[i];
@@ -78,30 +75,32 @@ function cmdHandler(event){
 function validateHandler(event){
 // Called automatically when an extension component needs to revalidate itself, e.g. when tab re-gains focus.
 
-	console.log("Validate - "+event.target.identifier);
-	
 	var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
 	
 	if (event.target.identifier == "feedMenuBtn"){
+	
+		//Update button enabled/disabled state, badge count and badge visibility.
+		var btn = event.target;
 	
 		if (typeof afeeds[thisUrl] != 'undefined'){
 			// We have already scanned this page
 			
 			if (afeeds[thisUrl].length >0){
-				// Set badge to number of feeds on page
-				event.target.disabled = false;
-				event.target.badge = afeeds[thisUrl].length;
+				// Set badge to number of feeds on page, if user preference dictates
+				btn.disabled = false;
+				if (safari.extension.settings.show_badge == true)
+					btn.badge = afeeds[thisUrl].length;
 			}
 			else{
 				// No feeds found on this page
-				event.target.disabled = true;
-				event.target.badge = 0;
+				btn.disabled = true;
+				btn.badge = 0;
 			}
 		}
 		else{
 			// Tab contains blank page
-			event.target.disabled = true;
-			event.target.badge = 0;
+			btn.disabled = true;
+			btn.badge = 0;
 		}
 	}
 }
