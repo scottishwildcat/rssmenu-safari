@@ -47,7 +47,8 @@ function showPopup (url,content){
 			popup.setAttribute('id','addfeed-popup');
 			popup.style['opacity'] = '0';
 			
-			popup.innerHTML = "<div class='url'><a href='"+url+"'>"+url+"</a></div>";
+			popup.innerHTML = "<div class='url'><img src='"
+							+ safari.extension.baseURI +"rss-color.png'/><a href='"+url+"'>"+url+"</a></div>";
 			popup.innerHTML += "<div class='action'>" + content + "</div>";
 			
 			document.body.insertBefore(popup, document.body.firstChild);
@@ -87,8 +88,8 @@ function msgHandler(event){
 		
 			// Use popup to show a transient message that the feed will load in
 			// the default app shortly, but it can take a few moments.
-			popupContent += "<span class='loadmsg'>Opening your default newsreader app… ";
-			popupContent += "<img src='"+safari.extension.baseURI+"progress_wheel.gif'></span>";
+			popupContent += "<span class='loadmsg'>Opening feed in your newsreader app ";
+			popupContent += "<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span>";
 			
 			var popup = showPopup(url,popupContent);
 			if (popup!=null)

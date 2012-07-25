@@ -32,7 +32,7 @@
 	margin: 0 0 !important;
 	padding: 4px 0px !important;
 
-	font-size: inherit !important;
+	font-size: 14px !important;
 	font-family: sans-serif !important;
 	color: black !important;
 	vertical-align: middle !important;
@@ -48,16 +48,19 @@
 
 }
 
-.url {
-	float: left !important;
-	padding: 4px 0 0 4px !important;
-	font-size: 12px !important;
+.popup img {
+	vertical-align: middle !important;
 }
 
-.url a {
-	padding-left: 18px !important; /* Leave room for the RSS icon decoration */
-	background:url(rss-color.png) 0% 50% no-repeat !important;
+.url img {
+	padding: 0px 8px;
 }
+
+.url {
+	float: left !important;
+	padding-left: 4px !important;
+}
+
 
 .url a:link {
 	text-decoration: underline !important;
@@ -66,16 +69,12 @@
 .action {
 	float:right !important;
 	padding: 0 4px 0 0 !important;
-	font-size: 12px !important;
 
 }
 
-.action .loadmsg {
-	padding: 4px 0px !important;
-}
-
-.action .loadmsg img {
+.action #spinner {
 	padding:0px 8px !important;
+	vertical-align: middle !important;
 }
 
 .action .bannerbutton {

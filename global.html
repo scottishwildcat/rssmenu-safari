@@ -143,7 +143,7 @@ function msgHandler(event){
 
 function deleteMenuHandler(event){
 // Called when tab is closed, or a different URL is loaded into an existing tab.
-// Want to delete afeeds[event.target.url], if it exists.
+// Deletes afeeds[event.target.url], if it exists.
 
 	if (typeof afeeds[event.target.url] != 'undefined')
 		delete afeeds[event.target.url];
