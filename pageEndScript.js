@@ -19,7 +19,7 @@ function openFeedInApp(url){
 	
 	var appiframe = document.getElementById('appiframe');		
 
-	if (appiframe == null){
+	if (appiframe === null){
 		// We haven't already created the iframe for this page, so do it now.
 		appiframe = document.createElement('IFRAME');
 		appiframe.style.width = 0+'px';
@@ -27,6 +27,7 @@ function openFeedInApp(url){
 		appiframe.setAttribute('id','appiframe');
 		document.body.appendChild(appiframe);
 	}	
+	
 	appiframe.src = url;
 }
 
@@ -45,8 +46,9 @@ function showPopup (url,content){
 	if (window.top === window) {
 		// Don't show the popup in any iframes on the page
 		
-		if (popup != null){
-		// If there's already a popup, remove it first.
+		if (popup !== null){
+		// If there's already a popup, hide it now.
+		// TODO: Should kill any existing hide timeout associated with it as well.
 			popup.parentElement.removeChild(popup);
 		}
 
@@ -64,7 +66,7 @@ function showPopup (url,content){
 		
 		// If we don't wrap the opacity change in a timeout, the fade transition
 		// doesn't happen...
-		setTimeout(function(){popup.style['opacity']='1'},0);
+		setTimeout(function(){popup.style['opacity']='1';},0);
 	}
 	return popup;
 }
@@ -73,13 +75,13 @@ function closePopup(){
 	// Close the popup that's used to 'always ask' or indicate 'now loading in default app'.
 	var popup = document.getElementById('addfeed-popup');
 	
-	if (popup != null){
+	if (popup !== null){
 		// If we don't wrap the opacity change in a timeout, the fade transition
 		// doesn't happen...
-		setTimeout(function(){popup.style['opacity']='0'},0);
+		setTimeout(function(){popup.style['opacity']='0';},0);
 		
 		// Don't remove the div immediately, or it will cut the fadeout short
-		setTimeout(function(){popup.parentElement.removeChild(popup)},1000);
+		setTimeout(function(){popup.parentElement.removeChild(popup);},1000);
 	}
 }
 
@@ -103,7 +105,7 @@ function msgHandler(event){
 			popupContent += "<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span>";
 			
 			var popup = showPopup(url,popupContent);
-			if (popup!=null)
+			if (popup !== null)
 				setTimeout(closePopup, timeout);
 
 			openFeedInApp(url);
@@ -131,7 +133,7 @@ function msgHandler(event){
 			// Not sure why the onclicks can't be set until this point, but here we go…			
 			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
 			document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
-			document.getElementById('closeBtn').onclick = function(){closePopup()};
+			document.getElementById('closeBtn').onclick = function(){closePopup();};
 		}
 	}
 	
@@ -174,7 +176,7 @@ function findFeedsOnPage(){
 						
 						title = c.attributes.getNamedItem("title");
 						
-						if (title!=null){
+						if (title !== null){
 							title = title.value;
 						}
 						else{
