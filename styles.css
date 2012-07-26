@@ -58,9 +58,10 @@
 	padding-left: 4px !important;
 }
 
-
 .url a:link {
 	text-decoration: underline !important;
+	color: black !important;
+	font-weight: normal !important;
 }
 
 .action {
