@@ -50,7 +50,7 @@ function getMenuByID(id){
 function cmdHandler(event){
 // Called when user clicks a toolbar button or menu item.
 
-	if (event.command.substr(0,4)=="http"){
+	if (event.command.substr(0,4)=="feed"){
 		// Menu item clicked.
 
 		if (safari.extension.settings.feed_action == 'google'){

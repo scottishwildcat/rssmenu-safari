@@ -26,7 +26,7 @@ function openFeedInApp(url){
 		appiframe.style.height = 0+'px';
 		appiframe.setAttribute('id','appiframe');
 		document.body.appendChild(appiframe);
-	}	
+	}
 	
 	appiframe.src = url;
 }
@@ -59,7 +59,8 @@ function showPopup (url,content){
 		popup.style['opacity'] = '0';
 		
 		popup.innerHTML = "<div class='url'><img src='"
-						+ safari.extension.baseURI +"rss-color.png'/><a href='"+url+"'>"+url+"</a></div>";
+						+ safari.extension.baseURI +"rss-color.png'/><a href='"+url+"'>"
+						+ url + "</a></div>";
 		popup.innerHTML += "<div class='action'>" + content + "</div>";
 		
 		document.body.insertBefore(popup, document.body.firstChild);
@@ -193,10 +194,12 @@ function findFeedsOnPage(){
 							// Specified link is relative, construct the full URI
 							href = 'http://' + document.domain + href;
 						}
-						
+												
 						// Only add feed if href isn't undefined
-						if (href)
+						if (href){
+							href = "feed:"+href;
 							foundFeeds.push([title, href]);
+						}
 					}
 				}
 			}
