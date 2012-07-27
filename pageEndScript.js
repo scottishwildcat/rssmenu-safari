@@ -28,7 +28,7 @@ function openFeedInApp(url){
 		document.body.appendChild(appiframe);
 	}	
 	
-	appiframe.src = url;
+	appiframe.src = 'feed:'+url;
 }
 
 function openFeedInReader(url){
@@ -148,6 +148,11 @@ function findFeedsOnPage(){
 	// A feed is a node in the document <head> that looks like:
 	// <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://blah.com/rss/feed.xml">
 	// where type may also be application/atom+xml or text/xml.
+	//
+	// TODO: Figure out if we can deal with redirects,
+	// e.g. http://www.thinkgeek.com/thinkgeek.rss redirects to http://feeds.feedburner.com/thinkgeek/whatsnew.
+	// Don't think we can, though...
+
 
 	if (window.top === window) {
 	// The parent frame is the top-level frame, not an iframe, so we can go ahead and check here.
@@ -193,7 +198,7 @@ function findFeedsOnPage(){
 							// Specified link is relative, construct the full URI
 							href = 'http://' + document.domain + href;
 						}
-						
+												
 						// Only add feed if href isn't undefined
 						if (href)
 							foundFeeds.push([title, href]);
