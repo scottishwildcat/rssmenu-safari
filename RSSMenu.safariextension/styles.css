@@ -6,7 +6,7 @@
 /*
 +-div popup-------------------------------------------------------+
 |+ div url--------------+ +div action----------------------------+|
-|| a                    | |bannerbutton bannerbutton bannerbutton||
+|| a                    | |rssmenu-button rssmenu-button rssmenu-button||
 |+----------------------+ +--------------------------------------+|
 +-----------------------------------------------------------------+
 
@@ -17,7 +17,7 @@
 +-----------------------------------------------------------------+
 */
 
-.popup {
+.rssmenu-popup {
 
 	display: block !important;
 	
@@ -48,29 +48,29 @@
 
 }
 
-.popup img {
+.rssmenu-popup img {
 	vertical-align: middle !important;
 	padding: 0px 8px !important;
 }
 
-.url {
+.rssmenu-url {
 	float: left !important;
 	padding-left: 4px !important;
 }
 
-.url a:link {
+.rssmenu-url a:link {
 	text-decoration: underline !important;
 	color: black !important;
 	font-weight: normal !important;
 }
 
-.action {
+.rssmenu-action {
 	float:right !important;
 	padding: 0 4px 0 0 !important;
 
 }
 
-.action .bannerbutton {
+.rssmenu-action .rssmenu-button {
 	display: inline-block !important;
 	padding: 2px 4px !important;
 	margin: 0px 4px !important;
@@ -88,6 +88,6 @@
 	cursor:pointer !important;
 }
 
-.action .bannerbutton:active {
+.rssmenu-action .rssmenu-button:active {
 	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
 }

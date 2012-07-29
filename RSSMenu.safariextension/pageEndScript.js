@@ -4,9 +4,6 @@
 
 //"use strict";
 
-var uri_scheme = 'feed';
-safari.self.tab.dispatchMessage("getExtensionSetting", "uri_scheme");
-
 safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 
 findFeedsOnPage(); // Run when any page has finished loading
@@ -21,51 +18,17 @@ function openFeedInApp(url){
 	// whose src is the feed URL.
 	
 	var appiframe = document.getElementById('appiframe');		
+
 	if (appiframe === null){
 		// We haven't already created the iframe for this page, so do it now.
 		appiframe = document.createElement('IFRAME');
-		appiframe.width = 0+'px';
-		appiframe.height = 0+'px';
+		appiframe.style.width = 0+'px';
+		appiframe.style.height = 0+'px';
 		appiframe.setAttribute('id','appiframe');
 		document.body.appendChild(appiframe);
 	}	
 	
-	var uri_menu = document.getElementById("uri");	
-	if (uri_menu != null){
-		// Protocol switcher menu is visible, so use its value
-		if (uri_menu.options[uri_menu.selectedIndex].value == "feed"){
-			url="feed:"+url;
-		}
-	}
-	else{
-		// Protocol switcher menu not visible, use the global preference value
-		if (uri_scheme == "feed"){
-			url="feed:"+url;
-		}
-	}
-	
 	appiframe.src = url;
-}
-
-function splitUrl(url){
-// Return the protocol and pathname of the given URI, which is
-// expected to be an http, https or feed URI.
-	var split = new Object();
-	
-	//TODO: Horrid bit of code, clean it up later.
-	var uri_type = url.substr(0,5);
-	
-	if (uri_type == "http:" || uri_type == "feed:") {
-		split.protocol = url.substr(0,4); 
-		split.pathname = url.substr(7);
-	}
-	
-	if (uri_type == "https") {
-		split.protocol="https"; 
-		split.pathname = url.substr(8);
-	}
-	
-	return split;
 }
 
 function openFeedInReader(url){
@@ -73,11 +36,10 @@ function openFeedInReader(url){
 	window.open('http://www.google.com/reader/view/feed/'+encodeURIComponent(url), '_blank');
 }
 
-function showPopup (url,content, allowSwitch){
+function showPopup (url,content){
 	// Show a popup banner at the top of the web page.
 	// url = the url of the RSS feed for which the banner is being shown.
 	// content = action buttons or 'loading in default app' message, depending on current preferences.
-	// allowSwitch = true if protocol switch menu should be shown, false if not
 
 	var popup = document.getElementById('rssmenu-popup'); // Will be 'null' if no existing popup being shown.
 		
@@ -85,59 +47,26 @@ function showPopup (url,content, allowSwitch){
 		// Don't show the popup in any iframes on the page
 		
 		if (popup !== null){
-			// If there's already a popup, hide it now.
-			// TODO: Should really kill any existing hide timeout associated with it as well.
+		// If there's already a popup, hide it now.
+		// TODO: Should kill any existing hide timeout associated with it as well.
 			popup.parentElement.removeChild(popup);
 		}
 
-		var surl = splitUrl(url);
-		
-		// Create popup container		
 		popup = document.createElement('div');
-		popup.className = 'rssmenu-popup';
+
+		popup.setAttribute('class','rssmenu-popup');
 		popup.setAttribute('id','rssmenu-popup');
-		popup.style.opacity = '0';
+		popup.style['opacity'] = '0';
 		
-		// Create URL area
-		var rssmenu_url = document.createElement('div');
-		rssmenu_url.setAttribute('id','rssmenu-url');
-		rssmenu_url.className = 'rssmenu-url';
-
-		// Create action area, content passed in as function param
-		var rssmenu_action = document.createElement('div');
-		rssmenu_action.className = 'rssmenu-action';
-		rssmenu_action.innerHTML = content;
-
-		// Create RSS icon
-		var rss_img = document.createElement('img');
-		rss_img.src = safari.extension.baseURI +"rss-color.png";
+		popup.innerHTML = "<div class='rssmenu-url'><img src='"
+						+ safari.extension.baseURI +"rss-color.png'/><a href='"+url+"'>"+url+"</a></div>";
+		popup.innerHTML += "<div class='rssmenu-action'>" + content + "</div>";
 		
-		// Create clickable URL, passed in as function param
-		var rssmenu_feedurl = document.createElement('a');
-		rssmenu_feedurl.setAttribute('id','clickable_url');
-		rssmenu_feedurl.href = url;
-		rssmenu_feedurl.innerHTML = (allowSwitch === false ? uri_scheme+"://" : '') + surl.pathname;
+		document.body.insertBefore(popup, document.body.firstChild);
 		
-		// Put it all together in the right order...
-		document.body.insertBefore(popup, document.body.firstChild); // Popup
-		popup.insertBefore(rssmenu_action, null); // Action area
-		popup.insertBefore(rssmenu_url, rssmenu_action); // URL area
-		rssmenu_url.insertBefore(rssmenu_feedurl, null); // Clickable URL
-		rssmenu_url.insertBefore(rss_img, rssmenu_feedurl); // RSS icon
-
-		if (allowSwitch === true){
-			// Create http/feed selector menu
-			var uri_menu = document.createElement('select');
-			uri_menu.setAttribute('id','uri');
-			uri_menu.innerHTML  ='<option value="feed">feed://</option>';
-			uri_menu.innerHTML +='<option value="http">'+surl.protocol+'://</option>';
-			uri_menu.selectedIndex = (uri_scheme == "feed" ? 0 : 1);
-			rssmenu_url.insertBefore(uri_menu, document.getElementById('clickable_url'));
-		}
-				
-		// Make the popup fade in. If we don't wrap the opacity change in a timeout, the fade 
+		// If we don't wrap the opacity change in a timeout, the fade transition
 		// doesn't happen...
-		setTimeout(function(){popup.style.opacity='1';},0);
+		setTimeout(function(){popup.style['opacity']='1';},0);
 	}
 	return popup;
 }
@@ -149,7 +78,7 @@ function closePopup(){
 	if (popup !== null){
 		// If we don't wrap the opacity change in a timeout, the fade transition
 		// doesn't happen...
-		setTimeout(function(){popup.style.opacity='0';},0);
+		setTimeout(function(){popup.style['opacity']='0';},0);
 		
 		// Don't remove the div immediately, or it will cut the fadeout short
 		setTimeout(function(){popup.parentElement.removeChild(popup);},1000);
@@ -157,9 +86,10 @@ function closePopup(){
 }
 
 function msgHandler(event){
-	// Messages we currently expect from the global page are:
-	// "showFeedPopup": menu item selected, show popup banner.
-	// "feedActionChanged": user changed default action setting.
+	// Messages we currently expect are:
+	// "showFeedPopup", sent from global page.
+	// "feedActionChanged", sent from global page.
+
 	var url = event.message[0]; // URL of feed to view
 	var action = event.message[1];
 	var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
@@ -174,7 +104,7 @@ function msgHandler(event){
 			popupContent += "<span class='loadmsg'>Opening feed in your newsreader app ";
 			popupContent += "<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span>";
 			
-			var popup = showPopup(url,popupContent, false);
+			var popup = showPopup(url,popupContent);
 			if (popup !== null)
 				setTimeout(closePopup, timeout);
 
@@ -192,13 +122,13 @@ function msgHandler(event){
 				b.innerText=t;
 				buttons.insertBefore(b,null); // null = insert as last child of popup 
 			}
-						
+			
 			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
 			createButton('googleBtn','Google Reader');
 			createButton('appBtn', 'Application');
 			createButton('closeBtn', 'Cancel');
 						
-			showPopup(url, buttons.innerHTML, true);
+			showPopup(url, buttons.innerHTML);
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
 			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
@@ -211,18 +141,6 @@ function msgHandler(event){
 	// User changed default action in preferences, so hide the popup banner 
 	// (if currently shown) to avoid confusion.
 		closePopup();
-	}
-	
-	if (event.name === "uriSchemeChanged" || event.name === "uriSchemeValue"){
-	// Got uri_scheme setting from global page on page load, or user changed
-	// uri_scheme preference.
-		uri_scheme = event.message;
-		var m = document.getElementById('uri');
-		if (m!==null){
-			var n = (event.message === "feed" ? 0 : 1);
-			m.selectedIndex = n;
-		}
-		console.log("URI scheme = "+event.message);
 	}
 }
 
@@ -244,7 +162,7 @@ function findFeedsOnPage(){
 			
 			c = docHead.children[i];
 			
-			//TODO: This detection code is really clunky… clean it up later.	
+			//TODO: This detection code is really clunky…			
 			if (c.nodeName == "LINK"){
 				
 				if (c.attributes.getNamedItem("rel")!==null && 
