@@ -138,6 +138,18 @@ function msgHandler(event){
    		// event.message = array of [feed_title, feed_url] found on the page.
 		afeeds[event.target.url] = event.message;
    	}
+   	
+   	if (event.name == "openFeedInTab"){
+   		// Couldn't use iframe method to load feed in external app, so need to do it in a new tab
+   		var url = event.message;
+   		safari.application.activeBrowserWindow.openTab('background').url = url;
+   		// Close the tab again after a short delay
+   		var closetab = function(){
+   			var t = safari.application.activeBrowserWindow.tabs;
+   			t[(t.length)-1].close();
+   		}
+   		setTimeout(closetab,3000);
+   	}
 }
 
 function deleteMenuHandler(event){

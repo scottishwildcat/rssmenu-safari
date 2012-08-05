@@ -13,22 +13,45 @@ findFeedsOnPage(); // Run when any page has finished loading
  * Helper functions
  */
 
+function x_frame_options(url){
+	// Return true if specified URL is allowed to be displayed in an iframe,
+	// false if its http headers specify 'X-Frame-Options: deny'.
+	
+	try {
+		var xhr = new XMLHttpRequest();
+		xhr.open("HEAD", url, false); // false = synchronous
+		xhr.send(null);
+	}
+	catch(e){
+	}
+
+	if (xhr.status === 200){
+		return xhr.getResponseHeader("X-Frame-Options"); // Poss. values: 'deny' or 'sameorigin'
+	}
+	else
+		return "allow"; // We couldn't access the http header, so hope for the best.
+}
+
 function openFeedInApp(url){
 	// We open a feed in the default app by adding an invisible iframe to the page
 	// whose src is the feed URL.
 	
-	var appiframe = document.getElementById('appiframe');		
-
-	if (appiframe === null){
-		// We haven't already created the iframe for this page, so do it now.
-		appiframe = document.createElement('IFRAME');
-		appiframe.style.width = 0+'px';
-		appiframe.style.height = 0+'px';
-		appiframe.setAttribute('id','appiframe');
-		document.body.appendChild(appiframe);
-	}	
+	if (x_frame_options(url) != "deny"){
+		var appiframe = document.getElementById('appiframe');		
+		if (appiframe === null){
+			// We haven't already created the iframe for this page, so do it now.
+			appiframe = document.createElement('IFRAME');
+			appiframe.style.width = 0+'px';
+			appiframe.style.height = 0+'px';
+			appiframe.setAttribute('id','appiframe');
+			document.body.appendChild(appiframe);
+		}			
+		appiframe.src = url;
+	}
+	else{
+		safari.self.tab.dispatchMessage("openFeedInTab",url);
+	}
 	
-	appiframe.src = url;
 }
 
 function openFeedInReader(url){
