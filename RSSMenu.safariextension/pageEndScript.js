@@ -188,10 +188,16 @@ function findFeedsOnPage(){
 								title = 'Untitled Feed';
 						}
 
-						href = c.attributes.getNamedItem("href").value;						
+						href = c.attributes.getNamedItem("href").value;
+												
 						if (href[0]=='/'){
-							// Specified link is relative, construct the full URI
+							// Specified link is relative to site root, construct the full URI
 							href = 'http://' + document.domain + href;
+						}
+
+						if (href.substr(0,4)!="http"){
+							// Specified link is relative to current page, construct the full URI
+							href = document.URL + href;
 						}
 						
 						// Only add feed if href isn't undefined
