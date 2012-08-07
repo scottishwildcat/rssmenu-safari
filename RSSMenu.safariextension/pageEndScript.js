@@ -170,63 +170,60 @@ function msgHandler(event){
 function findFeedsOnPage(){
 	// A feed is a node in the document <head> that looks like:
 	// <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://blah.com/rss/feed.xml">
-	// where type may also be application/atom+xml or text/xml.
+	// Other forms of href: "/feed.xml" (relative to site root), "feed.xml" (relative to current page.)
+	// Other values of type: application/atom+xml, text/xml.
 
 	if (window.top === window) {
-	// The parent frame is the top-level frame, not an iframe, so we can go ahead and check here.
-			
-		var foundFeeds = [];
-		var c, t, title, href;
+		// The parent frame is the top-level frame, not an iframe, so go ahead.
+		
+		var foundFeeds = []; // will be populated as: [[name,url],[name,url],...]
 	
-		var docHead = document.getElementsByTagName('head')[0];
+		var docHead = document.getElementsByTagName('head')[0];		
+		var headLinks = docHead.getElementsByTagName('link');
 			
-		// Store all found feeds in an array: [[name,url],[name,url],...]
-		for (var i=0; i < docHead.childElementCount; i++){
+		for (var i=0; i < headLinks.length; i++){
 			
-			c = docHead.children[i];
+			var link = headLinks[i];
 			
-			//TODO: This detection code is really clunky…			
-			if (c.nodeName == "LINK"){
+			if (link.attributes.getNamedItem("rel") !== null && 
+				link.attributes.getNamedItem("rel").value == "alternate"){
 				
-				if (c.attributes.getNamedItem("rel")!==null && 
-					c.attributes.getNamedItem("rel").value == "alternate"){
+				var type = link.attributes.getNamedItem("type").value;
+			
+				if (type === "application/rss+xml"  || 
+					type === "application/atom+xml" ||
+					type === "text/xml"){
 					
-					t = c.attributes.getNamedItem("type").value;
-				
-					if (t == "application/rss+xml" || 
-						t == "application/atom+xml" ||
-						t == "text/xml"){
-						
-						title = c.attributes.getNamedItem("title");
-						
-						if (title !== null){
-							title = title.value;
-						}
-						else{
-							if (t.indexOf("rss")!=-1)
-								title = "RSS Feed";
-							else if (t.indexOf("atom")!=-1)
-								title = "Atom Feed";
-							else
-								title = 'Untitled Feed';
-						}
-
-						href = c.attributes.getNamedItem("href").value;
-												
-						if (href[0]=='/'){
-							// Specified link is relative to site root, construct the full URI
-							href = 'http://' + document.domain + href;
-						}
-
-						if (href.substr(0,4)!="http"){
-							// Specified link is relative to current page, construct the full URI
-							href = document.URL + href;
-						}
-						
-						// Only add feed if href isn't undefined
-						if (href)
-							foundFeeds.push([title, href]);
+					var title = link.attributes.getNamedItem("title");
+					
+					if (title !== null){
+						// Use the feed title specified on the page
+						title = title.value;					
 					}
+					else{
+						// No title specified, use a generic name based on the type
+						if (type.indexOf("rss") != -1)
+							title = "RSS Feed";
+						else if (type.indexOf("atom") != -1)
+							title = "Atom Feed";
+						else
+							title = 'Untitled Feed';
+					}
+
+					var href = link.attributes.getNamedItem("href").value;
+											
+					if (href[0] == '/'){
+						// Specified link is relative to site root, construct the full URL
+						href = 'http://' + document.domain + href;
+					}
+
+					if (href.substr(0,4) !== "http"){
+						// Specified link is relative to current page, construct the full URL
+						href = document.URL + href;
+					}
+					
+					if (href)
+						foundFeeds.push([title, href]);
 				}
 			}
 		}
