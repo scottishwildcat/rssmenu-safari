@@ -45,6 +45,25 @@ function getMenuByID(id){
 	return null;
 }
 
+function urlOpenInBrowser(url){
+// Return true if url is open in any tab in any window,
+// otherwise false.
+
+	var w = safari.application.browserWindows;
+	
+	for (var i=0; i<w.length; w++){
+		var t = w[i].tabs;		
+		for (i=0; i < t.length; i++){
+		
+			if (t[i].url === url){
+				return true;		
+			}
+		}
+	}
+	return false;
+}
+
+
 /* Safari Extension message handlers */
 
 function cmdHandler(event){
@@ -153,14 +172,24 @@ function msgHandler(event){
 }
 
 function deleteMenuHandler(event){
-// Called when tab is closed, or a different URL is loaded into an existing tab.
-// Deletes afeeds[event.target.url], if it exists.
+// Called when a close or beforeNavigate event is received.
+// Deletes afeeds[event.target.url], if that url no longer open in any tab.
 
-	if (typeof afeeds[event.target.url] != 'undefined')
-		delete afeeds[event.target.url];
-	var btn = getToolbarBtnByID('feedMenuBtn');
-	btn.disabled = true;
-	btn.badge = 0;
+	var url = event.target.url;
+	
+	// Check after a short delay to give the tab time to close first,
+	// if it's going to -- otherwise the urlOpenInBrowser call will
+	// return true as the tab hasn't closed yet.
+	
+	setTimeout(function(){
+		if (urlOpenInBrowser(url) != true){		
+			if (typeof afeeds[url] != 'undefined')
+				delete afeeds[url];
+			//var btn = getToolbarBtnByID('feedMenuBtn');
+			//btn.disabled = true;
+			//btn.badge = 0;
+		}
+	},500);
 }
 
 function settingsChangeHandler(event){
