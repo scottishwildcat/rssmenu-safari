@@ -71,23 +71,27 @@ function cmdHandler(event){
 
 	if (event.command.substr(0,4)=="http"){
 		// Menu item clicked.
-
-		if (safari.extension.settings.feed_action == 'google'){
+		
+		switch (safari.extension.settings.feed_action){
+		
+			case 'google':
 			// Open feed URL in a new tab in Google Reader for now.
-			feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
-			safari.application.activeBrowserWindow.openTab().url=feedURL;
-		}
-		else if (safari.extension.settings.feed_action == 'defaultapp' ||
-				safari.extension.settings.feed_action == 'alwaysask'){
+				feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
+				safari.application.activeBrowserWindow.openTab().url=feedURL;
+				break;
 				
-			// Open feed in default reader application, or ask the user
-			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
-				("showFeedPopup",[event.command, // We previously set the command to the URL of the feed
-				safari.extension.settings.feed_action, // Which app to use to open the feed (or 'ask')
-				safari.extension.settings.banner_timeout * 1000]); // Only used if app to use is 'default app'
-		}
-		else
-			console.log('Unrecognised feed action: '+safari.extension.settings.feed_action);
+			case 'defaultapp':
+			case 'alwaysask':				
+				// Open feed in default reader application, or ask the user
+				safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
+					("showFeedPopup",[event.command, // We previously set the command to the URL of the feed
+					safari.extension.settings.feed_action, // Which app to use to open the feed (or 'ask')
+					safari.extension.settings.banner_timeout * 1000]); // Only used if app to use is 'default app'
+				break;
+				
+			default:
+				console.log('Unrecognised feed action: '+safari.extension.settings.feed_action);
+				break;
 	}
 }
 
@@ -101,7 +105,7 @@ function validateHandler(event){
 		//Update button enabled/disabled state, badge count and badge visibility.
 		var btn = event.target;
 	
-		if (typeof afeeds[thisUrl] != 'undefined'){
+		if (thisUrl in afeeds){
 			// We have already scanned this page
 			
 			if (afeeds[thisUrl].length >0){
@@ -153,22 +157,25 @@ function menuHandler(event){
 function msgHandler(event){
 // Called when the pageEndScript has something to tell us.
 
-   	if (event.name == "foundFeeds"){
-   		// event.message = array of [feed_title, feed_url] found on the page.
-		afeeds[event.target.url] = event.message;
-   	}
+	switch (event.name){
    	
-   	if (event.name == "openFeedInTab"){
-   		// Couldn't use iframe method to load feed in external app, so need to do it in a new tab
-   		var url = event.message;
-   		safari.application.activeBrowserWindow.openTab('background').url = url;
-   		// Close the tab again after a short delay
-   		var closetab = function(){
-   			var t = safari.application.activeBrowserWindow.tabs;
-   			t[(t.length)-1].close();
-   		}
-   		setTimeout(closetab,3000);
-   	}
+	   	case "foundFeeds":
+	   		// event.message = array of [feed_title, feed_url] found on the page.
+			afeeds[event.target.url] = event.message;
+			break;
+	   	
+	   	case "openFeedInTab":
+	   		// Couldn't use iframe method to load feed in external app, so need to do it in a new tab
+	   		var url = event.message;
+	   		safari.application.activeBrowserWindow.openTab('background').url = url;
+	   		// Close the tab again after a short delay
+	   		var closetab = function(){
+	   			var t = safari.application.activeBrowserWindow.tabs;
+	   			t[(t.length)-1].close();
+	   		}
+	   		setTimeout(closetab,3000);
+	   		break;
+	}
 }
 
 function deleteMenuHandler(event){
@@ -182,38 +189,42 @@ function deleteMenuHandler(event){
 	// return true as the tab hasn't closed yet.
 	
 	setTimeout(function(){
+	
 		if (urlOpenInBrowser(url) != true){		
-			if (typeof afeeds[url] != 'undefined')
+			if (url in afeeds)
 				delete afeeds[url];
 			//var btn = getToolbarBtnByID('feedMenuBtn');
 			//btn.disabled = true;
 			//btn.badge = 0;
 		}
+		
 	},500);
 }
 
 function settingsChangeHandler(event){
 // Called when extension settings are changed in the Safari Preferences dialog.
 
-	if (event.key == "feed_action"){
-	// If 'default action' setting is changed, we inform the injected script so it can
-	// hide the popup banner if it's visible at the time.
-		safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
-				("feedActionChanged", 0);
+	switch (event.key){
+
+		case "feed_action":
+			// If 'default action' setting is changed, we inform the injected script so it can
+			// hide the popup banner if it's visible at the time.
+			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
+					("feedActionChanged", 0);
+			break;
 	
-	}
-	
-	if (event.key == "show_badge"){
-	// If the show_badge setting is changed, show or hide the badge immediately.
-		var btn = getToolbarBtnByID('feedMenuBtn');
-		var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
-		
-		if (safari.extension.settings.show_badge == true){
-			btn.badge = afeeds[thisUrl].length;
-		}
-		else{
-			btn.badge = 0;
-		}
+		case "show_badge":
+			// If the show_badge setting is changed, show or hide the badge immediately.
+			var btn = getToolbarBtnByID('feedMenuBtn');
+			var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
+			
+			if (safari.extension.settings.show_badge == true){
+				btn.badge = afeeds[thisUrl].length;
+			}
+			else{
+				btn.badge = 0;
+			}
+			break;
 	}
 }
 
