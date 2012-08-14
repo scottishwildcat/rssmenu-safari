@@ -214,7 +214,8 @@ function findFeedsOnPage(){
 											
 					if (href[0] == '/'){
 						// Specified link is relative to site root, construct the full URL
-						href = 'http://' + document.domain + href;
+						var protocol = document.URL.split(':')[0];
+						href = protocol+ '://' + document.domain + href;
 					}
 
 					if (href.substr(0,4) !== "http"){
