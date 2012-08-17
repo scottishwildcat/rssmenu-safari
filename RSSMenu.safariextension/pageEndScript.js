@@ -211,6 +211,7 @@ function findFeedsOnPage(){
 					}
 
 					var href = link.attributes.getNamedItem("href").value;
+					href = href.trim();
 											
 					if (href[0] == '/'){
 						// Specified link is relative to site root, construct the full URL
