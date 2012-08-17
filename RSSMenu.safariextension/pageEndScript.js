@@ -23,6 +23,10 @@ function x_frame_options(url){
 		xhr.send(null);
 	}
 	catch(e){
+		//TODO: Assumes failure is due to cross-domain request, so returns "deny"
+		//to open the feed in a tab instead -- may not be the case.
+		console.log("oops - "+e.message);
+		return "deny";
 	}
 
 	if (xhr.status === 200){
