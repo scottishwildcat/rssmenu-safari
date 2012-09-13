@@ -85,8 +85,8 @@ function showPopup (url,content){
 		popup.setAttribute('id','rssmenu-popup');
 		popup.style['opacity'] = '0';
 		
-		popup.innerHTML = "<div class='rssmenu-url'><img src='"
-						+ safari.extension.baseURI +"rss-color.png'/><a href='"+url+"'>"+url+"</a></div>";
+		popup.innerHTML = "<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"rss-color.png'/></div>";
+		popup.innerHTML += "<div class='rssmenu-url'><a href='"+url+"'>"+url+"</a></div>";
 		popup.innerHTML += "<div class='rssmenu-action'>" + content + "</div>";
 		
 		document.body.insertBefore(popup, document.body.firstChild);
@@ -153,9 +153,20 @@ function msgHandler(event){
 			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
 			createButton('googleBtn','Google Reader');
 			createButton('appBtn', 'Application');
-			createButton('closeBtn', 'Cancel');
-						
+
+			buttons.innerHTML += '<div class="rssmenu-button"><svg id="closeBtn" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0, 0, 64, 64">'
+  				+'<g id="Layer 1">'
+				+'<path d="M53.692,9.241 C65.898,21.447 65.898,41.237 53.692,53.442 C41.487,65.648 21.697,65.648 9.491,53.442 C-2.715,41.237 -2.715,21.447 9.491,9.241 C21.697,-2.965 41.487,-2.965 53.692,9.241" stroke="#000000" stroke-width="1" fill="#888888"/>'
+    			+'<g>'
+      			+'<path d="M19.171,18.921 L44.012,43.762" stroke="#EEEEEE" stroke-width="10" fill="#000000" fill-opacity="0"/>'
+      			+'<path d="M19.171,43.762 L44.012,18.921" stroke="#EEEEEE" stroke-width="10" fill="#000000" fill-opacity="0"/>'
+    			+'</g></g><defs/></svg></div>';
+    									
 			showPopup(url, buttons.innerHTML);
+			// svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+			// svg.removeAttribute('width');
+			// svg.removeAttribute('height');
+
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
 			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
