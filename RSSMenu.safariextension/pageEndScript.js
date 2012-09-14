@@ -128,8 +128,9 @@ function msgHandler(event){
 		
 			// Use popup to show a transient message that the feed will load in
 			// the default app shortly, but it can take a few moments.
-			popupContent += "<span class='loadmsg'>Opening feed in your newsreader app ";
-			popupContent += "<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span>";
+			popupContent += "<div class='rssmenu-pushbuttons'>"
+							+"<span class='loadmsg'>Opening feed in your newsreader app "
+							+"<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span></div>";
 			
 			var popup = showPopup(url,popupContent);
 			if (popup !== null)
@@ -140,7 +141,7 @@ function msgHandler(event){
 		
 		else if (action == 'alwaysask'){
 			
-			//var buttons = document.createElement('div');
+			/* var buttons = document.createElement('div');
 			
 			var createButton = function(i,t){
 				var b = document.createElement('div');
@@ -149,6 +150,7 @@ function msgHandler(event){
 				b.innerText=t;
 				buttons.insertBefore(b,null); // null = insert as last child of popup 
 			}
+			*/
 			
 			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
 			var btnHTML = ''
