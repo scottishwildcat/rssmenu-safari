@@ -72,15 +72,25 @@
 .rssmenu-action {
 	float:right !important;
 	padding-right: 4px !important;
+	position: relative !important;
+	width:50% !important;
 
 }
 
-.rssmenu-action .rssmenu-button {
+.rssmenu-pushbuttons {
+	position:absolute;
+	right:32px;
+}
+
+.rssmenu-button {
 	display: inline-block !important;
 	padding: 2px 4px !important;
 	margin: 0px 0px 0px 4px !important;
+	float:right !important;
 
 	-webkit-border-radius: 2px !important;
+	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
+	border: thin outset black !important;
 
 	font: webkit-small-control !important;
 	height: auto !important;
@@ -91,21 +101,30 @@
 	cursor:pointer !important;
 }
 
-#appBtn, #googleBtn {
-	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
-	border: thin outset black !important;
+
+/* Hover must come before active… */
+.rssmenu-button:hover {
+	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important; 
 }
 
-#closeBtn {
-	width: 18px !important;
-	height: 18px !important;
-	/*top: 18px !important;*/
-}
-
-#appBtn:active, #googleBtn:active {
+.rssmenu-button:active {
 	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
 }
 
-.rssmenu-action .rssmenu-closebutton {
-	display: inline-block !important;
+.rssmenu-closebtn {
+  display: inline-block !important;
+  padding: 2px 4px !important;
+  position: absolute !important;
+  right: 4px !important;
+  
+  background-image: url(closeBtn@2x.png) !important;
+  background-size: 16px 16px !important;
+  height: 16px !important;
+  width: 16px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.rssmenu-closebtn:hover {
+  background-image: url(closeBtn-hover@2x.png) !important;
 }
