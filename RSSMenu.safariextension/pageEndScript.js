@@ -85,9 +85,11 @@ function showPopup (url,content){
 		popup.setAttribute('id','rssmenu-popup');
 		popup.style['opacity'] = '0';
 		
-		popup.innerHTML = "<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"RSS-20.png'/></div>";
-		popup.innerHTML += "<div class='rssmenu-url'><a href='"+url+"'>"+url+"</a></div>";
-		popup.innerHTML += "<div class='rssmenu-action'>" + content + "</div>";
+		var innerHTML = [];
+		innerHTML.push("<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"RSS-20.png'/></div>");
+		innerHTML.push("<div class='rssmenu-url'><a href='"+url+"'>"+url+"</a></div>");
+		innerHTML.push("<div class='rssmenu-action'>" + content + "</div>");
+		popup.innerHTML = innerHTML.join('');
 		
 		document.body.insertBefore(popup, document.body.firstChild);
 		
@@ -120,7 +122,7 @@ function msgHandler(event){
 	var url = event.message[0]; // URL of feed to view
 	var action = event.message[1];
 	var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
-	var popupContent = "";
+	var popupContent = [];
 	
 	if (event.name == "showFeedPopup"){
 								
@@ -128,9 +130,10 @@ function msgHandler(event){
 		
 			// Use popup to show a transient message that the feed will load in
 			// the default app shortly, but it can take a few moments.
-			popupContent += "<div class='rssmenu-pushbuttons'>"
-							+"<span class='loadmsg'>Opening feed in your newsreader app "
-							+"<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span></div>";
+			popupContent.push("<div class='rssmenu-pushbuttons'>");
+			popupContent.push("<span class='loadmsg'>Opening feed in your newsreader app...");
+			popupContent.push("<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span></div>");
+			popupContent=popupContent.join('');
 			
 			var popup = showPopup(url,popupContent);
 			if (popup !== null)
@@ -141,26 +144,15 @@ function msgHandler(event){
 		
 		else if (action == 'alwaysask'){
 			
-			/* var buttons = document.createElement('div');
-			
-			var createButton = function(i,t){
-				var b = document.createElement('div');
-				b.setAttribute('class','rssmenu-button');
-				b.setAttribute('id',i);
-				b.innerText=t;
-				buttons.insertBefore(b,null); // null = insert as last child of popup 
-			}
-			*/
-			
 			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
-			var btnHTML = ''
-			+'<div class="rssmenu-pushbuttons">'
-	        	+'<div class="rssmenu-button" id="appBtn">Application</div>'
-	        	+'<div class="rssmenu-button" id="googleBtn">Google Reader</div>'
-	    	+'</div>'
-			+'<div class="rssmenu-closebtn" id="closeBtn"></div>';
+			popupContent.push('<div class="rssmenu-pushbuttons">');
+	        popupContent.push('<div class="rssmenu-button" id="appBtn">Application</div>');
+	        popupContent.push('<div class="rssmenu-button" id="googleBtn">Google Reader</div>');
+	    	popupContent.push('</div>');
+			popupContent.push('<div class="rssmenu-closebtn" id="closeBtn"></div>');
+			popupContent = popupContent.join('');
 	        									
-			showPopup(url, btnHTML);
+			showPopup(url, popupContent);
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
 			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
