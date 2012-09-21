@@ -146,8 +146,9 @@ function menuHandler(event){
 			feedMenu.removeMenuItem(0);
 	
 	// Add the new feeds to the menu, if any
-	btn.menu = feedMenu;			
-	if (feedsToAdd.length > 0)
+	btn.menu = feedMenu;
+
+	if (feedsToAdd!==undefined && feedsToAdd.length > 0)
 		for (i=0; i < feedsToAdd.length; i++)
 			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],feedsToAdd[i][1]);
 			

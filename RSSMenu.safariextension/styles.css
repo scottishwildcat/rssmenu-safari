@@ -21,7 +21,7 @@
 
 	/*display: block !important;*/
 	
-	background-color: #ffcc66 !important;
+	background-image: -webkit-linear-gradient(top, #ffdd77, #eebb66) !important; 
 	border-color: #666666 !important;
 	border-style: solid !important;
 	border-width: 0 0 thin 0 !important;
@@ -61,7 +61,7 @@
 	position: absolute !important;
 	left: 28px !important;
 	padding-left: 4px !important;
-	padding-top: 2px !important;
+	/*padding-top: 2px !important;*/
 	white-space: nowrap !important;
 	overflow:hidden !important;
 }
@@ -96,6 +96,7 @@
 	border: thin outset black !important;
 
 	font: webkit-small-control !important;
+	font-weight: normal !important;
 	height: auto !important;
 	line-height:normal !important;
 	text-indent: 0px !important;
