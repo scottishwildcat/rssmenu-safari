@@ -86,7 +86,8 @@ function showPopup (url,content){
 		popup.style['opacity'] = '0';
 		
 		var innerHTML = [];
-		innerHTML.push("<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"RSS-20.png'/></div>");
+		//innerHTML.push("<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"RSS-20.png'/></div>");
+		innerHTML.push('<div class="rssmenu-icon"></div>');
 		innerHTML.push("<div class='rssmenu-url'><a href='"+url+"'>"+url+"</a></div>");
 		innerHTML.push("<div class='rssmenu-action'>" + content + "</div>");
 		popup.innerHTML = innerHTML.join('');

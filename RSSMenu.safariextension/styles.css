@@ -19,7 +19,7 @@
 
 .rssmenu-popup {
 
-	display: block !important;
+	/*display: block !important;*/
 	
 	background-color: #ffcc66 !important;
 	border-color: #666666 !important;
@@ -35,11 +35,11 @@
 	font-size: 14px !important;
 	font-family: sans-serif !important;
 	color: black !important;
-	/*vertical-align: middle !important;*/
 
 	position: fixed !important;
 	left: 0px !important;
 	top: 0px !important;
+	height: 22px !important;
 
 	z-index: 999999 !important;
 
@@ -62,7 +62,6 @@
 	left: 28px !important;
 	padding-left: 4px !important;
 	padding-top: 2px !important;
-	
 	white-space: nowrap !important;
 	overflow:hidden !important;
 }
@@ -133,4 +132,18 @@
 
 .rssmenu-closebtn:hover {
   background-image: url(closeBtn-hover@2x.png) !important;
+}
+
+.rssmenu-icon {
+	display: inline-block !important;
+	padding: 2px 4px !important;
+	position: absolute !important;
+	left: 4px !important;
+	
+	background-image: url(RSS-40.png) !important;
+	background-size: 20px 20px !important;
+	height: 20px !important;
+	width: 20px !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
 }
