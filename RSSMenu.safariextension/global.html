@@ -170,7 +170,7 @@ function msgHandler(event){
    	
 	   	case "foundFeeds":
 	   		// event.message = array of [feed_title, feed_url] found on the page.
-			afeeds[event.target.url] = event.message;
+	   		afeeds[event.target.url] = event.message;
 	   		clog("Added afeeds["+event.target.url+"]");
 			break;
 	   	
@@ -188,27 +188,54 @@ function msgHandler(event){
 	}
 }
 
-function deleteMenuHandler(event){
-// Called when a close or beforeNavigate event is received.
+function navigateHandler(event){
+// Called when a close, navigate or beforeNavigate event is received.
 // Deletes afeeds[event.target.url], if that url no longer open in any tab.
 
 	var url = event.target.url;
-	
-	// Check after a short delay to give the tab time to close first,
-	// if it's going to -- otherwise the urlOpenInBrowser call will
-	// return true as the tab hasn't closed yet.
-	
-	setTimeout(function(){
-	
-		if (urlOpenInBrowser(url) != true){		
-			if (url in afeeds)
-				delete afeeds[url];
-			//var btn = getToolbarBtnByID('feedMenuBtn');
-			//btn.disabled = true;
-			//btn.badge = 0;
-		}
-		
-	},500);
+
+	switch(event.type){
+
+		case "close":
+			clog("close:");
+			
+		//case "beforeNavigate":
+			// Check if the URL being vacated is still open in some other tab.
+			// But only after a short delay, to give the tab time to close first, if it's going to. 
+			// clog("beforeNavigate:");
+			
+			setTimeout(function(){
+			
+				if (urlOpenInBrowser(url) == false){
+					clog("Closing tab "+url+" not open elsewhere");
+					if (url in afeeds){
+						delete afeeds[url];
+						clog("Delete menu for "+url);
+					}
+				}
+			},500);
+			
+			break;
+			
+		case "navigate":
+			// Check if we've already found some feeds on the URL we've
+			// landed on, and update button accordingly.
+			var btn = getToolbarBtnByID('feedMenuBtn');
+			
+			clog("navigate: menu for "+url+" = "+afeeds[url]);
+			if (url in afeeds){
+			
+				if (afeeds[url].length === 0){
+					btn.disabled = true;
+					btn.badge = 0;
+				}
+				else{
+					btn.disabled = false;
+					btn.badge = afeeds[url].length;
+				}
+			}	
+			break;
+	}
 }
 
 function settingsChangeHandler(event){
