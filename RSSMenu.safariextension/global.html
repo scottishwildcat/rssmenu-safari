@@ -18,8 +18,15 @@ safari.application.addEventListener("message", msgHandler, false); // Received l
 safari.extension.settings.addEventListener("change", settingsChangeHandler, false); // Settings changed in prefs window
 
 // These two only work in Safari 5.1 and later. They don't bubble, hence second param=true.
-safari.application.addEventListener("close", deleteMenuHandler, true);
-safari.application.addEventListener("beforeNavigate", deleteMenuHandler, true);
+safari.application.addEventListener("close", navigateHandler, true);
+safari.application.addEventListener("beforeNavigate", navigateHandler, true);
+safari.application.addEventListener("navigate", navigateHandler, true);
+
+var debug=true;
+function clog(msg){
+	if (debug) console.log("RSSMenu:"+arguments.callee.caller.name+"() "+msg);
+}
+
 
 /* Utilities */
 
@@ -90,7 +97,7 @@ function cmdHandler(event){
 				break;
 				
 			default:
-				console.log('Unrecognised feed action: '+safari.extension.settings.feed_action);
+				clog('Unrecognised feed action: '+safari.extension.settings.feed_action);
 				break;
 		}
 	}
@@ -164,6 +171,7 @@ function msgHandler(event){
 	   	case "foundFeeds":
 	   		// event.message = array of [feed_title, feed_url] found on the page.
 			afeeds[event.target.url] = event.message;
+	   		clog("Added afeeds["+event.target.url+"]");
 			break;
 	   	
 	   	case "openFeedInTab":

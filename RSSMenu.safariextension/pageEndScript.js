@@ -13,7 +13,12 @@ findFeedsOnPage(); // Run when any page has finished loading
  * Helper functions
  */
 
-function x_frame_options(url){
+var debug=true;
+function clog(msg){
+	if (debug) console.log("RSSMenu:"+arguments.callee.caller.name+"() "+msg);
+}
+
+function XFrameOptions(url){
 	// Return true if specified URL is allowed to be displayed in an iframe,
 	// false if its http headers specify 'X-Frame-Options: deny'.
 	
@@ -25,7 +30,7 @@ function x_frame_options(url){
 	catch(e){
 		//TODO: Assumes failure is due to cross-domain request, so returns "deny"
 		//to open the feed in a tab instead -- may not be the case.
-		console.log("oops - "+e.message);
+		clog(e.message);
 		return "deny";
 	}
 
@@ -40,7 +45,9 @@ function openFeedInApp(url){
 	// We open a feed in the default app by adding an invisible iframe to the page
 	// whose src is the feed URL.
 	
-	if (x_frame_options(url) != "deny"){
+	clog(url);
+	
+	if (XFrameOptions(url) != "deny"){
 		var appiframe = document.getElementById('appiframe');		
 		if (appiframe === null){
 			// We haven't already created the iframe for this page, so do it now.
@@ -53,6 +60,7 @@ function openFeedInApp(url){
 		appiframe.src = url;
 	}
 	else{
+		clog("iFrame denied, opening in tab");
 		safari.self.tab.dispatchMessage("openFeedInTab",url);
 	}
 	
