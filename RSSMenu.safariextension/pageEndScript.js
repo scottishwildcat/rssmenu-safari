@@ -6,7 +6,7 @@
 
 safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 
-findFeedsOnPage(); // Run when any page has finished loading
+findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
 
 
 /*
