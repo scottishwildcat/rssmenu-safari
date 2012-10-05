@@ -38,7 +38,7 @@ function XFrameOptions(url){
 		return xhr.getResponseHeader("X-Frame-Options"); // Poss. values: 'deny' or 'sameorigin'
 	}
 	else
-		return "allow"; // We couldn't access the http header, so hope for the best.
+		return "deny"; // We couldn't access the http header, so assume the worst
 }
 
 function openFeedInApp(url){
