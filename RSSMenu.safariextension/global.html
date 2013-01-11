@@ -23,8 +23,18 @@ safari.application.addEventListener("beforeNavigate", navigateHandler, true);
 safari.application.addEventListener("navigate", navigateHandler, true);
 
 var debug=true;
-function clog(msg){
-	if (debug) console.log("RSSMenu:"+arguments.callee.caller.name+"() "+msg);
+function clog(level, msg){
+	
+	var msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
+	
+	if (debug){
+		switch (level){ 
+			case 'l': console.log(msg); break;
+			case 'd': console.debug(msg); break;
+			case 'w': console.warn(msg); break;
+			default: console.log(msg); break;
+		}
+	}
 }
 
 
@@ -97,7 +107,7 @@ function cmdHandler(event){
 				break;
 				
 			default:
-				clog('Unrecognised feed action: '+safari.extension.settings.feed_action);
+				clog('e','Unrecognised feed action: '+safari.extension.settings.feed_action);
 				break;
 		}
 	}
@@ -171,17 +181,19 @@ function msgHandler(event){
 	   	case "foundFeeds":
 	   		// event.message = array of [feed_title, feed_url] found on the page.
 	   		afeeds[event.target.url] = event.message;
-	   		clog("Added afeeds["+event.target.url+"]");
+	   		clog('d',"foundFeeds: added afeeds["+event.target.url+"]");
 			break;
 	   	
 	   	case "openFeedInTab":
 	   		// Couldn't use iframe method to load feed in external app, so need to do it in a new tab
 	   		var url = event.message;
+	   		clog('d',"Opening temporary tab");
 	   		safari.application.activeBrowserWindow.openTab('background').url = url;
 	   		// Close the tab again after a short delay
 	   		var closetab = function(){
 	   			var t = safari.application.activeBrowserWindow.tabs;
 	   			t[(t.length)-1].close();
+	   			clog('d',"Closed temporary tab");
 	   		}
 	   		setTimeout(closetab,3000);
 	   		break;
@@ -197,7 +209,7 @@ function navigateHandler(event){
 	switch(event.type){
 
 		case "close":
-			clog("close:");
+			clog('d',"close:");
 			
 		//case "beforeNavigate":
 			// Check if the URL being vacated is still open in some other tab.
@@ -207,10 +219,10 @@ function navigateHandler(event){
 			setTimeout(function(){
 			
 				if (urlOpenInBrowser(url) == false){
-					clog("Closing tab "+url+" not open elsewhere");
+					clog('d',"Deleting menu for url '"+url+"' as not open elsewhere");
 					if (url in afeeds){
 						delete afeeds[url];
-						clog("Delete menu for "+url);
+						clog('d',"Delete menu for "+url);
 					}
 				}
 			},500);
@@ -221,20 +233,8 @@ function navigateHandler(event){
 			// Check if we've already found some feeds on the URL we've
 			// landed on, and update button accordingly.
 			var btn = getToolbarBtnByID('feedMenuBtn');
-			
-			clog("navigate: menu for "+url+" = "+afeeds[url]);
-			if (url in afeeds){
-			
-				if (afeeds[url].length === 0){
-					btn.disabled = true;
-					btn.badge = 0;
-				}
-				else{
-					btn.disabled = false;
-					btn.badge = afeeds[url].length;
-				}
-			}	
-			break;
+			clog('d',"navigate: update button");
+			updateButton(btn, url);
 	}
 }
 
