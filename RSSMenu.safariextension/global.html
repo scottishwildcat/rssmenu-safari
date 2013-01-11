@@ -80,6 +80,34 @@ function urlOpenInBrowser(url){
 	return false;
 }
 
+function updateButton(btn, url)
+//Update btn enabled/disabled state, badge count and badge visibility for given url
+{
+	if (url in afeeds){
+		// We have already scanned this page
+		clog('d',"Already scanned "+url);
+		if (afeeds[url].length >0){
+			// Set badge to number of feeds on page, if user preference dictates
+			btn.disabled = false;
+			if (safari.extension.settings.show_badge == true)
+				btn.badge = afeeds[url].length;
+		}
+		else{
+			// No feeds found on this page
+			clog('i',"No feeds found for "+url);
+			btn.disabled = true;
+			btn.badge = 0;
+		}
+	}
+	else{
+		// Tab contains blank page
+		clog('d',"Tab contains blank page");
+		btn.disabled = true;
+		btn.badge = 0;
+	}
+}
+
+
 
 /* Safari Extension message handlers */
 
@@ -116,33 +144,12 @@ function cmdHandler(event){
 function validateHandler(event){
 // Called automatically when an extension component needs to revalidate itself, e.g. when tab re-gains focus.
 	
-	var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
+	var url = safari.application.activeBrowserWindow.activeTab.url;
 	
 	if (event.target.identifier == "feedMenuBtn"){
-
 		//Update button enabled/disabled state, badge count and badge visibility.
 		var btn = event.target;
-	
-		if (thisUrl in afeeds){
-			// We have already scanned this page
-			
-			if (afeeds[thisUrl].length >0){
-				// Set badge to number of feeds on page, if user preference dictates
-				btn.disabled = false;
-				if (safari.extension.settings.show_badge == true)
-					btn.badge = afeeds[thisUrl].length;
-			}
-			else{
-				// No feeds found on this page
-				btn.disabled = true;
-				btn.badge = 0;
-			}
-		}
-		else{
-			// Tab contains blank page
-			btn.disabled = true;
-			btn.badge = 0;
-		}
+		updateButton(event.target, url);
 	}
 }
 

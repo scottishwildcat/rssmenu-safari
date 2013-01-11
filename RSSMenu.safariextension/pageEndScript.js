@@ -49,7 +49,7 @@ function XFrameOptions(url){
 	}
 	else
 		return "deny"; // We couldn't access the http header, so assume the worst
-}
+	}
 
 function openFeedInApp(url){
 	// We open a feed in the default app by adding an invisible iframe to the page
