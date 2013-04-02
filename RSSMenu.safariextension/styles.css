@@ -123,7 +123,7 @@
   position: absolute !important;
   right: 4px !important;
   
-  background-image: url(closeBtn@2x.png) !important;
+  background-image: url(img/closeBtn@2x.png) !important;
   background-size: 16px 16px !important;
   height: 16px !important;
   width: 16px !important;
@@ -132,7 +132,7 @@
 }
 
 .rssmenu-closebtn:hover {
-  background-image: url(closeBtn-hover@2x.png) !important;
+  background-image: url(img/closeBtn-hover@2x.png) !important;
 }
 
 .rssmenu-icon {
@@ -141,7 +141,7 @@
 	position: absolute !important;
 	left: 4px !important;
 	
-	background-image: url(RSS-40.png) !important;
+	background-image: url(img/RSS-40.png) !important;
 	background-size: 20px 20px !important;
 	height: 20px !important;
 	width: 20px !important;

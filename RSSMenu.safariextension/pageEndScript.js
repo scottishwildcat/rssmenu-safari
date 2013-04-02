@@ -105,7 +105,7 @@ function showPopup (url,content){
 		popup.style['opacity'] = '0';
 		
 		var innerHTML = [];
-		//innerHTML.push("<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"RSS-20.png'/></div>");
+		//innerHTML.push("<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"img/RSS-20.png'/></div>");
 		innerHTML.push('<div class="rssmenu-icon"></div>');
 		innerHTML.push("<div class='rssmenu-url'><a href='"+url+"'>"+url+"</a></div>");
 		innerHTML.push("<div class='rssmenu-action'>" + content + "</div>");
@@ -152,7 +152,7 @@ function msgHandler(event){
 			// the default app shortly, but it can take a few moments.
 			popupContent.push("<div class='rssmenu-pushbuttons'>");
 			popupContent.push("<span class='loadmsg'>Opening feed in your newsreader app...");
-			popupContent.push("<img id='spinner' src='"+safari.extension.baseURI+"progress_wheel.gif'></span></div>");
+			popupContent.push("<img id='spinner' src='"+safari.extension.baseURI+"img/progress_wheel.gif'></span></div>");
 			popupContent=popupContent.join('');
 			
 			var popup = showPopup(url,popupContent);

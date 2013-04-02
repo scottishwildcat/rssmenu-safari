@@ -35,7 +35,7 @@
 				<key>Identifier</key>
 				<string>feedMenuBtn</string>
 				<key>Image</key>
-				<string>toolbarBtn.png</string>
+				<string>img/toolbarBtn.png</string>
 				<key>Label</key>
 				<string>Feed Menu</string>
 				<key>Menu</key>
