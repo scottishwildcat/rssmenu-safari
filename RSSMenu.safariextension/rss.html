@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<!-- RSS Feed Page for Safari RSS Feed Extension
+     © 2012-13 Calum Benson
+     Licence: None - public domain -->
+
+<html><head>
+
+<!--script type="text/javascript" src="jquery-1.9.1.min.js"></script-->
+<script type="text/javascript" src="jfeed/jquery.js"></script>
+<script type="text/javascript" src="jfeed/jfeed.js"></script>
+<script type="text/javascript" src="jfeed/jfeeditem.js"></script>
+<script type="text/javascript" src="jfeed/jatom.js"></script>
+<script type="text/javascript" src="jfeed/jrss.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	var feedUrlStart = window.location.href.indexOf('?');
+	var feedUrl = decodeURIComponent(window.location.href.substr(feedUrlStart+1));
+	
+	$.getFeed({
+		url:feedUrl,
+		success: function(feed){
+				
+			var b = $("body");
+			b.append('<p>feed type: ' + feed.type + '</p>');
+            b.append('<p>feed version: ' + feed.version + '</p>');
+            b.append('<p>feed title: ' + feed.title + '</p>');
+            b.append('<p>feed link: ' + feed.link + '</p>');
+            b.append('<p>feed description: ' + feed.description + '</p>');
+            b.append('<p>feed language: ' + feed.language + '</p>');
+            b.append('<p>feed updated: ' + feed.updated + '</p>');
+            b.append('<p>feed items: ' + feed.items.length + '</p>');
+            
+            for(var j = 0; j < feed.items.length; j++) {
+            
+                b.append('<h2>' + feed.items[j].title + '</h2>');
+                b.append('<h3>Updated: ' + feed.items[j].updated + '</h3>');
+                b.append('<p><a href="' + feed.items[j].link + '">' + feed.items[j].link + '</p>');
+                b.append('<p>' + feed.items[j].description + '</p>');
+                b.append('<p>Id: ' + feed.items[j].id + '</p>');
+            }
+
+	}});
+
+});
+
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /** End Script for Safari RSS Feed Extension **/
-/** © 2012 Calum Benson                      **/
+/** © 2012-13 Calum Benson                   **/
 /** Licence: None - public domain            **/      
 
 //"use strict";
@@ -77,9 +77,8 @@ function openFeedInApp(url){
 	
 }
 
-function openFeedInReader(url){
-	// Pass feed url to Google Reader in a new tab/window (according to browser prefs).
-	window.open('http://www.google.com/reader/view/feed/'+encodeURIComponent(url), '_blank');
+function openFeedInBrowser(url){
+	safari.self.tab.dispatchMessage("openLocal",url);
 }
 
 function showPopup (url,content){
@@ -139,13 +138,13 @@ function msgHandler(event){
 	// "showFeedPopup", sent from global page.
 	// "feedActionChanged", sent from global page.
 
+	if (event.name == "showFeedPopup"){
+
 	var url = event.message[0]; // URL of feed to view
 	var action = event.message[1];
 	var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
 	var popupContent = [];
 	
-	if (event.name == "showFeedPopup"){
-								
 		if (action == 'defaultapp'){
 		
 			// Use popup to show a transient message that the feed will load in
@@ -164,10 +163,10 @@ function msgHandler(event){
 		
 		else if (action == 'alwaysask'){
 			
-			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
+			// Show three buttons in the popup -- Browser Preview, Application, and Cancel.
 			popupContent.push('<div class="rssmenu-pushbuttons">');
 	        popupContent.push('<div class="rssmenu-button" id="appBtn">Application</div>');
-	        popupContent.push('<div class="rssmenu-button" id="googleBtn">Google Reader</div>');
+	        popupContent.push('<div class="rssmenu-button" id="browserBtn">Browser Preview</div>');
 	    	popupContent.push('</div>');
 			popupContent.push('<div class="rssmenu-closebtn" id="closeBtn"></div>');
 			popupContent = popupContent.join('');
@@ -175,7 +174,7 @@ function msgHandler(event){
 			showPopup(url, popupContent);
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
-			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
+			document.getElementById('browserBtn').onclick = function(){openFeedInBrowser(url);closePopup();};
 			document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
 			document.getElementById('closeBtn').onclick = function(){closePopup();};
 		}

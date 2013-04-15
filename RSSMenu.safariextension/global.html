@@ -1,10 +1,18 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <!-- Global Page for Safari RSS Feed Extension
-     © 2012 Calum Benson
+     © 2012-13 Calum Benson
      Licence: None - public domain -->
 
 <html><head>
+
+<!--script type="text/javascript" src="jquery-1.9.1.min.js"></script-->
+<script type="text/javascript" src="jfeed/jquery.js"></script>
+<script type="text/javascript" src="jfeed/jfeed.js"></script>
+<script type="text/javascript" src="jfeed/jfeeditem.js"></script>
+<script type="text/javascript" src="jfeed/jatom.js"></script>
+<script type="text/javascript" src="jfeed/jrss.js"></script>
+
 <script type="text/javascript">
 
 // Associative array used to store menus for each open tab. 
@@ -119,10 +127,10 @@ function cmdHandler(event){
 		
 		switch (safari.extension.settings.feed_action){
 		
-			case 'google':
+			case 'browser':
 			// Open feed URL in a new tab in Google Reader for now.
-				feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
-				safari.application.activeBrowserWindow.openTab().url=feedURL;
+				feedURL = encodeURIComponent(event.command);
+		   		safari.application.activeBrowserWindow.openTab('foreground').url = safari.extension.baseURI+'rss.html?'+feedURL;
 				break;
 				
 			case 'defaultapp':
@@ -204,6 +212,13 @@ function msgHandler(event){
 	   		}
 	   		setTimeout(closetab,3000);
 	   		break;
+	   		
+	   	case "openLocal":
+	   		// Use built-in RSS viewer to view the feed
+	   		var url = event.message;
+	   		safari.application.activeBrowserWindow.openTab('foreground').url = 
+	   				safari.extension.baseURI+'rss.html?'+encodeURIComponent(url);
+			break;
 	}
 }
 
