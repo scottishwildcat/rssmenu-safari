@@ -137,14 +137,14 @@ function msgHandler(event){
 	// Messages we currently expect are:
 	// "showFeedPopup", sent from global page.
 	// "feedActionChanged", sent from global page.
-
+	
 	if (event.name == "showFeedPopup"){
 
-	var url = event.message[0]; // URL of feed to view
-	var action = event.message[1];
-	var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
-	var popupContent = [];
-	
+		var url = event.message[0]; // URL of feed to view
+		var action = event.message[1];
+		var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
+		var popupContent = [];
+								
 		if (action == 'defaultapp'){
 		
 			// Use popup to show a transient message that the feed will load in

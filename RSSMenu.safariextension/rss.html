@@ -25,23 +25,24 @@ $(document).ready(function(){
 		success: function(feed){
 				
 			var b = $("body");
-			b.append('<p>feed type: ' + feed.type + '</p>');
-            b.append('<p>feed version: ' + feed.version + '</p>');
-            b.append('<p>feed title: ' + feed.title + '</p>');
-            b.append('<p>feed link: ' + feed.link + '</p>');
-            b.append('<p>feed description: ' + feed.description + '</p>');
+			//b.append('<p>feed type: ' + feed.type + '</p>');
+            //b.append('<p>feed version: ' + feed.version + '</p>');
+            b.append('<h1><a href="' + feed.link + '">' + feed.title + '</a></h1>');
+            //b.append('<p>feed link: ' + feed.link + '</p>');
+            b.append('<h2>' + feed.description + '</h2>');
             b.append('<p>feed language: ' + feed.language + '</p>');
             b.append('<p>feed updated: ' + feed.updated + '</p>');
             b.append('<p>feed items: ' + feed.items.length + '</p>');
             
             for(var j = 0; j < feed.items.length; j++) {
             
-                b.append('<h2>' + feed.items[j].title + '</h2>');
-                b.append('<h3>Updated: ' + feed.items[j].updated + '</h3>');
-                b.append('<p><a href="' + feed.items[j].link + '">' + feed.items[j].link + '</p>');
+                b.append('<h3><a href="' + feed.items[j].link + '">' + feed.items[j].title + '</a></h3>');
+                b.append('<h4>Updated: ' + feed.items[j].updated + '</h4>');
                 b.append('<p>' + feed.items[j].description + '</p>');
-                b.append('<p>Id: ' + feed.items[j].id + '</p>');
+                //b.append('<p>Id: ' + feed.items[j].id + '</p>');
             }
+            
+            document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';
 
 	}});
 
