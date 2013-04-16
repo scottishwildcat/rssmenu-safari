@@ -21,7 +21,11 @@ function displayFeed(feed, feedUrl){
 
 
 	function t(id){
-		return function(){$('#'+id+' > .abody').toggle();}
+		return function(){$('#'+id+' > .abody').slideToggle('fast');}
+	};
+
+	function o(link){
+		return function(){window.open(link);}
 	};
 	
 	// Articles
@@ -29,24 +33,27 @@ function displayFeed(feed, feedUrl){
 		
 		//var articleId = feed.items[j].id;
 		var articleId = "article"+j;
+		var article = $("<article>").attr("id", articleId);
 		
-		var a = $("<article>").attr("id", articleId);
-				
-		h= $('<button>').text(">");
-		h.click(t(articleId));
-		a.append(h);
-		
-		h = $('<h3 class="atitle">');
-		h.append($('<a>').attr('href',feed.items[j].link).text(feed.items[j].title));
-		a.append(h);
-		
+		var header = $('<div class="artheader">');
+
+		// <d artheader> <s atitle>Title</s> <btn>Link</btn></s> <s adate>date</s> </s>		
+		var title = $('<span class="atitle">').text(feed.items[j].title);
+		title.click(t(articleId));
+
+		var btn = $('<button>').text("Link");
+		btn.click(o(feed.items[j].link));
+
+		var date = $('<span class="adate">').text(feed.items[j].updated);
+		header.append(title).append(btn).append(date);
+		article.append(header);
+
 		h = $('<p class="abody">');
 		h.append(feed.items[j].description);
-		a.append(h);
+		article.append(h);
 		
-		a.append($('<p class="adate">').text(feed.items[j].updated));
 		
-		b.append(a);
+		b.append(article);
 	}
 	
 	document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';

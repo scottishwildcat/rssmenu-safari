@@ -1,6 +1,6 @@
 body {
 	font-family: sans-serif;
-	width:60%;
+	width:80%;
 	background-color: #e4e4e4;
 }
 
@@ -9,11 +9,40 @@ article {
 	background-color: white;
 	padding: 4px;
 	margin: 4px;
+	overflow: auto;
+	
+	/*
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;*/
 }
 
-.abody {
-	display: none;
+
+.artheader button {
 }
+
+.atitle {
+	font-weight: bold;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	float:left;
+	width:70%;
+}
+
+.adate {
+	font-size: smaller;
+	float: right;
+}
+
+
+
+.abody {
+	clear: both;
+	display: none;
+	padding: 12px 24px;
+}
+
 
 .subscribe {
 	display: inline-block !important;
