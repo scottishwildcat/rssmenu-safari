@@ -1,0 +1,46 @@
+body {
+	font-family: sans-serif;
+	width:60%;
+	background-color: #e4e4e4;
+}
+
+article {
+	border: 1px solid #d4d4d4;
+	background-color: white;
+	padding: 4px;
+	margin: 4px;
+}
+
+.abody {
+	display: none;
+}
+
+.subscribe {
+	display: inline-block !important;
+	padding: 2px 4px !important;
+	margin: 0px 0px 0px 4px !important;
+	float:right !important;
+
+	-webkit-border-radius: 2px !important;
+	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
+	border: thin outset black !important;
+
+	font: webkit-small-control !important;
+	font-weight: normal !important;
+	height: auto !important;
+	line-height:normal !important;
+	text-indent: 0px !important;
+	color: #333 !important;
+	-webkit-user-select: none !important; /* So user can't select button text */
+	
+	cursor:pointer !important;
+}
+
+/* Hover must come before active… */
+.subscribe:hover {
+	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important; 
+}
+
+.subscribe:active {
+	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
+}
