@@ -21,17 +21,18 @@ function displayFeed(feed, feedUrl){
 	
 	var list = $("<div id='alist'>");
 
-	/*
-	body.append('<p>feed language: ' + feed.language + '</p>');
-	body.append('<p>feed updated: ' + feed.updated + '</p>');
-	body.append('<p>feed items: ' + feed.items.length + '</p>');
-	*/
-
-	function t(id){
+	function t(id, url){
+		// Return a function that either expands article with DOM id if there is any body text,
+		// otherwise opens the original url in a new tab.
 		return function(){
-			var b = $('#'+id+' > .abody');
+			var b = $('#'+id+' .abody');
+			var l = $('#'+id+' .alink');
 			if (b.html()!=""){
 				b.slideToggle('fast');
+				l.toggle();
+			}
+			else{
+				window.open(url);
 			}
 		}
 	};
@@ -43,7 +44,6 @@ function displayFeed(feed, feedUrl){
 	// Articles
 	for(var j = 0; j < feed.items.length; j++) {
 		
-		//var articleId = feed.items[j].id;
 		var articleId = "article"+j;
 		var article = $("<article>").attr("id", articleId);
 		
@@ -51,16 +51,15 @@ function displayFeed(feed, feedUrl){
 
 		var title = $('<h2>');
 		title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));
-		title.click(t(articleId));
+		
+		var l = feed.items[j].link;
+		title.click(t(articleId,l));
 
 		var author = "";
 		if (feed.items[j].author != ""){
 			author = $('<span class="elips author">').text(feed.items[j].author);
 		}
 		
-		var linkBtn = $('<span class="alink">').html("<img src='link.png'>");
-		linkBtn.click(o(feed.items[j].link));
-
 		// Show only time if article posted today, only date otherwise.
 		var today = new Date().toLocaleDateString();
 		var articleDate = new Date (Date.parse(feed.items[j].updated));
@@ -74,13 +73,13 @@ function displayFeed(feed, feedUrl){
 		}
 				
 		var date = $('<span class="elips adate">').text(displayDate);
-		header.append(title).append(author).append(linkBtn).append(date);
+		header.append(title).append(author).append(date);
+		header.append($("<a class='alink'>").attr("href",l).text("Read original on "+l.split('/')[2]));
 		article.append(header);
 
 		h = $('<div class="abody">');
 		h.append(feed.items[j].description);
 		article.append(h);
-		
 		
 		list.append(article);
 	}
@@ -89,12 +88,4 @@ function displayFeed(feed, feedUrl){
 	
 	document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';
 	
-	/*
-	$(".atitle").hover(	function(){$(this).css({"color":"purple"});
-									$(this).siblings(".adate").css({"color":"purple"});
-								},
-						function(){$(this).css({"color":"black"});
-									$(this).siblings(".adate").css({"color":"black"});
-								});
-	*/
 }
