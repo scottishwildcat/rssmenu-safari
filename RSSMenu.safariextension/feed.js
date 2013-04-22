@@ -1,27 +1,39 @@
 function displayFeed(feed, feedUrl){
 
-	var b = $("body");
+	var body = $("body");
+	
+	var ph = $("<header class='pageheader'>");
 	
 	// Feed Title
-	var h = $("<h1>");
-	h.attr("class","feedtitle");
+	var h = $("<h1 class='feedtitle'>");
 	h.append($('<a>').attr('href', feed.link).text(feed.title));
-	b.append(h);
-	
-	b.append($('<a class="subscribe">').attr('href', feedUrl).text("Subscribe"));
+	ph.append(h);
 	
 	// Feed description
-	h = $("<h2>").text(feed.description);
-	h.attr('id','feeddesc');
-	b.append(h);
+	h = $("<p class='feeddesc'>");
+	h.append(feed.description);
+	ph.append(h);
+	
+	ph.append($('<a class="subscribe">').attr('href', feedUrl).text("Subscribe"));
+	ph.append($("<button>").text("Show All").click(function(){$(".abody").show()}));
 
-	b.append('<p>feed language: ' + feed.language + '</p>');
-	b.append('<p>feed updated: ' + feed.updated + '</p>');
-	b.append('<p>feed items: ' + feed.items.length + '</p>');
+	body.append(ph);
+	
+	var list = $("<div id='alist'>");
 
+	/*
+	body.append('<p>feed language: ' + feed.language + '</p>');
+	body.append('<p>feed updated: ' + feed.updated + '</p>');
+	body.append('<p>feed items: ' + feed.items.length + '</p>');
+	*/
 
 	function t(id){
-		return function(){$('#'+id+' > .abody').slideToggle('fast');}
+		return function(){
+			var b = $('#'+id+' > .abody');
+			if (b.html()!=""){
+				b.slideToggle('fast');
+			}
+		}
 	};
 
 	function o(link){
@@ -35,27 +47,54 @@ function displayFeed(feed, feedUrl){
 		var articleId = "article"+j;
 		var article = $("<article>").attr("id", articleId);
 		
-		var header = $('<div class="artheader">');
+		var header = $('<header class="artheader">');
 
-		// <d artheader> <s atitle>Title</s> <btn>Link</btn></s> <s adate>date</s> </s>		
-		var title = $('<span class="atitle">').text(feed.items[j].title);
+		var title = $('<h2>');
+		title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));
 		title.click(t(articleId));
 
-		var btn = $('<button>').text("Link");
-		btn.click(o(feed.items[j].link));
+		var author = "";
+		if (feed.items[j].author != ""){
+			author = $('<span class="elips author">').text(feed.items[j].author);
+		}
+		
+		var linkBtn = $('<span class="alink">').html("<img src='link.png'>");
+		linkBtn.click(o(feed.items[j].link));
 
-		var date = $('<span class="adate">').text(feed.items[j].updated);
-		header.append(title).append(btn).append(date);
+		// Show only time if article posted today, only date otherwise.
+		var today = new Date().toLocaleDateString();
+		var articleDate = new Date (Date.parse(feed.items[j].updated));
+		var displayDate = "";
+		
+		if (articleDate.toLocaleDateString() == today){
+			displayDate = articleDate.toLocaleTimeString();
+		}
+		else{
+			displayDate = articleDate.toLocaleDateString();
+		}
+				
+		var date = $('<span class="elips adate">').text(displayDate);
+		header.append(title).append(author).append(linkBtn).append(date);
 		article.append(header);
 
-		h = $('<p class="abody">');
+		h = $('<div class="abody">');
 		h.append(feed.items[j].description);
 		article.append(h);
 		
 		
-		b.append(article);
+		list.append(article);
 	}
+	
+	body.append(list);
 	
 	document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';
 	
+	/*
+	$(".atitle").hover(	function(){$(this).css({"color":"purple"});
+									$(this).siblings(".adate").css({"color":"purple"});
+								},
+						function(){$(this).css({"color":"black"});
+									$(this).siblings(".adate").css({"color":"black"});
+								});
+	*/
 }

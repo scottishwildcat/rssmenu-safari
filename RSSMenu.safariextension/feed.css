@@ -1,40 +1,80 @@
-body {
+html {
 	font-family: sans-serif;
-	width:80%;
-	background-color: #e4e4e4;
+	min-width:100%;
+	min-height: 100%;
+	/*background-color: #e4e4e4;*/
+	/*background-image: -webkit-linear-gradient(top, #e8e4e4 0%, #999999 100%);*/
+}
+
+body {
+	padding: 24px;
 }
 
 article {
-	border: 1px solid #d4d4d4;
+	/*border: 1px solid #d4d4d4;*/
 	background-color: white;
 	padding: 4px;
-	margin: 4px;
+	/*margin: 4px;*/
 	overflow: auto;
-	
-	/*
+	border-top:1px solid #e6e6e6
+}
+
+#alist {
+	clear:both;
+	padding: 24px;
+}
+
+.artheader h2 {
+	margin: 0px;
+}
+
+.elips {
+	overflow: hidden; 
+	text-overflow: ellipsis; 
 	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;*/
 }
 
-
-.artheader button {
-}
-
-.atitle {
+a.atitle {
+	/*display: inline;*/
+	text-decoration: none;
+	font-size: 0.6em;
 	font-weight: bold;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
+	color: black;
+	margin: 2px 0px;
+	float:left; 
+	min-width:5%;
+	max-width:60%;
+}
+
+a.atitle:hover{
+	color:purple;
+}
+
+.alink {
 	float:left;
-	width:70%;
+	margin-left: 8px;
+}
+
+.author {
+	float:left;
+	margin-left: 8px;
+	font-size: smaller;
+	color: gray;
+	margin: 2px 8px;
+	
+	min-width:5%;
+	max-width:15%; 
+
 }
 
 .adate {
 	font-size: smaller;
-	float: right;
+	float:right; 
+	min-width:5%;
+	max-width:15%; 
+	text-align: right;
+	margin-left: 8px;
 }
-
 
 
 .abody {
