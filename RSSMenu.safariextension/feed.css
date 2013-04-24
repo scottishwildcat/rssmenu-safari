@@ -45,6 +45,11 @@ a.atitle:hover{
 	color:purple;
 }
 
+a.ext {
+    background: url(img/external-link.png) center right no-repeat;
+    padding-right: 16px;
+}
+
 .alink {
 	margin-top:2px;
 	font-size: small;

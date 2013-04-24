@@ -52,6 +52,11 @@ function displayFeed(feed, feedUrl){
 		var title = $('<h2>');
 		title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));
 		
+		// If article content is empty, clicking title will link directly to original article
+		if (feed.items[j].description == ""){
+			$("a",title).addClass("ext");
+		}
+		
 		var l = feed.items[j].link;
 		title.click(t(articleId,l));
 
@@ -74,7 +79,7 @@ function displayFeed(feed, feedUrl){
 				
 		var date = $('<span class="elips adate">').text(displayDate);
 		header.append(title).append(author).append(date);
-		header.append($("<a class='alink'>").attr("href",l).text("Read original on "+l.split('/')[2]));
+		header.append($("<a class='alink ext'>").attr({"href":l, "target":"_blank"}).text("Read original on "+l.split('/')[2]));
 		article.append(header);
 
 		h = $('<div class="abody">');
