@@ -34,13 +34,13 @@ function displayFeed(feed, feedUrl){
 				l.toggle();
 			}
 			else{
-				window.open(url);
+				window.open(url,'_blank');
 			}
 		}
 	};
 
-	function o(link){
-		return function(){window.open(link);}
+	function o(url){
+		return function(){window.open(url,'_blank');}
 	};
 	
 	// Articles
