@@ -165,8 +165,8 @@ function msgHandler(event){
 			
 			// Show three buttons in the popup -- Safari, Application, and Cancel.
 			popupContent.push('<div class="rssmenu-pushbuttons">');
-	        popupContent.push('<div class="rssmenu-button" id="appBtn">Application</div>');
-	        popupContent.push('<div class="rssmenu-button" id="browserBtn">Safari</div>');
+	        popupContent.push('<div class="rssmenu-button" id="appBtn">Open in Application</div>');
+	        popupContent.push('<div class="rssmenu-button" id="browserBtn">Preview in Safari</div>');
 	    	popupContent.push('</div>');
 			popupContent.push('<div class="rssmenu-closebtn" id="closeBtn"></div>');
 			popupContent = popupContent.join('');
