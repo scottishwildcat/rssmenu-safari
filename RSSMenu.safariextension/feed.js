@@ -1,5 +1,7 @@
 function displayFeed(feed, feedUrl){
 
+	$("#loading").hide();
+	
 	var body = $("body");
 	
 	var ph = $("<header class='pageheader'>");
