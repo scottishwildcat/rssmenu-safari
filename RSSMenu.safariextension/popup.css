@@ -1,0 +1,150 @@
+/** Injected stylesheet for Safari RSS Feed Extension **/
+/** © 2012-13 Calum Benson                            **/
+/** Licence: None - public domain                     **/ 
+
+
+/*
++-div rssmenu-popup----------------------------------------------------------+
+|+ div rssmenu-url------+ +div rssmenu-action-------------------------------+|
+|| a                    | |rssmenu-button rssmenu-button rssmenu-closebutton||
+|+----------------------+ +-------------------------------------------------+|
++----------------------------------------------------------------------------+
+
++-div rssmenu-popup-----------------------------------------------+
+|+ div rssmenu-url------+ +div rssmenu-action--------------------+|
+|| a                    | |loadmsg                               ||
+|+----------------------+ +--------------------------------------+|
++-----------------------------------------------------------------+
+*/
+
+.rssmenu-popup {
+
+	/*display: block !important;*/
+	
+	background-image: -webkit-linear-gradient(top, #ffdd77, #eebb66) !important; 
+	border-color: #666666 !important;
+	border-style: solid !important;
+	border-width: 0 0 thin 0 !important;
+	border-radius: 0px !important;
+	width:100% !important;
+	-webkit-box-shadow: 0px 4px 4px #999;
+
+	margin: 0 0 !important;
+	padding: 4px 0px !important;
+
+	font-size: 14px !important;
+	font-family: sans-serif !important;
+	color: black !important;
+
+	position: fixed !important;
+	left: 0px !important;
+	top: 0px !important;
+	height: 22px !important;
+
+	z-index: 999999 !important;
+
+	-webkit-transition: opacity .25s ease-in-out;
+	opacity: 0; /* Set this to '1' at runtime to make the div fade in */
+
+}
+
+.rssmenu-popup img {
+	/*vertical-align: middle !important;*/	
+	padding: 0px 8px !important;
+}
+
+.rssmenu-urlicon {
+	float:left;
+}
+
+.rssmenu-url {
+	position: absolute !important;
+	left: 28px !important;
+	padding-left: 4px !important;
+	padding-top: 2px !important;
+	white-space: nowrap !important;
+	overflow:hidden !important;
+}
+
+.rssmenu-url a:link {
+	text-decoration: underline !important;
+	color: black !important;
+	font-weight: normal !important;
+}
+
+.rssmenu-action {
+	float:right !important;
+	padding-right: 4px !important;
+	position: relative !important;
+	width:75% !important;
+
+}
+
+.rssmenu-pushbuttons {
+	position:absolute;
+	right:32px;
+}
+
+.rssmenu-button {
+	display: inline-block !important;
+	padding: 2px 4px !important;
+	margin: 0px 0px 0px 4px !important;
+	float:right !important;
+
+	-webkit-border-radius: 2px !important;
+	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
+	border: thin outset black !important;
+
+	font: webkit-small-control !important;
+	font-weight: normal !important;
+	height: auto !important;
+	line-height:normal !important;
+	text-indent: 0px !important;
+	color: #333 !important;
+	-webkit-user-select: none !important; /* So user can't select button text */
+	
+	cursor:pointer !important;
+}
+
+
+/* Hover must come before active… */
+.rssmenu-button:hover {
+	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important; 
+}
+
+.rssmenu-button:active {
+	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
+}
+
+/* See http://coding.smashingmagazine.com/2012/08/20/towards-retina-web/ for retina-friendly tips */
+.rssmenu-closebtn {
+  display: inline-block !important;
+  padding: 2px 4px !important;
+  position: absolute !important;
+  right: 4px !important;
+  
+  background-image: url(img/closeBtn@2x.png) !important;
+  background-size: 16px 16px !important;
+  height: 16px !important;
+  width: 16px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+.rssmenu-closebtn:hover {
+  background-image: url(img/closeBtn-hover@2x.png) !important;
+}
+
+.rssmenu-icon {
+	display: inline-block !important;
+	padding: 2px 4px !important;
+	position: absolute !important;
+	left: 4px !important;
+	
+	background-image: url(img/RSS-40.png) !important;
+	background-size: 20px 20px !important;
+	height: 20px !important;
+	width: 20px !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
+}

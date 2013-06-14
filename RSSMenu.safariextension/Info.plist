@@ -58,7 +58,7 @@
 		</dict>
 		<key>Stylesheets</key>
 		<array>
-			<string>styles.css</string>
+			<string>popup.css</string>
 		</array>
 	</dict>
 	<key>Description</key>
