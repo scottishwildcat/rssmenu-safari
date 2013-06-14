@@ -53,7 +53,7 @@ function displayFeed(feed, feedUrl){
 
 		var title = $('<h2>');
 		title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));
-		
+
 		// If article content is empty, clicking title will link directly to original article
 		if (feed.items[j].description == ""){
 			$("a",title).addClass("ext");

@@ -130,7 +130,7 @@ function cmdHandler(event){
 			case 'browser':
 			// Open feed URL in a new tab in Google Reader for now.
 				feedURL = encodeURIComponent(event.command);
-		   		safari.application.activeBrowserWindow.openTab('foreground').url = safari.extension.baseURI+'feed.html?'+feedURL;
+		   		safari.application.activeBrowserWindow.openTab('foreground').url = safari.extension.baseURI+'preview.html?'+feedURL;
 				break;
 				
 			case 'defaultapp':
@@ -217,7 +217,7 @@ function msgHandler(event){
 	   		// Use built-in RSS viewer to view the feed
 	   		var url = event.message;
 	   		safari.application.activeBrowserWindow.openTab('foreground').url = 
-	   				safari.extension.baseURI+'feed.html?'+encodeURIComponent(url);
+	   				safari.extension.baseURI+'preview.html?'+encodeURIComponent(url);
 			break;
 	}
 }
