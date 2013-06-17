@@ -8,21 +8,6 @@ safari.self.addEventListener("message", msgHandler, false); // Listen for events
 
 findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
 
-var debug=true;
-function clog(level, msg){
-	
-	var msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
-	
-	if (debug){
-		switch (level){ 
-			case 'l': console.log(msg); break;
-			case 'd': console.debug(msg); break;
-			case 'w': console.warn(msg); break;
-			default: console.log(msg); break;
-		}
-	}
-}
-
 function XFrameOptions(url){
 	// Return true if specified URL is allowed to be displayed in an iframe,
 	// false if its http headers specify 'X-Frame-Options: deny'.
@@ -62,7 +47,7 @@ function openFeedInApp(url){
 			appiframe.setAttribute('id','appiframe');
 			document.body.appendChild(appiframe);
 			clog('l',"Appended hidden iframe to page");
-		}			
+		}
 		url = httpToFeed(url);
 		appiframe.src = url;
 	}
@@ -76,26 +61,6 @@ function openFeedInApp(url){
 function openFeedInBrowser(url){
 	safari.self.tab.dispatchMessage("openLocal",url);
 }
-
-function protocol(url){
-	// Return the URI protocol of the given url, up to but not including the colon.
-	// Likely return values are 'http', 'https', 'feed'.
-	return url.split(':')[0];
-}
-
-function httpToFeed(url){
-	// Convert given http or https URL to canonical feed format.
-	// If URL is in a different format, return it unchanged.
-
-	if (protocol(url) == "http")
-		return url.replace(/^http/,'feed');
-		
-	if (protocol(url) == "https")
-		return "feed:"+url;
-		
-	return url;
-}
-
 
 function showPopup (url,content){
 	// Show a popup banner at the top of the web page.
