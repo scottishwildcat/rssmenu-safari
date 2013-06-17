@@ -168,6 +168,60 @@ function msgHandler(event){
 	}
 }
 
+function getBaseURL(){
+	// Check for presence of <base href="<url>"> tag in <head>, and
+	// return URL if found. Adds trailing '/' if not present.
+	// Used when RSS feed link is not fully qualified.
+
+		var docHead = document.getElementsByTagName('head')[0];
+		var baseLinks = docHead.getElementsByTagName('base');
+		var baseURL;
+		
+		for (var i=0; i < baseLinks.length; i++){
+			
+			var link = baseLinks[i];
+			
+			if (link.attributes.getNamedItem("href") !== null){
+				url = link.attributes.getNamedItem("href").value;
+				if (url.charAt(url.length-1)!='/'){
+					url+='/';
+				}
+				break;
+			}
+		}
+		
+		return baseURL;
+	
+}
+
+function fullyQualifiedURL(h){
+	// Given the href value from a <link> tag specifying a URL feed, which may not be fully
+	// qualified, return the full URL to that feed.
+					
+	var href = h.trim();
+	
+	if (href.substr(0,4) !== "http"){
+		// Specified link is relative, construct the full URL
+		
+		// Remove leading slash if present
+		if (href[0] == '/'){
+			href = href.slice(1);
+		}
+
+		var baseURL = getBaseURL();
+		if (baseURL != undefined){
+			href = baseURL + href;				
+		}
+		else{
+			// In absence of <base> tag, assume document domain.
+			href = protocol(document.URL) + '://' + document.domain + '/' + href;
+		}
+	}
+	
+	return href;
+
+}
+
 function findFeedsOnPage(){
 	// A feed is a node in the document <head> that looks like:
 	// <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://blah.com/rss/feed.xml">
@@ -181,7 +235,7 @@ function findFeedsOnPage(){
 	
 		var docHead = document.getElementsByTagName('head')[0];		
 		var headLinks = docHead.getElementsByTagName('link');
-			
+					
 		for (var i=0; i < headLinks.length; i++){
 			
 			var link = headLinks[i];
@@ -211,20 +265,8 @@ function findFeedsOnPage(){
 							title = 'Untitled Feed';
 					}
 
-					var href = link.attributes.getNamedItem("href").value;
-					href = href.trim();
-											
-					if (href[0] == '/'){
-						// Specified link is relative to site root, construct the full URL
-						// TODO: Check for <base> tag in head first, per http://www.rssboard.org/rss-autodiscovery
-						href = protocol(document.URL) + '://' + document.domain + href;
-					}
-
-					if (href.substr(0,4) !== "http"){
-						// Specified link is relative to current page, construct the full URL
-						href = document.URL + href;
-					}
-					
+					var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
+										
 					if (href)
 						foundFeeds.push([title, href]);
 				}
