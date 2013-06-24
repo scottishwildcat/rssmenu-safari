@@ -40,6 +40,7 @@ function displayFeed(feed, feedUrl){
 	};
 
 	function o(url){
+		// Return a function that opens the given URL in a new tab/window.
 		return function(){window.open(url,'_blank');}
 	};
 	
@@ -49,7 +50,7 @@ function displayFeed(feed, feedUrl){
 		var articleId = "article"+j;
 		var article = $("<article>").attr("id", articleId);
 		
-		var header = $('<header class="artheader">');
+		var header = $('<header>').addClass('artheader');
 
 		var title = $('<h2>');
 		title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));

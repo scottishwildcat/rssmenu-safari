@@ -8,6 +8,25 @@ body {
 	padding: 24px;
 }
 
+h1 {
+	margin-top:0;
+	margin-bottom: 0;
+}
+
+h1.feedtitle a {
+	text-decoration: none;
+	color: black;
+}
+
+h1.feedtitle a:hover {
+	text-decoration: underline;
+}
+
+h2.feeddesc {
+	font-weight: 100; 
+	font-size: 14px; 
+	color: #222; 
+}
 article {
 	background-color: white;
 	padding: 4px;
