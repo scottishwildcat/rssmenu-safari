@@ -6,22 +6,40 @@ function displayFeed(feed, feedUrl){
 	
 	var ph = $("<header class='pageheader'>");
 	
-	// Feed Title
+	// <h1> Feed Title - subscribe icon - webpage icon </h1>
 	var h = $("<h1 class='feedtitle'>");
-	h.append($('<a>').attr('href', feed.link).text(feed.title));
+	h.text(feed.title);
+	
+	var si = $('<img>').attr('src','img/preview-subscribe.png').attr('title','Subscribe');
+	var pi = $('<img>').attr('src','img/preview-webpage.png').attr('title','Visit Homepage');
+	
+	h.append(($('<a>').attr('href',httpToFeed(feedUrl))).append(si));
+	h.append(($('<a>').attr('href',feed.link)).append(pi));
+	
 	ph.append(h);
 	
-	// Feed description
-	h = $("<p class='feeddesc'>");
+	
+	// <H2> FEED DESCRIPTION </H2>
+	h = $("<h2 class='feeddesc'>");
 	h.append(feed.description);
+	h.text (h.text()); // Strip any html tags from feed description
 	ph.append(h);
-	
-	ph.append($('<a class="subscribe">').attr('href', feedUrl).text("Subscribe"));
-	ph.append($("<button>").text("Show All").click(function(){$(".abody").show()}));
-
 	body.append(ph);
 	
+	// ARTICLE LIST
 	var list = $("<div id='alist'>");
+
+	// Add show/hide all buttons
+	var c = $("<div id='controls'>");
+	si = $('<img>').attr('src','img/preview-show.png').attr('title','Expand All');
+	pi = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All');
+	
+	// Wrap clickable imgs in dummy <a> tags to allow keyboard navigation
+	//c.append($('<a>').attr('href','#')).append(si);
+	//c.append($('<a>').attr('href','#')).append(pi);
+	c.append($('<button>').click(function(){$(".abody").show()}).append(si));
+	c.append($('<button>').click(function(){$(".abody").hide()}).append(pi));
+	list.append(c);
 
 	function t(id, url){
 		// Return a function that either expands article with DOM id if there is any body text,

@@ -27,6 +27,13 @@ h2.feeddesc {
 	font-size: 14px; 
 	color: #222; 
 }
+
+div#controls button {
+	-webkit-appearance: none; 
+	border:0; 
+	background:none; 
+}
+
 article {
 	background-color: white;
 	padding: 4px;
