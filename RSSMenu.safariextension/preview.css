@@ -37,9 +37,7 @@ h2#feeddesc {
 	margin:0;
 	padding:0;
 	float:right;
-	
 	padding-left:12px;
-	
 	background:none; 
 }
 
@@ -165,6 +163,7 @@ a.ext {
 .subscribe:active {
 	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
 }
+
 #ack {
 	font-size:small;
 	color:#999;

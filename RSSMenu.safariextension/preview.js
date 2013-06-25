@@ -2,7 +2,6 @@ function displayFeed(feed, feedUrl){
 
 	$("#loading").hide();
 	
-	
 	var body = $("body");
 	
 	var ph = $("<header id='pageheader'>");
@@ -63,21 +62,12 @@ function displayFeed(feed, feedUrl){
 
 	// Change opacity of header images on mouseover
 	$('img','header').hover(
-        function() {
-            $(this).stop().animate({ opacity: 0.5 }, 0);
-        },
-       function() {
-           $(this).stop().animate({ opacity: 1.0 }, 0);
-		   }
+		function() {$(this).stop().animate({ opacity: 0.5 },0);},
+		function() {$(this).stop().animate({ opacity: 1.0 },0);}
 	);
               
-                   
-	
-
-	
 	// ARTICLE LIST
 	var list = $("<div id='alist'>");
-
 
 	function t(id, url){
 		// Return a function that either expands article with DOM id if there is any body text,
@@ -106,7 +96,7 @@ function displayFeed(feed, feedUrl){
 		var articleId = "article"+j;
 		var article = $("<article>").attr("id", articleId);
 		
-		var header = $('<header>').addClass('artheader');
+		var artheader = $('<header>').addClass('artheader');
 
 		var title = $('<h2>');
 		title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));
