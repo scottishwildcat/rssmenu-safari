@@ -20,13 +20,16 @@ function displayFeed(feed, feedUrl){
 	var si = $('<img>').attr('src','img/preview-subscribe.png').attr('id','subscribe').attr('title','Subscribe');
 	var pi = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Visit Homepage');
 	c.append(($('<a>').attr('href',httpToFeed(feedUrl))).append(si));
+	
+	if (feed.link!=""){
 	c.append(($('<a>').attr('href',feed.link)).append(pi));
+	}
 
 	// Show-hide buttons
 	si = $('<img>').attr('src','img/preview-show.png').attr('title','Expand All');
 	pi = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All');
-	c.append($('<button>').attr('id','show-all').click(function(){$(".abody").show()}).append(si));
-	c.append($('<button>').attr('id','hide-all').click(function(){$(".abody").hide()}).append(pi));
+	c.append($('<button>').attr('id','show-all').click(function(){$(".readorig, .abody").show()}).append(si));
+	c.append($('<button>').attr('id','hide-all').click(function(){$(".readorig, .abody").hide()}).append(pi));
 	
 	ph.append(c);
 	
@@ -115,9 +118,9 @@ function displayFeed(feed, feedUrl){
 		}
 				
 		var date = $('<span class="elips adate">').text(displayDate);
-		header.append(title).append(author).append(date);
-		header.append($("<a class='alink ext'>").attr({"href":l, "target":"_blank"}).text("Read original on "+l.split('/')[2]));
-		article.append(header);
+		artheader.append(title).append(author).append(date);
+		artheader.append($("<a class='readorig alink ext'>").attr({"href":l, "target":"_blank"}).text("Read original on "+l.split('/')[2]));
+		article.append(artheader);
 
 		h = $('<div class="abody">');
 		h.append(feed.items[j].description);
