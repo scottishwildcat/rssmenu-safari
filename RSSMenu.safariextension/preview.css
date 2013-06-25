@@ -165,3 +165,12 @@ a.ext {
 .subscribe:active {
 	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
 }
+#ack {
+	font-size:small;
+	color:#999;
+	float:right;
+}
+
+#ack a {
+	color:#999;
+}

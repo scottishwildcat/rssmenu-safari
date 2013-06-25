@@ -154,6 +154,11 @@ function displayFeed(feed, feedUrl){
 	
 	body.append(list);
 	
+	// jFeed acknowledgement
+	var ack = $('<div id="ack">');
+	ack.html("Made with <a href='https://github.com/jfhovinne/jFeed'>jFeed</a> by Jean-FranÁois Hovinne ");
+	body.append(ack);
+	
 	document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';
 	
 }
