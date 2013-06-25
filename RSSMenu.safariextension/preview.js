@@ -127,13 +127,17 @@ function displayFeed(feed, feedUrl){
 		// Show only time if article posted today, only date otherwise.
 		var today = new Date().toLocaleDateString();
 		var articleDate = new Date (Date.parse(feed.items[j].updated));
+
 		var displayDate = "";
 		
+		if (articleDate!='Invalid Date'){
+			
 		if (articleDate.toLocaleDateString() == today){
 			displayDate = articleDate.toLocaleTimeString();
 		}
 		else{
 			displayDate = articleDate.toLocaleDateString();
+		}
 		}
 				
 		var date = $('<span class="elips adate">').text(displayDate);
