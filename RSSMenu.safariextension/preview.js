@@ -16,20 +16,39 @@ function displayFeed(feed, feedUrl){
 	c.append(h);
 		
 	// Article buttons
+	var b1,b2,b3;
 	
-	var si = $('<img>').attr('src','img/preview-subscribe.png').attr('id','subscribe').attr('title','Subscribe');
-	var pi = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Visit Homepage');
-	c.append(($('<a>').attr('href',httpToFeed(feedUrl))).append(si));
+	b1 = $('<img>').attr('src','img/preview-subscribe.png').attr('id','subscribe').attr('title','Subscribe');
+	b2 = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Homepage');
+	c.append(($('<a>').attr('href',httpToFeed(feedUrl))).append(b1));
 	
 	if (feed.link!=""){
-	c.append(($('<a>').attr('href',feed.link)).append(pi));
+		c.append(($('<a>').attr('href',feed.link)).append(b2));
 	}
 
 	// Show-hide buttons
-	si = $('<img>').attr('src','img/preview-show.png').attr('title','Expand All');
-	pi = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All');
-	c.append($('<button>').attr('id','show-all').click(function(){$(".readorig, .abody").show()}).append(si));
-	c.append($('<button>').attr('id','hide-all').click(function(){$(".readorig, .abody").hide()}).append(pi));
+	function toggleImages(){
+		var visible=true; // Essentially a static used by the anon function returned
+		return function(){
+			if (visible==true){
+				$("img","#alist").hide();
+				$("#toggle-icon").attr('src','img/preview-images-off.png');
+				visible=false;
+			}
+			else{
+				$("img","#alist").show();
+				$("#toggle-icon").attr('src','img/preview-images-on.png');
+				visible = true;
+			}
+		}
+	}
+	
+	b1 = $('<img>').attr('src','img/preview-show.png').attr('title','Expand Articles');
+	b2 = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse Articles');
+	b3 = $('<img>').attr('src','img/preview-images-on.png').attr('title','Toggle Images').attr('id','toggle-icon');
+	c.append($('<button>').attr('id','show-all').click(function(){$(".readorig, .abody").show()}).append(b1));
+	c.append($('<button>').attr('id','hide-all').click(function(){$(".readorig, .abody").hide()}).append(b2));
+	c.append($('<button>').attr('id','toggle-images').click(toggleImages()).append(b3));
 	
 	ph.append(c);
 	
