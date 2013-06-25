@@ -8,42 +8,63 @@ body {
 	padding: 24px;
 }
 
-h1 {
+h1#feedtitle {
 	margin-top:0;
 	margin-bottom: 0;
+	display:inline;
 }
 
-h1.feedtitle a {
+h1#feedtitle a {
 	text-decoration: none;
 	color: black;
 }
 
-h1.feedtitle a:hover {
+h1#feedtitle a:hover {
 	text-decoration: underline;
 }
 
-h2.feeddesc {
+h2#feeddesc {
+	clear:both;
 	font-weight: 100; 
 	font-size: 14px; 
 	color: #222; 
 }
 
-div#controls button {
+
+#pageheader button {
 	-webkit-appearance: none; 
 	border:0; 
+	margin:0;
+	padding:0;
+	float:right;
+	
+	padding-left:12px;
+	
 	background:none; 
 }
+
+
+img#subscribe {
+	padding-left: 12px;
+}
+
+img#homepage {
+	padding-left: 4px;
+}
+
+
+
+#alist {
+	clear:both;
+	padding: 24px;
+}
+
 
 article {
 	background-color: white;
 	padding: 4px;
 	overflow: auto;
 	border-top:1px solid #e6e6e6
-}
-
-#alist {
-	clear:both;
-	padding: 24px;
 }
 
 .artheader h2 {

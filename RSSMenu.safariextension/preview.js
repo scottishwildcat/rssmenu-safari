@@ -2,44 +2,60 @@ function displayFeed(feed, feedUrl){
 
 	$("#loading").hide();
 	
+	
 	var body = $("body");
 	
-	var ph = $("<header class='pageheader'>");
+	var ph = $("<header id='pageheader'>");
 	
-	// <h1> Feed Title - subscribe icon - webpage icon </h1>
-	var h = $("<h1 class='feedtitle'>");
+	// <h1> Feed Title </h1> <div controls>sub web     show hide</div>
+
+	var c = $("<div id='controls'>");
+
+	var h = $("<h1 id='feedtitle'>");
 	h.text(feed.title);
+	c.append(h);
+		
+	// Article buttons
 	
-	var si = $('<img>').attr('src','img/preview-subscribe.png').attr('title','Subscribe');
-	var pi = $('<img>').attr('src','img/preview-webpage.png').attr('title','Visit Homepage');
+	var si = $('<img>').attr('src','img/preview-subscribe.png').attr('id','subscribe').attr('title','Subscribe');
+	var pi = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Visit Homepage');
+	c.append(($('<a>').attr('href',httpToFeed(feedUrl))).append(si));
+	c.append(($('<a>').attr('href',feed.link)).append(pi));
+
+	// Show-hide buttons
+	si = $('<img>').attr('src','img/preview-show.png').attr('title','Expand All');
+	pi = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All');
+	c.append($('<button>').attr('id','show-all').click(function(){$(".abody").show()}).append(si));
+	c.append($('<button>').attr('id','hide-all').click(function(){$(".abody").hide()}).append(pi));
 	
-	h.append(($('<a>').attr('href',httpToFeed(feedUrl))).append(si));
-	h.append(($('<a>').attr('href',feed.link)).append(pi));
-	
-	ph.append(h);
+	ph.append(c);
 	
 	
 	// <H2> FEED DESCRIPTION </H2>
-	h = $("<h2 class='feeddesc'>");
+	h = $("<h2 id='feeddesc'>");
 	h.append(feed.description);
 	h.text (h.text()); // Strip any html tags from feed description
 	ph.append(h);
+	
 	body.append(ph);
+
+	// Change opacity of header images on mouseover
+	$('img','header').hover(
+        function() {
+            $(this).stop().animate({ opacity: 0.5 }, 0);
+        },
+       function() {
+           $(this).stop().animate({ opacity: 1.0 }, 0);
+		   }
+	);
+              
+                   
+	
+
 	
 	// ARTICLE LIST
 	var list = $("<div id='alist'>");
 
-	// Add show/hide all buttons
-	var c = $("<div id='controls'>");
-	si = $('<img>').attr('src','img/preview-show.png').attr('title','Expand All');
-	pi = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All');
-	
-	// Wrap clickable imgs in dummy <a> tags to allow keyboard navigation
-	//c.append($('<a>').attr('href','#')).append(si);
-	//c.append($('<a>').attr('href','#')).append(pi);
-	c.append($('<button>').click(function(){$(".abody").show()}).append(si));
-	c.append($('<button>').click(function(){$(".abody").hide()}).append(pi));
-	list.append(c);
 
 	function t(id, url){
 		// Return a function that either expands article with DOM id if there is any body text,
