@@ -23,8 +23,15 @@ $(document).ready(function(){
 	var feedUrlStart = window.location.href.indexOf('?');
 	var feedUrl = decodeURIComponent(window.location.href.substr(feedUrlStart+1));
 	
-	$.getFeed({url:feedUrl, 
-				success:function(feed){displayFeed(feed, feedUrl);}
+	$.getFeed({
+				url:feedUrl, 
+				success:function(feed){displayFeed(feed, feedUrl);},
+				error:function(e, error, reason){
+							$("#loading").hide();
+							$("#error").show();
+							$("#errormsg").text(error+": "+reason);
+							$("#errorurl").attr("href", httpToFeed(feedUrl));
+							}
 			});
 	
 });
@@ -33,5 +40,10 @@ $(document).ready(function(){
 </head>
 <body>
 <div id="loading"><p>Loading feed preview....</p></div>
+<div id="error">
+	<p>Sorry, feed preview not currently available. The reason given by the server was:</p>
+	<p id="errormsg">Unknown</p>
+	<p><a id="errorurl" href="#">Open in Application</a> might work instead.</p>
+</div>
 </body>
 </html>

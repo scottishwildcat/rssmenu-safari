@@ -8,6 +8,10 @@ body {
 	padding: 24px;
 }
 
+#error{
+	display:none;
+}
+
 h1#feedtitle {
 	margin-top:0;
 	margin-bottom: 0;
@@ -172,4 +176,4 @@ a.ext {
 
 #ack a {
 	color:#999;
-}
+}
