@@ -27,7 +27,6 @@ $(document).ready(function(){
 				url:feedUrl, 
 				success:function(feed){displayFeed(feed, feedUrl);},
 				error:function(e, error, reason){
-							$("#loading").hide();
 							$("#error").show();
 							$("#errormsg").text(error+": "+reason);
 							$("#errorurl").attr("href", httpToFeed(feedUrl));
@@ -39,11 +38,16 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-<div id="loading"><p>Loading feed preview....</p></div>
-<div id="error">
-	<p>Sorry, feed preview not currently available. The reason given by the server was:</p>
-	<p id="errormsg">Unknown</p>
-	<p><a id="errorurl" href="#">Open in Application</a> might work instead.</p>
+
+<div id="loading">
+	<h1>Loading feed preview...</h1>
+	
+	<div id="error">
+		<h2 id="errormsg">Unknown error</h2>
+		<p>Sorry, this feed could not be opened.</p>
+		<!--<p><a id="errorurl" href="#">Open in Application</a> might work instead.</p>-->
+	</div>
 </div>
+
 </body>
 </html>

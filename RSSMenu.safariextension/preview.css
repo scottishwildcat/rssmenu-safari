@@ -8,32 +8,36 @@ body {
 	padding: 24px;
 }
 
-#error{
-	display:none;
-}
 
 h1#feedtitle {
 	margin-top:0;
 	margin-bottom: 0;
-	display:inline;
+	display:inline-block;
+	font-family:serif;
+	max-width:80%;
+	min-width:5%;
 }
 
 h1#feedtitle a {
 	text-decoration: none;
 	color: black;
+	
+	background: url(img/preview-subscribe.png) center right no-repeat; 
+	padding-right: 28px;
 }
 
 h1#feedtitle a:hover {
 	text-decoration: underline;
+	background: url(img/preview-subscribe-hover.png) center right no-repeat; 
 }
 
 h2#feeddesc {
 	clear:both;
 	font-weight: 100; 
-	font-size: 14px; 
-	color: #222; 
+	font-size: 18px; 
+	color: #222;
+	margin-top: 8px;
 }
-
 
 #pageheader button {
 	-webkit-appearance: none; 
@@ -51,7 +55,8 @@ img#subscribe {
 }
 
 img#homepage {
-	padding-left: 4px;
+	float:right;
+	padding-left: 12px;
 }
 
 
@@ -138,42 +143,20 @@ a.ext {
 }
 
 
-.subscribe {
-	display: inline-block !important;
-	padding: 2px 4px !important;
-	margin: 0px 0px 0px 4px !important;
-	float:right !important;
-
-	-webkit-border-radius: 2px !important;
-	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
-	border: thin outset black !important;
-
-	font: webkit-small-control !important;
-	font-weight: normal !important;
-	height: auto !important;
-	line-height:normal !important;
-	text-indent: 0px !important;
-	color: #333 !important;
-	-webkit-user-select: none !important; /* So user can't select button text */
-	
-	cursor:pointer !important;
-}
-
-/* Hover must come before active… */
-.subscribe:hover {
-	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important; 
-}
-
-.subscribe:active {
-	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
-}
-
 #ack {
-	font-size:small;
+	font-size:10px;
 	color:#999;
 	float:right;
 }
 
 #ack a {
 	color:#999;
+}
+
+#ack a:hover {
+	color:purple;
+}
+
+#error{
+	display:none;
 }

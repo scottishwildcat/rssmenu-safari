@@ -6,25 +6,17 @@ function displayFeed(feed, feedUrl){
 	
 	var ph = $("<header id='pageheader'>");
 	
-	// <h1> Feed Title </h1> <div controls>sub web     show hide</div>
+	// <h1><a href="feed:url">Feed Title</a></h1> <div controls>web     show hide</div>
 
 	var c = $("<div id='controls'>");
 
-	var h = $("<h1 id='feedtitle'>");
-	h.text(feed.title);
+	var h = $("<h1 id='feedtitle' class='elips'>");
+	h.append($('<a>').text(feed.title).attr('title','Open in Application').attr('href',httpToFeed(feedUrl)));
 	c.append(h);
 		
 	// Article buttons
-	var b1,b2,b3;
+	var b1,b2,b3, b4;
 	
-	b1 = $('<img>').attr('src','img/preview-subscribe.png').attr('id','subscribe').attr('title','Subscribe');
-	b2 = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Homepage');
-	c.append(($('<a>').attr('href',httpToFeed(feedUrl))).append(b1));
-	
-	if (feed.link!=""){
-		c.append(($('<a>').attr('href',feed.link)).append(b2));
-	}
-
 	// Show-hide buttons
 	function toggleImages(){
 		var visible=true; // Essentially a static used by the anon function returned
@@ -42,13 +34,20 @@ function displayFeed(feed, feedUrl){
 		}
 	}
 	
-	b1 = $('<img>').attr('src','img/preview-show.png').attr('title','Expand Articles');
-	b2 = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse Articles');
-	b3 = $('<img>').attr('src','img/preview-images-on.png').attr('title','Toggle Images').attr('id','toggle-icon');
+	b1 = $('<img>').attr('src','img/preview-show.png').attr('title','Expand All Articles');
+	b2 = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All Articles');
+	b3 = $('<img>').attr('src','img/preview-images-on.png').attr('title','Toggle Images in Articles').attr('id','toggle-icon');
+	
 	c.append($('<button>').attr('id','show-all').click(function(){$(".readorig, .abody").show()}).append(b1));
 	c.append($('<button>').attr('id','hide-all').click(function(){$(".readorig, .abody").hide()}).append(b2));
 	c.append($('<button>').attr('id','toggle-images').click(toggleImages()).append(b3));
 	
+	b4 = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Visit Feed Homepage');
+	
+	if (feed.link!=""){
+		c.append(($('<a>').attr('href',feed.link)).append(b4));
+	}
+
 	ph.append(c);
 	
 	
@@ -122,12 +121,12 @@ function displayFeed(feed, feedUrl){
 		
 		if (articleDate!='Invalid Date'){
 			
-		if (articleDate.toLocaleDateString() == today){
-			displayDate = articleDate.toLocaleTimeString();
-		}
-		else{
-			displayDate = articleDate.toLocaleDateString();
-		}
+			if (articleDate.toLocaleDateString() == today){
+				displayDate = articleDate.toLocaleTimeString();
+			}
+			else{
+				displayDate = articleDate.toLocaleDateString();
+			}
 		}
 				
 		var date = $('<span class="elips adate">').text(displayDate);
@@ -146,7 +145,7 @@ function displayFeed(feed, feedUrl){
 	
 	// jFeed acknowledgement
 	var ack = $('<div id="ack">');
-	ack.html("Made with <a href='https://github.com/jfhovinne/jFeed'>jFeed</a> by Jean-FranÁois Hovinne ");
+	ack.html("RSS Menu extension (c) 2012-2013 <a href='http://calum.me'>Calum Benson</a>. This page made with <a href='https://github.com/jfhovinne/jFeed'>jFeed</a> by Jean-Francois Hovinne.");
 	body.append(ack);
 	
 	document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';
