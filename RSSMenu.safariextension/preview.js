@@ -6,18 +6,18 @@ function displayFeed(feed, feedUrl){
 	
 	var ph = $("<header id='pageheader'>");
 	
-	// <h1><a href="feed:url">Feed Title</a></h1> <div controls>web     show hide</div>
+	// <div controls><h1>Feed Title</h1> web show hide</div>
 
-	var c = $("<div id='controls'>");
+	var d = $("<div id='controls'>");
 
 	var h = $("<h1 id='feedtitle' class='elips'>");
-	h.append($('<a>').text(feed.title).attr('title','Open in Application').attr('href',httpToFeed(feedUrl)));
-	c.append(h);
+	//h.append($('<a>').text(feed.title).attr('title','Open in Application').attr('href',httpToFeed(feedUrl)));
+	h.text(feed.title);
+	d.append(h);
 		
-	// Article buttons
-	var b1,b2,b3, b4;
+	// BUTTONS
+	var b1,b2,b3,b4;
 	
-	// Show-hide buttons
 	function toggleImages(){
 		var visible=true; // Essentially a static used by the anon function returned
 		return function(){
@@ -38,25 +38,30 @@ function displayFeed(feed, feedUrl){
 	b2 = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All Articles');
 	b3 = $('<img>').attr('src','img/preview-images-on.png').attr('title','Toggle Images in Articles').attr('id','toggle-icon');
 	
-	c.append($('<button>').attr('id','show-all').click(function(){$(".readorig, .abody").show()}).append(b1));
-	c.append($('<button>').attr('id','hide-all').click(function(){$(".readorig, .abody").hide()}).append(b2));
-	c.append($('<button>').attr('id','toggle-images').click(toggleImages()).append(b3));
+	d.append($('<button>').attr('id','show-all').click(function(){$(".readorig, .abody").show()}).append(b1));
+	d.append($('<button>').attr('id','hide-all').click(function(){$(".readorig, .abody").hide()}).append(b2));
+	d.append($('<button>').attr('id','toggle-images').click(toggleImages()).append(b3));
 	
 	b4 = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Visit Feed Homepage');
 	
 	if (feed.link!=""){
-		c.append(($('<a>').attr('href',feed.link)).append(b4));
+		d.append(($('<a>').attr('href',feed.link)).append(b4));
 	}
-
-	ph.append(c);
+	
+	ph.append(d);
 	
 	
 	// <H2> FEED DESCRIPTION </H2>
-	h = $("<h2 id='feeddesc'>");
-	h.append(feed.description);
+	d = $("<div 'desc'>");
+	h = $("<h2 id='feeddesc'>").text(feed.description);
 	h.text (h.text()); // Strip any html tags from feed description
-	ph.append(h);
+	d.append(h);
 	
+	//Subscribe button
+	d.append($('<a class="linkbtn">').attr('id','subscribe').text('Open in Application').attr('href',httpToFeed(feedUrl)));
+
+	ph.append(d);
+		
 	body.append(ph);
 
 	// Change opacity of header images on mouseover
@@ -131,7 +136,7 @@ function displayFeed(feed, feedUrl){
 				
 		var date = $('<span class="elips adate">').text(displayDate);
 		artheader.append(title).append(author).append(date);
-		artheader.append($("<a class='readorig alink ext'>").attr({"href":l, "target":"_blank"}).text("Read original on "+l.split('/')[2]));
+		artheader.append($("<a class='readorig alink ext'>").attr({"href":l, "target":"_blank"}).text("Read article on "+l.split('/')[2]));
 		article.append(artheader);
 
 		h = $('<div class="abody">');
