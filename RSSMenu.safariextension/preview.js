@@ -94,7 +94,7 @@ function displayFeed(feed, feedUrl){
 		return function(){window.open(url,'_blank');}
 	};
 	
-	// Articles
+	// ARTICLES
 	for(var j = 0; j < feed.items.length; j++) {
 		
 		var articleId = "article"+j;
@@ -121,7 +121,6 @@ function displayFeed(feed, feedUrl){
 		// Show only time if article posted today, only date otherwise.
 		var today = new Date().toLocaleDateString();
 		var articleDate = new Date (Date.parse(feed.items[j].updated));
-
 		var displayDate = "";
 		
 		if (articleDate!='Invalid Date'){
