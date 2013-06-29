@@ -53,7 +53,7 @@ function displayFeed(feed, feedUrl){
 	
 	// <H2> FEED DESCRIPTION </H2>
 	d = $("<div 'desc'>");
-	h = $("<h2 id='feeddesc'>").text(feed.description);
+	h = $("<h2 id='feeddesc'>").html(feed.description);
 	h.text (h.text()); // Strip any html tags from feed description
 	d.append(h);
 	
