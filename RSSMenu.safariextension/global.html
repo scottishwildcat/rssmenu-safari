@@ -189,7 +189,7 @@ function msgHandler(event){
 	   		// Couldn't use iframe method to load feed in external app, so need to do it in a new tab
 	   		var url = event.message;
 	   		clog('d',"Opening temporary tab");
-	   		safari.application.activeBrowserWindow.openTab('background').url = url;
+	   		safari.application.activeBrowserWindow.openTab('background').url = httpToFeed(url);
 	   		// Close the tab again after a short delay
 	   		var closetab = function(){
 	   			var t = safari.application.activeBrowserWindow.tabs;
