@@ -18,18 +18,6 @@ h1 {
 	min-width:5%;
 }
 
-h1#feedtitle a {
-	text-decoration: none;
-	color: black;
-	
-	background: url(img/preview-subscribe.png) center right no-repeat; 
-	padding-right: 32px;
-}
-
-h1#feedtitle a:hover {
-	text-decoration: underline;
-	background: url(img/preview-subscribe-hover.png) center right no-repeat; 
-}
 
 h2#feeddesc {
 	clear:both;
