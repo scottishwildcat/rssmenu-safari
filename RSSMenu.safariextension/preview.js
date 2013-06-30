@@ -23,26 +23,43 @@ function displayFeed(feed, feedUrl){
 		return function(){
 			if (visible==true){
 				$("img","#alist").hide();
-				$("#toggle-icon").attr('src','img/preview-images-off.png');
+				$("#toggle-icon").attr('src','img/preview-images-off@2x.png')
+								.attr('width','24px')
+								.attr('height','24px');
 				visible=false;
 			}
 			else{
 				$("img","#alist").show();
-				$("#toggle-icon").attr('src','img/preview-images-on.png');
+				$("#toggle-icon").attr('src','img/preview-images-on@2x.png')
+								.attr('width','24px')
+								.attr('height','24px');
 				visible = true;
 			}
 		}
 	}
 	
-	b1 = $('<img>').attr('src','img/preview-show.png').attr('title','Expand All Articles');
-	b2 = $('<img>').attr('src','img/preview-hide.png').attr('title','Collapse All Articles');
-	b3 = $('<img>').attr('src','img/preview-images-on.png').attr('title','Toggle Images in Articles').attr('id','toggle-icon');
+	b1 = $('<img>').attr('src','img/preview-show@2x.png')
+					.attr('width','24px')
+					.attr('height','24px')
+					.attr('title','Expand All Articles');
+					
+	b2 = $('<img>').attr('src','img/preview-hide@2x.png')
+					.attr('width','24px')
+					.attr('height','24px')
+					.attr('title','Collapse All Articles');
+					
+	b3 = $('<img>').attr('src','img/preview-images-on@2x.png')
+					.attr('width','24px')
+					.attr('height','24px')
+					.attr('title','Toggle Images in Articles')
+					.attr('id','toggle-icon');
 	
-	d.append($('<button>').attr('id','show-all').click(function(){$(".readorig, .abody").show()}).append(b1));
-	d.append($('<button>').attr('id','hide-all').click(function(){$(".readorig, .abody").hide()}).append(b2));
-	d.append($('<button>').attr('id','toggle-images').click(toggleImages()).append(b3));
 	
-	b4 = $('<img>').attr('src','img/preview-webpage.png').attr('id','homepage').attr('title','Visit Feed Homepage');
+	b4 = $('<img>').attr('src','img/preview-webpage@2x.png')
+					.attr('width','24px')
+					.attr('height','24px')
+					.attr('id','homepage')
+					.attr('title','Visit Feed Homepage');
 	
 	if (feed.link!=""){
 		d.append(($('<a>').attr('href',feed.link)).append(b4));

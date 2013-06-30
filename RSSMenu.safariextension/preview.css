@@ -44,7 +44,7 @@ button#toggle-images {
 
 img#homepage {
 	float:right;
-	padding-left: 12px;
+	padding-left: 12px;	
 }
 
 
@@ -87,7 +87,8 @@ a.atitle:hover{
 }
 
 a.ext {
-    background: url(img/external-link.png) center right no-repeat;
+    background: url(img/external-link@2x.png) center right no-repeat;
+    background-size: 12px 12px;
     padding-right: 16px;
 }
 
