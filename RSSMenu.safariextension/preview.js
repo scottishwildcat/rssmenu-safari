@@ -54,6 +54,16 @@ function displayFeed(feed, feedUrl){
 					.attr('title','Toggle Images in Articles')
 					.attr('id','toggle-icon');
 	
+	d.append($('<button>').attr('id','show-all')
+						.click(function(){$(".readorig, .abody").show()})
+						.append(b1));
+							
+	d.append($('<button>').attr('id','hide-all')
+						.click(function(){$(".readorig, .abody").hide()})
+						.append(b2));
+							
+	d.append($('<button>').attr('id','toggle-images')
+							.click(toggleImages()).append(b3));
 	
 	b4 = $('<img>').attr('src','img/preview-webpage@2x.png')
 					.attr('width','24px')
@@ -75,7 +85,9 @@ function displayFeed(feed, feedUrl){
 	d.append(h);
 	
 	//Subscribe button
-	d.append($('<a class="linkbtn">').attr('id','subscribe').text('Open in Application').attr('href',httpToFeed(feedUrl)));
+	d.append($('<a class="linkbtn">').attr('id','subscribe')
+									.text('Open in Application')
+									.attr('href',httpToFeed(feedUrl)));
 
 	ph.append(d);
 		
@@ -152,7 +164,10 @@ function displayFeed(feed, feedUrl){
 				
 		var date = $('<span class="elips adate">').text(displayDate);
 		artheader.append(title).append(author).append(date);
-		artheader.append($("<a class='readorig alink ext'>").attr({"href":l, "target":"_blank"}).text("Read article on "+l.split('/')[2]));
+		
+		artheader.append($("<a class='readorig alink ext'>")
+					.attr({"href":l, "target":"_blank"})
+					.text("Read article on "+l.split('/')[2]));
 		article.append(artheader);
 
 		h = $('<div class="abody">');

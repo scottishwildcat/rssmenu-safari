@@ -3,20 +3,6 @@
 /** Licence: None - public domain                     **/ 
 
 
-/*
-+-div rssmenu-popup----------------------------------------------------------+
-|+ div rssmenu-url------+ +div rssmenu-action-------------------------------+|
-|| a                    | |rssmenu-button rssmenu-button rssmenu-closebutton||
-|+----------------------+ +-------------------------------------------------+|
-+----------------------------------------------------------------------------+
-
-+-div rssmenu-popup-----------------------------------------------+
-|+ div rssmenu-url------+ +div rssmenu-action--------------------+|
-|| a                    | |loadmsg                               ||
-|+----------------------+ +--------------------------------------+|
-+-----------------------------------------------------------------+
-*/
-
 .rssmenu-popup {
 
 	/*display: block !important;*/
@@ -29,7 +15,7 @@
 	width:100% !important;
 	-webkit-box-shadow: 0px 4px 4px #999;
 	box-sizing: content-box !important;
-
+	
 	margin: 0 0 !important;
 	padding: 4px 0px !important;
 
@@ -71,6 +57,7 @@
 	text-decoration: underline !important;
 	color: black !important;
 	font-weight: normal !important;
+	font-size:14px !important;
 }
 
 .rssmenu-action {
@@ -98,6 +85,7 @@
 
 	font: webkit-small-control !important;
 	font-weight: normal !important;
+	font-size: 14px !important;
 	height: auto !important;
 	line-height:normal !important;
 	text-indent: 0px !important;
