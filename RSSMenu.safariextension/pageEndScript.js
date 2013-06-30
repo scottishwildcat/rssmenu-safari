@@ -4,9 +4,14 @@
 
 //"use strict";
 
-safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
+function isTopLevel(){
+	return (window.top === window);
+}
 
-findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
+if (isTopLevel()){
+	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
+	findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
+}
 
 function XFrameOptions(url){
 	// Return true if specified URL is allowed to be displayed in an iframe,
@@ -228,50 +233,46 @@ function findFeedsOnPage(){
 	// Other forms of href: "/feed.xml" (relative to site root), "feed.xml" (relative to current page.)
 	// Other values of type: application/atom+xml, text/xml.
 
-	if (window.top === window) {
-		// The parent frame is the top-level frame, not an iframe, so go ahead.
-		
-		var foundFeeds = []; // will be populated as: [[name,url],[name,url],...]
-	
-		var docHead = document.getElementsByTagName('head')[0];		
-		var headLinks = docHead.getElementsByTagName('link');
-					
-		for (var i=0; i < headLinks.length; i++){
-			
-			var link = headLinks[i];
-			
-			if (link.attributes.getNamedItem("rel") !== null && 
-				link.attributes.getNamedItem("rel").value == "alternate"){
-				
-				var type = link.attributes.getNamedItem("type").value;
-			
-				if (type === "application/rss+xml"  || 
-					type === "application/atom+xml" ||
-					type === "text/xml"){
-					
-					var title = link.attributes.getNamedItem("title");
-					
-					if (title !== null){
-						// Use the feed title specified on the page
-						title = title.value;					
-					}
-					else{
-						// No title specified, use a generic name based on the type
-						if (type.indexOf("rss") != -1)
-							title = "RSS Feed";
-						else if (type.indexOf("atom") != -1)
-							title = "Atom Feed";
-						else
-							title = 'Untitled Feed';
-					}
+	var foundFeeds = []; // will be populated as: [[name,url],[name,url],...]
 
-					var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
-										
-					if (href)
-						foundFeeds.push([title, href]);
+	var docHead = document.getElementsByTagName('head')[0];		
+	var headLinks = docHead.getElementsByTagName('link');
+				
+	for (var i=0; i < headLinks.length; i++){
+		
+		var link = headLinks[i];
+		
+		if (link.attributes.getNamedItem("rel") !== null && 
+			link.attributes.getNamedItem("rel").value == "alternate"){
+			
+			var type = link.attributes.getNamedItem("type").value;
+		
+			if (type === "application/rss+xml"  || 
+				type === "application/atom+xml" ||
+				type === "text/xml"){
+				
+				var title = link.attributes.getNamedItem("title");
+				
+				if (title !== null){
+					// Use the feed title specified on the page
+					title = title.value;					
 				}
+				else{
+					// No title specified, use a generic name based on the type
+					if (type.indexOf("rss") != -1)
+						title = "RSS Feed";
+					else if (type.indexOf("atom") != -1)
+						title = "Atom Feed";
+					else
+						title = 'Untitled Feed';
+				}
+
+				var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
+									
+				if (href)
+					foundFeeds.push([title, href]);
 			}
 		}
-		safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
 	}
+	safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
 }
