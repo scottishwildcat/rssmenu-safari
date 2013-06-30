@@ -14,10 +14,15 @@ h1 {
 	margin-bottom: 0;
 	display:inline-block;
 	font-family:serif;
+	font-size: 28px;
 	max-width:80%;
 	min-width:5%;
 }
 
+h2#errormsg {
+	font-size: 22px;
+	font-family: serif;
+}
 
 h2#feeddesc {
 	clear:both;

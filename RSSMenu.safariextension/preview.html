@@ -27,6 +27,7 @@ $(document).ready(function(){
 				url:feedUrl, 
 				success:function(feed){displayFeed(feed, feedUrl);},
 				error:function(e, error, reason){
+							$("#wait").hide();
 							$("#error").show();
 							$("#errormsg").text(error+": "+reason);
 							$("#errorurl").attr("href", httpToFeed(feedUrl));
@@ -41,12 +42,11 @@ $(document).ready(function(){
 
 <div id="loading">
 	<h1>Loading feed preview</h1>
-	<p><img src="img/progress_wheel.gif">&nbsp;&nbsp;Please wait, could take up to 30 seconds...</p>
+	<p id="wait"><img src="img/progress_wheel.gif">&nbsp;&nbsp;Please wait, could take up to 30 seconds...</p>
 	
 	<div id="error">
 		<h2 id="errormsg">Unknown error</h2>
-		<p>Sorry, this feed could not be opened.</p>
-		<!--<p><a id="errorurl" href="#">Open in Application</a> might work instead.</p>-->
+		<p>Sorry, this feed is not currently available.</p>
 	</div>
 </div>
 
