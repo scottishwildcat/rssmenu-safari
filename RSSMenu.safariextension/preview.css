@@ -46,12 +46,14 @@ button#toggle-images {
 	background:none; 
 }
 
-
-img#homepage {
+a#homepage {
+    background: url(img/preview-webpage@2x.png) center right no-repeat;
+    background-size: 24px 24px;
 	float:right;
 	padding-left: 12px;	
+	width: 24px;
+	height: 24px;
 }
-
 
 #alist {
 	clear:both;

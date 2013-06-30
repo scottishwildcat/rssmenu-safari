@@ -64,15 +64,13 @@ function displayFeed(feed, feedUrl){
 							
 	d.append($('<button>').attr('id','toggle-images')
 							.click(toggleImages()).append(b3));
-	
-	b4 = $('<img>').attr('src','img/preview-webpage@2x.png')
-					.attr('width','24px')
-					.attr('height','24px')
-					.attr('id','homepage')
-					.attr('title','Visit Feed Homepage');
-	
+
+	b4 = $('<a>').attr('href',feed.link)
+				.attr('id','homepage')
+				.attr('title','Visit Feed Homepage');
+
 	if (feed.link!=""){
-		d.append(($('<a>').attr('href',feed.link)).append(b4));
+		d.append(b4);
 	}
 	
 	ph.append(d);
@@ -93,10 +91,15 @@ function displayFeed(feed, feedUrl){
 		
 	body.append(ph);
 
-	// Change opacity of header images on mouseover
+	// Change opacity of button icons on mouseover
 	$('img','header').hover(
-		function() {$(this).stop().animate({ opacity: 0.5 },0);},
-		function() {$(this).stop().animate({ opacity: 1.0 },0);}
+		function() {$(this).stop().animate({opacity: 0.5 },0);},
+		function() {$(this).stop().animate({opacity: 1.0 },0);}
+	);
+	
+	$('#homepage').hover(
+		function() {$(this).stop().css('background-image','url(img/preview-webpage-hover@2x.png)')},
+		function() {$(this).stop().css('background-image','url(img/preview-webpage@2x.png)')}
 	);
               
 	// ARTICLE LIST
