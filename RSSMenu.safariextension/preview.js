@@ -6,12 +6,9 @@ function displayFeed(feed, feedUrl){
 	
 	var ph = $("<header id='pageheader'>");
 	
-	// <div controls><h1>Feed Title</h1> web show hide</div>
-
 	var d = $("<div id='controls'>");
 
 	var h = $("<h1 id='feedtitle' class='elips'>");
-	//h.append($('<a>').text(feed.title).attr('title','Open in Application').attr('href',httpToFeed(feedUrl)));
 	h.text(feed.title);
 	d.append(h);
 		
