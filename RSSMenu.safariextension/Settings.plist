@@ -11,7 +11,7 @@
 		<string>Open feeds in</string>
 		<key>Titles</key>
 		<array>
-			<string>Google Reader</string>
+			<string>Safari</string>
 			<string>Default application</string>
 			<string>Always ask</string>
 		</array>
@@ -19,7 +19,7 @@
 		<string>RadioButtons</string>
 		<key>Values</key>
 		<array>
-			<string>google</string>
+			<string>browser</string>
 			<string>defaultapp</string>
 			<string>alwaysask</string>
 		</array>

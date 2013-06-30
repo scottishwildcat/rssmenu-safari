@@ -1,10 +1,19 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <!-- Global Page for Safari RSS Feed Extension
-     © 2012 Calum Benson
+     © 2012-13 Calum Benson
      Licence: None - public domain -->
 
 <html><head>
+
+<!--script type="text/javascript" src="jquery-1.9.1.min.js"></script-->
+<script type="text/javascript" src="jfeed/jquery.js"></script>
+<script type="text/javascript" src="jfeed/jfeed.js"></script>
+<script type="text/javascript" src="jfeed/jfeeditem.js"></script>
+<script type="text/javascript" src="jfeed/jatom.js"></script>
+<script type="text/javascript" src="jfeed/jrss.js"></script>
+<script type="text/javascript" src="common.js"></script>
+
 <script type="text/javascript">
 
 // Associative array used to store menus for each open tab. 
@@ -21,21 +30,6 @@ safari.extension.settings.addEventListener("change", settingsChangeHandler, fals
 safari.application.addEventListener("close", navigateHandler, true);
 safari.application.addEventListener("beforeNavigate", navigateHandler, true);
 safari.application.addEventListener("navigate", navigateHandler, true);
-
-var debug=true;
-function clog(level, msg){
-	
-	var msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
-	
-	if (debug){
-		switch (level){ 
-			case 'l': console.log(msg); break;
-			case 'd': console.debug(msg); break;
-			case 'w': console.warn(msg); break;
-			default: console.log(msg); break;
-		}
-	}
-}
 
 
 /* Utilities */
@@ -119,10 +113,10 @@ function cmdHandler(event){
 		
 		switch (safari.extension.settings.feed_action){
 		
-			case 'google':
+			case 'browser':
 			// Open feed URL in a new tab in Google Reader for now.
-				feedURL = 'http://www.google.com/reader/view/feed/'+encodeURIComponent(event.command);
-				safari.application.activeBrowserWindow.openTab().url=feedURL;
+				feedURL = encodeURIComponent(event.command);
+		   		safari.application.activeBrowserWindow.openTab('foreground').url = safari.extension.baseURI+'preview.html?'+feedURL;
 				break;
 				
 			case 'defaultapp':
@@ -195,7 +189,7 @@ function msgHandler(event){
 	   		// Couldn't use iframe method to load feed in external app, so need to do it in a new tab
 	   		var url = event.message;
 	   		clog('d',"Opening temporary tab");
-	   		safari.application.activeBrowserWindow.openTab('background').url = url;
+	   		safari.application.activeBrowserWindow.openTab('background').url = httpToFeed(url);
 	   		// Close the tab again after a short delay
 	   		var closetab = function(){
 	   			var t = safari.application.activeBrowserWindow.tabs;
@@ -204,6 +198,13 @@ function msgHandler(event){
 	   		}
 	   		setTimeout(closetab,3000);
 	   		break;
+	   		
+	   	case "openLocal":
+	   		// Use built-in RSS viewer to view the feed
+	   		var url = event.message;
+	   		safari.application.activeBrowserWindow.openTab('foreground').url = 
+	   				safari.extension.baseURI+'preview.html?'+encodeURIComponent(url);
+			break;
 	}
 }
 

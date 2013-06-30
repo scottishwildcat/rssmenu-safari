@@ -1,0 +1,202 @@
+html {
+	font-family: sans-serif;
+	min-width:100%;
+	min-height: 100%;
+}
+
+body {
+	padding: 24px;
+}
+
+
+h1 {
+	margin-top:0;
+	margin-bottom: 0;
+	display:inline-block;
+	font-family:serif;
+	font-size: 28px;
+	max-width:80%;
+	min-width:5%;
+}
+
+h2#errormsg {
+	font-size: 22px;
+	font-family: serif;
+}
+
+h2#feeddesc {
+	clear:both;
+	float:left;
+	max-width: 80%;
+	font-weight: 100; 
+	font-size: 18px; 
+	color: #222;
+	margin-top: 8px;
+}
+
+button#show-all,
+button#hide-all,
+button#toggle-images {
+	-webkit-appearance: none; 
+	border:0; 
+	margin:0;
+	padding:0;
+	float:right;
+	padding-left:12px;
+	background:none; 
+}
+
+a#homepage {
+    background: url(img/preview-webpage@2x.png) center right no-repeat;
+    background-size: 24px 24px;
+	float:right;
+	padding-left: 12px;	
+	width: 24px;
+	height: 24px;
+}
+
+#alist {
+	clear:both;
+	padding: 24px;
+}
+
+
+article {
+	background-color: white;
+	padding: 4px;
+	overflow: auto;
+	border-top:1px solid #e6e6e6
+}
+
+.artheader h2 {
+	margin: 0px;
+}
+
+.elips {
+	overflow: hidden; 
+	text-overflow: ellipsis; 
+	white-space: nowrap;
+}
+
+a.atitle {
+	text-decoration: none;
+	font-size: 0.6em;
+	font-weight: bold;
+	color: black;
+	margin: 2px 0px;
+	float:left; 
+	min-width:5%;
+	max-width:60%;
+}
+
+a.atitle:hover{
+	color:purple;
+}
+
+a.ext {
+    background: url(img/external-link@2x.png) center right no-repeat;
+    background-size: 12px 12px;
+    padding-right: 16px;
+}
+
+.alink {
+	margin-top:2px;
+	font-size: small;
+	color:grey;
+	clear:both;
+	float:left;
+	display:none;
+}
+
+a.alink:hover{
+	color: purple;
+}
+
+.author {
+	float:left;
+	margin-left: 8px;
+	font-size: smaller;
+	color: gray;
+	margin: 2px 8px;
+	
+	min-width:5%;
+	max-width:15%; 
+
+}
+
+.adate {
+	font-size: smaller;
+	float:right; 
+	min-width:5%;
+	max-width:15%; 
+	text-align: right;
+	margin-left: 8px;
+}
+
+
+.abody {
+	clear: both;
+	display: none;
+	padding: 12px 24px;
+	font-size: 0.9em;
+}
+
+
+#ack {
+	font-size:10px;
+	color:#999;
+	float:right;
+}
+
+#ack a {
+	color:#999;
+}
+
+#ack a:hover {
+	color:purple;
+}
+
+#error{
+	display:none;
+}
+
+
+a#subscribe {
+
+	float:right;
+	text-decoration: none;
+	font-size: small;
+	
+}
+
+a.linkbtn {
+	
+	display: inline-block !important;
+	padding: 2px 4px !important;
+	margin: 0px 0px 0px 4px !important;
+	float:right !important;
+
+	-webkit-border-radius: 3px !important;
+	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
+	border: thin outset black !important;
+
+	font: webkit-small-control !important;
+	font-weight: normal !important;
+	height: auto !important;
+	line-height:normal !important;
+	text-indent: 0px !important;
+	color: #333 !important;
+	-webkit-user-select: none !important; /* So user can't select button text */
+	
+	cursor:pointer !important;
+}
+
+
+/* Hover must come before activeÖ */
+a.linkbtn:hover {
+	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important; 
+}
+
+a.linkbtn:active {
+	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
+}

@@ -1,31 +1,16 @@
 /** End Script for Safari RSS Feed Extension **/
-/** © 2012 Calum Benson                      **/
+/** © 2012-13 Calum Benson                   **/
 /** Licence: None - public domain            **/      
 
 //"use strict";
 
-safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
+function isTopLevel(){
+	return (window.top === window);
+}
 
-findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
-
-
-/*
- * Helper functions
- */
-
-var debug=true;
-function clog(level, msg){
-	
-	var msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
-	
-	if (debug){
-		switch (level){ 
-			case 'l': console.log(msg); break;
-			case 'd': console.debug(msg); break;
-			case 'w': console.warn(msg); break;
-			default: console.log(msg); break;
-		}
-	}
+if (isTopLevel()){
+	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
+	findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
 }
 
 function XFrameOptions(url){
@@ -67,7 +52,8 @@ function openFeedInApp(url){
 			appiframe.setAttribute('id','appiframe');
 			document.body.appendChild(appiframe);
 			clog('l',"Appended hidden iframe to page");
-		}			
+		}
+		url = httpToFeed(url);
 		appiframe.src = url;
 	}
 	else{
@@ -77,9 +63,8 @@ function openFeedInApp(url){
 	
 }
 
-function openFeedInReader(url){
-	// Pass feed url to Google Reader in a new tab/window (according to browser prefs).
-	window.open('http://www.google.com/reader/view/feed/'+encodeURIComponent(url), '_blank');
+function openFeedInBrowser(url){
+	safari.self.tab.dispatchMessage("openLocal",url);
 }
 
 function showPopup (url,content){
@@ -138,13 +123,13 @@ function msgHandler(event){
 	// Messages we currently expect are:
 	// "showFeedPopup", sent from global page.
 	// "feedActionChanged", sent from global page.
-
-	var url = event.message[0]; // URL of feed to view
-	var action = event.message[1];
-	var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
-	var popupContent = [];
 	
 	if (event.name == "showFeedPopup"){
+
+		var url = event.message[0]; // URL of feed to view
+		var action = event.message[1];
+		var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
+		var popupContent = [];
 								
 		if (action == 'defaultapp'){
 		
@@ -164,10 +149,10 @@ function msgHandler(event){
 		
 		else if (action == 'alwaysask'){
 			
-			// Show three buttons in the popup -- Google Reader, Application, and Cancel.
+			// Show three buttons in the popup -- Safari, Application, and Cancel.
 			popupContent.push('<div class="rssmenu-pushbuttons">');
-	        popupContent.push('<div class="rssmenu-button" id="appBtn">Application</div>');
-	        popupContent.push('<div class="rssmenu-button" id="googleBtn">Google Reader</div>');
+	        popupContent.push('<div class="rssmenu-button" id="appBtn">Open in Application</div>');
+	        popupContent.push('<div class="rssmenu-button" id="browserBtn">Preview in Safari</div>');
 	    	popupContent.push('</div>');
 			popupContent.push('<div class="rssmenu-closebtn" id="closeBtn"></div>');
 			popupContent = popupContent.join('');
@@ -175,7 +160,7 @@ function msgHandler(event){
 			showPopup(url, popupContent);
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
-			document.getElementById('googleBtn').onclick = function(){openFeedInReader(url);closePopup();};
+			document.getElementById('browserBtn').onclick = function(){openFeedInBrowser(url);closePopup();};
 			document.getElementById('appBtn').onclick = function(){openFeedInApp(url);closePopup();};
 			document.getElementById('closeBtn').onclick = function(){closePopup();};
 		}
@@ -188,68 +173,106 @@ function msgHandler(event){
 	}
 }
 
+function getBaseURL(){
+	// Check for presence of <base href="<url>"> tag in <head>, and
+	// return URL if found. Adds trailing '/' if not present.
+	// Used when RSS feed link is not fully qualified.
+
+		var docHead = document.getElementsByTagName('head')[0];
+		var baseLinks = docHead.getElementsByTagName('base');
+		var baseURL;
+		
+		for (var i=0; i < baseLinks.length; i++){
+			
+			var link = baseLinks[i];
+			
+			if (link.attributes.getNamedItem("href") !== null){
+				url = link.attributes.getNamedItem("href").value;
+				if (url.charAt(url.length-1)!='/'){
+					url+='/';
+				}
+				break;
+			}
+		}
+		
+		return baseURL;
+	
+}
+
+function fullyQualifiedURL(h){
+	// Given the href value from a <link> tag specifying a URL feed, which may not be fully
+	// qualified, return the full URL to that feed.
+					
+	var href = h.trim();
+	
+	if (href.substr(0,4) !== "http"){
+		// Specified link is relative, construct the full URL
+		
+		// Remove leading slash if present
+		if (href[0] == '/'){
+			href = href.slice(1);
+		}
+
+		var baseURL = getBaseURL();
+		if (baseURL != undefined){
+			href = baseURL + href;				
+		}
+		else{
+			// In absence of <base> tag, assume document domain.
+			href = protocol(document.URL) + '://' + document.domain + '/' + href;
+		}
+	}
+	
+	return href;
+
+}
+
 function findFeedsOnPage(){
 	// A feed is a node in the document <head> that looks like:
 	// <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://blah.com/rss/feed.xml">
 	// Other forms of href: "/feed.xml" (relative to site root), "feed.xml" (relative to current page.)
 	// Other values of type: application/atom+xml, text/xml.
 
-	if (window.top === window) {
-		// The parent frame is the top-level frame, not an iframe, so go ahead.
-		
-		var foundFeeds = []; // will be populated as: [[name,url],[name,url],...]
-	
-		var docHead = document.getElementsByTagName('head')[0];		
-		var headLinks = docHead.getElementsByTagName('link');
-			
-		for (var i=0; i < headLinks.length; i++){
-			
-			var link = headLinks[i];
-			
-			if (link.attributes.getNamedItem("rel") !== null && 
-				link.attributes.getNamedItem("rel").value == "alternate"){
+	var foundFeeds = []; // will be populated as: [[name,url],[name,url],...]
+
+	var docHead = document.getElementsByTagName('head')[0];		
+	var headLinks = docHead.getElementsByTagName('link');
 				
-				var type = link.attributes.getNamedItem("type").value;
+	for (var i=0; i < headLinks.length; i++){
+		
+		var link = headLinks[i];
+		
+		if (link.attributes.getNamedItem("rel") !== null && 
+			link.attributes.getNamedItem("rel").value == "alternate"){
 			
-				if (type === "application/rss+xml"  || 
-					type === "application/atom+xml" ||
-					type === "text/xml"){
-					
-					var title = link.attributes.getNamedItem("title");
-					
-					if (title !== null){
-						// Use the feed title specified on the page
-						title = title.value;					
-					}
-					else{
-						// No title specified, use a generic name based on the type
-						if (type.indexOf("rss") != -1)
-							title = "RSS Feed";
-						else if (type.indexOf("atom") != -1)
-							title = "Atom Feed";
-						else
-							title = 'Untitled Feed';
-					}
-
-					var href = link.attributes.getNamedItem("href").value;
-					href = href.trim();
-											
-					if (href[0] == '/'){
-						// Specified link is relative to site root, construct the full URL
-						var protocol = document.URL.split(':')[0];
-						href = protocol+ '://' + document.domain + href;
-					}
-
-					if (href.substr(0,4) !== "http"){
-						// Specified link is relative to current page, construct the full URL
-						href = document.URL + href;
-					}
-					
-					if (href)
-						foundFeeds.push([title, href]);
+			var type = link.attributes.getNamedItem("type").value;
+		
+			if (type === "application/rss+xml"  || 
+				type === "application/atom+xml" ||
+				type === "text/xml"){
+				
+				var title = link.attributes.getNamedItem("title");
+				
+				if (title !== null){
+					// Use the feed title specified on the page
+					title = title.value;					
 				}
+				else{
+					// No title specified, use a generic name based on the type
+					if (type.indexOf("rss") != -1)
+						title = "RSS Feed";
+					else if (type.indexOf("atom") != -1)
+						title = "Atom Feed";
+					else
+						title = 'Untitled Feed';
+				}
+
+				var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
+									
+				if (href)
+					foundFeeds.push([title, href]);
 			}
 		}
-		safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
 	}
+	safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
 }

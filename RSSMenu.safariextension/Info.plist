@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Calum Benson</string>
 	<key>Builder Version</key>
-	<string>8536.28.10</string>
+	<string>8537.46.3</string>
 	<key>CFBundleDisplayName</key>
 	<string>RSS Menu</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.9.4</string>
+	<string>2.0</string>
 	<key>CFBundleVersion</key>
-	<string>20</string>
+	<string>200</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Global Page</key>
@@ -53,12 +53,13 @@
 		<dict>
 			<key>End</key>
 			<array>
+				<string>common.js</string>
 				<string>pageEndScript.js</string>
 			</array>
 		</dict>
 		<key>Stylesheets</key>
 		<array>
-			<string>styles.css</string>
+			<string>popup.css</string>
 		</array>
 	</dict>
 	<key>Description</key>
