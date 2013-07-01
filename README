@@ -1,10 +1,10 @@
 RSS Menu Extension for Safari
-(c) 2012 Calum Benson
+(c) 2012-13 Calum Benson
 
 What Does It Do?
 
-* Adds a simple menu button to your Safari toolbar
-* Opens feeds either online in Google Reader (no account required) or in your native news reader app (Vienna, Reeder, NetNewsWire etc.)
-* Toolbar button badge shows how many feeds available on current page
+* Adds a menu button to your Safari toolbar that lists autodiscovered feeds (see http://www.rssboard.org/rss-autodiscovery)
+* Opens feeds either in your native news reader app (Vienna, Reeder, NetNewsWire etc.), or directly in Safari.
+* Toolbar button badge shows how many feeds available on current page.
 
-master is stable branch, rss-2.x is dev branch.
+Works with Safari v6 or later.
