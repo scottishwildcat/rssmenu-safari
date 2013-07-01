@@ -160,6 +160,9 @@ a.alink:hover{
 	display:none;
 }
 
+#errormsg{
+	text-transform: capitalize;
+}
 
 a#subscribe {
 

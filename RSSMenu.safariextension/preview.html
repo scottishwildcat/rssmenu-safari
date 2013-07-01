@@ -29,11 +29,21 @@ $(document).ready(function(){
 				error:function(e, error, reason){
 							$("#wait").hide();
 							$("#error").show();
-							$("#errormsg").text(error+": "+reason);
-							$("#errorurl").attr("href", httpToFeed(feedUrl));
+							$("#errormsg").text(error+": "+reason.split(':')[0]);
+							
+							switch(error){
+							
+								case "parsererror":
+									$("#errortext").html("<a href='"+httpToFeed(feedUrl)+"'>Open in Application</a> may still work.");
+									break;
+							
+								default:
+									$("#errortext").html("Sorry, this feed is not currently available.")
+									break;
+							
 							}
+						}	
 			});
-	
 });
 
 </script>
@@ -46,7 +56,7 @@ $(document).ready(function(){
 	
 	<div id="error">
 		<h2 id="errormsg">Unknown error</h2>
-		<p>Sorry, this feed is not currently available.</p>
+		<p id="errortext">Sorry, this feed is not currently available.</p>
 	</div>
 </div>
 
