@@ -1,13 +1,12 @@
 function displayFeed(feed, feedUrl){
 
-	$("#loading").hide();
+	$("#loading").hide(); // Lose the progress indicator, we're done.
 	
 	var body = $("body");
 	
 	var ph = $("<header id='pageheader'>");
 	
 	var d = $("<div id='controls'>");
-
 	var h = $("<h1 id='feedtitle' class='elips'>");
 	h.text(feed.title);
 	d.append(h);
@@ -16,6 +15,9 @@ function displayFeed(feed, feedUrl){
 	var b1,b2,b3,b4;
 	
 	function toggleImages(){
+		/* Return a function that shows or hides all <img> elements in the article list,
+		   depending on whether they're currently shown or hidden. */
+		   
 		var visible=true; // Essentially a static used by the anon function returned
 		return function(){
 			if (visible==true){
@@ -35,6 +37,7 @@ function displayFeed(feed, feedUrl){
 		}
 	}
 	
+	// Expand all, collapse all, toggle image and visit homepage buttons
 	b1 = $('<img>').attr('src','img/preview-show@2x.png')
 					.attr('width','24px')
 					.attr('height','24px')
@@ -73,13 +76,13 @@ function displayFeed(feed, feedUrl){
 	ph.append(d);
 	
 	
-	// <H2> FEED DESCRIPTION </H2>
+	// Feed Description
 	d = $("<div 'desc'>");
 	h = $("<h2 id='feeddesc'>").html(feed.description);
 	h.text (h.text()); // Strip any html tags from feed description
 	d.append(h);
 	
-	//Subscribe button
+	//Open in Application button
 	d.append($('<a class="linkbtn">').attr('id','subscribe')
 									.text('Open in Application')
 									.attr('href',httpToFeed(feedUrl)));
@@ -103,8 +106,9 @@ function displayFeed(feed, feedUrl){
 	var list = $("<div id='alist'>");
 
 	function t(id, url){
-		// Return a function that either expands article with DOM id if there is any body text,
-		// otherwise opens the original url in a new tab.
+		// Return a function that toggles visibility of article with 
+		// given DOM id if there is any body text, otherwise opens its 
+		// url in a new tab.
 		return function(){
 			var b = $('#'+id+' .abody');
 			var l = $('#'+id+' .alink');
@@ -123,7 +127,9 @@ function displayFeed(feed, feedUrl){
 		return function(){window.open(url,'_blank');}
 	};
 	
-	// ARTICLES
+	// Articles
+	// TODO: Display a message if feed.items.length == 0
+	
 	for(var j = 0; j < feed.items.length; j++) {
 		
 		var articleId = "article"+j;

@@ -195,7 +195,7 @@ a.linkbtn {
 }
 
 
-/* Hover must come before activeÖ */
+/* Hover must come before active */
 a.linkbtn:hover {
 	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important; 
 }
