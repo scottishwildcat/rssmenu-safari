@@ -27,6 +27,7 @@ JAtom.prototype = {
             item.link = jQuery(this).find('link').eq(0).attr('href');
             item.description = jQuery(this).find('content').eq(0).text();
             item.updated = jQuery(this).find('updated').eq(0).text();
+            item.published = jQuery(this).find('published').eq(0).text(); //CFB
             item.id = jQuery(this).find('id').eq(0).text();
             
             feed.items.push(item);
