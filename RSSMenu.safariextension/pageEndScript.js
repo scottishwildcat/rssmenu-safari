@@ -10,7 +10,14 @@ function isTopLevel(){
 
 if (isTopLevel()){
 	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
-	findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
+	findFeedsOnPage();
+	
+	//TODO: Doesn't work for pages like youtube.com/muppets
+	
+	var urlRegExp = new RegExp("youtube\..*\/(user|channel)","i");
+	if (urlRegExp.test(document.URL)){
+		findYouTubePlaylistFeedsOnPage();
+	}
 }
 
 function XFrameOptions(url){
@@ -283,4 +290,40 @@ function findFeedsOnPage(){
 		} // rel==alternate
 	}
 	safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
+}
+
+function findYouTubePlaylistFeedsOnPage(){
+	// Return a list of RSS feeds for YouTube playlists on this page.
+	// TODO: proper way is really to use API at https://developers.google.com/youtube/2.0/reference#Playlists_Feeds
+
+	var foundFeeds = []; // will be populated as: [[name,url],[name,url]]
+	
+	var userId = "";
+	
+	if (document.URL.indexOf("/channel/")!=-1){
+		userId = (document.URL).split("/channel/")[1];
+	}
+	else if (document.URL.indexOf("/user/")!=-1){
+		userId = (document.URL).split("/user/")[1];
+	}
+
+	function gotYouTubeFeeds(data, textStatus, jqXHR){
+		var foundFeeds =[];
+		
+		if (textStatus==="success"){
+			var feeds = $('entry',data);
+			for (var i=0; i < feeds.length; i++){
+				var plTitle = $('title', $('entry',data)[i]).text();
+				var plURL = $('content', $('entry',data)[i]).attr('src') + "&max-results=50"; //Max allowed by API v2.
+				foundFeeds.push([plTitle, plURL]);
+				clog('l',plTitle+": "+plURL);
+			}
+			safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
+		}
+	}
+	
+	if (userId != ""){
+		var plAPI = "https://gdata.youtube.com/feeds/api/users/"+userId+"/playlists?v=2";
+		$.get(plAPI, gotYouTubeFeeds);
+	}
 }

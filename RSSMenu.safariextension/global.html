@@ -181,7 +181,10 @@ function msgHandler(event){
    	
 	   	case "foundFeeds":
 	   		// event.message = array of [feed_title, feed_url] found on the page.
-	   		afeeds[event.target.url] = event.message;
+	   		if (afeeds[event.target.url] === undefined){
+	   			afeeds[event.target.url] = [];
+	   		}
+	   		afeeds[event.target.url] = afeeds[event.target.url].concat(event.message);
 	   		clog('d',"foundFeeds: added afeeds["+event.target.url+"]");
 			break;
 	   	
