@@ -29,7 +29,8 @@ h2#feeddesc {
 	float:left;
 	max-width: 80%;
 	font-weight: 100; 
-	font-size: 18px; 
+	font-size: 18px;	
+	font-family: serif;
 	color: #222;
 	margin-top: 8px;
 }
