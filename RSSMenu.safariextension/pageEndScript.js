@@ -245,34 +245,42 @@ function findFeedsOnPage(){
 		if (link.attributes.getNamedItem("rel") !== null && 
 			link.attributes.getNamedItem("rel").value == "alternate"){
 			
-			var type = link.attributes.getNamedItem("type").value;
-		
-			if (type === "application/rss+xml"  || 
-				type === "application/atom+xml" ||
-				type === "text/xml"){
-				
-				var title = link.attributes.getNamedItem("title");
-				
-				if (title !== null){
-					// Use the feed title specified on the page
-					title = title.value;					
-				}
-				else{
-					// No title specified, use a generic name based on the type
-					if (type.indexOf("rss") != -1)
-						title = "RSS Feed";
-					else if (type.indexOf("atom") != -1)
-						title = "Atom Feed";
-					else
-						title = 'Untitled Feed';
-				}
+			var typeItem = link.attributes.getNamedItem("type");
 
-				var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
-									
-				if (href)
-					foundFeeds.push([title, href]);
-			}
-		}
+			if (typeItem !== null){
+
+				var type=typeItem.value;			
+			
+				if (type === "application/rss+xml"  || 
+					type === "application/atom+xml" ||
+					type === "text/xml"){
+					
+					var title = link.attributes.getNamedItem("title");
+					
+					if (title !== null){
+						// Use the feed title specified on the page
+						title = title.value;					
+					}
+					else{
+						// No title specified, use a generic name based on the type
+						if (type.indexOf("rss") != -1)
+							title = "RSS Feed";
+						else if (type.indexOf("atom") != -1)
+							title = "Atom Feed";
+						else
+							title = 'Untitled Feed';
+					}
+	
+					var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
+										
+					if (href)
+						foundFeeds.push([title, href]);
+				
+				} // type === rss+xml/atom+xml/xml
+	
+			} // type.Item !==null
+	
+		} // rel==alternate
 	}
 	safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
 }
