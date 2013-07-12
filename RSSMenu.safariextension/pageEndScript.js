@@ -228,12 +228,10 @@ function fullyQualifiedURL(h){
 }
 
 function findFeedsOnPage(){
-	// A feed is a node in the document <head> that looks like:
-	// <link rel="alternate" type="application/rss+xml" title="RSS feed" href="http://blah.com/rss/feed.xml">
-	// Other forms of href: "/feed.xml" (relative to site root), "feed.xml" (relative to current page.)
-	// Other values of type: application/atom+xml, text/xml.
+	// Look for feeds identified in <head> per the RSS autodiscovery spec:
+	// http://www.rssboard.org/rss-autodiscovery
 
-	var foundFeeds = []; // will be populated as: [[name,url],[name,url],...]
+	var foundFeeds = {}; // will be populated as {href1: title1, href2: title2...}
 
 	var docHead = document.getElementsByTagName('head')[0];		
 	var headLinks = docHead.getElementsByTagName('link');
@@ -273,8 +271,9 @@ function findFeedsOnPage(){
 	
 					var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
 										
-					if (href)
-						foundFeeds.push([title, href]);
+					if (href){
+						foundFeeds[href]=title;
+					}
 				
 				} // type === rss+xml/atom+xml/xml
 	

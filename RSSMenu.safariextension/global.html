@@ -80,11 +80,14 @@ function updateButton(btn, url)
 	if (url in afeeds){
 		// We have already scanned this page
 		clog('d',"Already scanned "+url);
-		if (afeeds[url].length >0){
+		
+		//Object.keys(x) returns no. of properties on object x
+		var numFeedsOnPage = Object.keys(afeeds[url]).length; 
+		if (numFeedsOnPage > 0){
 			// Set badge to number of feeds on page, if user preference dictates
 			btn.disabled = false;
 			if (safari.extension.settings.show_badge == true)
-				btn.badge = afeeds[url].length;
+				btn.badge = numFeedsOnPage;
 		}
 		else{
 			// No feeds found on this page
@@ -166,9 +169,10 @@ function menuHandler(event){
 	// Add the new feeds to the menu, if any
 	btn.menu = feedMenu;
 
-	if (feedsToAdd!==undefined && feedsToAdd.length > 0)
-		for (i=0; i < feedsToAdd.length; i++)
-			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i][0],feedsToAdd[i][1]);
+	if (feedsToAdd!==undefined && Object.keys(feedsToAdd).length > 0)
+		for (i in feedsToAdd){
+			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i] ,i);
+		}
 			
 	// Clear badge when button clicked
 	btn.badge = 0;
@@ -180,8 +184,16 @@ function msgHandler(event){
 	switch (event.name){
    	
 	   	case "foundFeeds":
-	   		// event.message = array of [feed_title, feed_url] found on the page.
-	   		afeeds[event.target.url] = event.message;
+	   		// event.message = {href1: title1, href2: title2...} found on page
+	   		
+	   		if (afeeds[event.target.url] === undefined){
+	   			afeeds[event.target.url] = {};
+	   		}
+	   		
+	   		// A neat jQuery function that merges all properties of 
+	   		// second object arg with first object arg
+	   		$.extend(afeeds[event.target.url], event.message);
+	   		
 	   		clog('d',"foundFeeds: added afeeds["+event.target.url+"]");
 			break;
 	   	
@@ -264,7 +276,7 @@ function settingsChangeHandler(event){
 			var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
 			
 			if (safari.extension.settings.show_badge == true){
-				btn.badge = afeeds[thisUrl].length;
+				btn.badge = Object.keys(afeeds[url]).length;
 			}
 			else{
 				btn.badge = 0;
