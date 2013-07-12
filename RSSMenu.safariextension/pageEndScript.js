@@ -295,10 +295,11 @@ function findYouTubePlaylistFeedsOnPage(){
 	// Return a list of RSS feeds for YouTube playlists on this page.
 	// TODO: proper way is really to use API at https://developers.google.com/youtube/2.0/reference#Playlists_Feeds
 
-	var foundFeeds = []; // will be populated as: [[name,url],[name,url]]
+	var foundFeeds = {}; // will be populated as: {url1:title1, url2: title2...}
 	
 	var userId = "";
 	
+	//TODO: Fix for cases like http://www.youtube.com/user/soulpancake?feature=watch
 	if (document.URL.indexOf("/channel/")!=-1){
 		userId = (document.URL).split("/channel/")[1];
 	}
@@ -314,7 +315,7 @@ function findYouTubePlaylistFeedsOnPage(){
 			for (var i=0; i < feeds.length; i++){
 				var plTitle = $('title', $('entry',data)[i]).text();
 				var plURL = $('content', $('entry',data)[i]).attr('src') + "&max-results=50"; //Max allowed by API v2.
-				foundFeeds.push([plTitle, plURL]);
+				foundFeeds[plURL] = plTitle;
 				clog('l',plTitle+": "+plURL);
 			}
 			safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
