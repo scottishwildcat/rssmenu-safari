@@ -194,7 +194,7 @@ function msgHandler(event){
 	   		// second object arg with first object arg
 	   		$.extend(afeeds[event.target.url], event.message);
 	   		
-	   		updateBtn(getToolbarBtnByID('feedMenuBtn'), event.target.url);
+	   		updateButton(getToolbarBtnByID('feedMenuBtn'), event.target.url);
 	   		
 	   		clog('d',"foundFeeds: added afeeds["+event.target.url+"]");
 			break;
