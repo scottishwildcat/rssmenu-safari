@@ -12,9 +12,7 @@ if (isTopLevel()){
 	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 	findFeedsOnPage();
 	
-	//TODO: Doesn't work for pages like youtube.com/muppets
-	
-	var urlRegExp = new RegExp("youtube\..*\/(user|channel)","i");
+	var urlRegExp = new RegExp("youtube.com\/","i");
 	if (urlRegExp.test(document.URL)){
 		findYouTubePlaylistFeedsOnPage();
 	}
@@ -293,19 +291,12 @@ function findFeedsOnPage(){
 
 function findYouTubePlaylistFeedsOnPage(){
 	// Return a list of RSS feeds for YouTube playlists on this page.
-	// TODO: proper way is really to use API at https://developers.google.com/youtube/2.0/reference#Playlists_Feeds
+	// Uses Google API v2, see https://developers.google.com/youtube/2.0/reference#Playlists_Feeds.
 
 	var foundFeeds = {}; // will be populated as: {url1:title1, url2: title2...}
 	
-	var userId = "";
-	
-	//TODO: Fix for cases like http://www.youtube.com/user/soulpancake?feature=watch
-	if (document.URL.indexOf("/channel/")!=-1){
-		userId = (document.URL).split("/channel/")[1];
-	}
-	else if (document.URL.indexOf("/user/")!=-1){
-		userId = (document.URL).split("/user/")[1];
-	}
+	// Use the YouTube userId embedded in the page's <meta> information.
+	var userId = $('meta[itemprop="channelId"]').attr('content');
 
 	function gotYouTubeFeeds(data, textStatus, jqXHR){
 		var foundFeeds =[];
@@ -322,7 +313,7 @@ function findYouTubePlaylistFeedsOnPage(){
 		}
 	}
 	
-	if (userId != ""){
+	if (userId !== undefined){
 		var plAPI = "https://gdata.youtube.com/feeds/api/users/"+userId+"/playlists?v=2";
 		$.get(plAPI, gotYouTubeFeeds);
 	}
