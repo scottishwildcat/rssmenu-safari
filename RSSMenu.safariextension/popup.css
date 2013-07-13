@@ -28,7 +28,7 @@
 	top: 0px !important;
 	height: 22px !important;
 
-	z-index: 999999 !important;
+	z-index: 2147483647 !important; /*Highest value Safari supports */
 
 	-webkit-transition: opacity .25s ease-in-out;
 	opacity: 0; /* Set this to '1' at runtime to make the div fade in */
