@@ -169,28 +169,48 @@ function menuHandler(event){
 	// Add the new feeds to the menu, if any
 	btn.menu = feedMenu;
 	
-	var menuItems = [];
-
+	var sortedFeeds = [];
+	var unsortedFeeds = [];
+	
 	if (feedsToAdd!==undefined && Object.keys(feedsToAdd).length > 0){
+		var menuId=0;
 		for (var i in feedsToAdd){
-			menuItems.push (['feed'+ menuItems.length, feedsToAdd[i], i]);
+			if (feedsToAdd[i].sort == true){
+				sortedFeeds.push (['feed'+ menuId, feedsToAdd[i].title, i]);
+			}
+			else{
+				unsortedFeeds.push(['feed'+ menuId, feedsToAdd[i].title, i]);
+			}
+			menuId++;
 		}
 	}
-		
+
 	// Sort feeds alphabetically
 	function compareMenuItems(m1,m2){
 		if (m1[1].toUpperCase() < m2[1].toUpperCase()) return -1;
 		if (m1[1].toUpperCase() > m2[1].toUpperCase()) return 1;
 		return 0;
 	}
+	sortedFeeds.sort(compareMenuItems);
 	
-	menuItems.sort(compareMenuItems);
+	// Add items to menu, unsorted feeds first. If there are both
+	// sorted and unsorted feeds, put a separator between them.
+		
+	function addItems(items){
+		for (var i=0; i < items.length; i++){
+			feedMenu.appendMenuItem(items[i][0],items[i][1],items[i][2]);
+		}
+	}
 	
-	// Add items to menu
-	var j=0;
-	for (i=0; i < menuItems.length; i++){
-		feedMenu.appendMenuItem(menuItems[i][0],menuItems[i][1] ,menuItems[i][2]);
-		j++
+	if (unsortedFeeds.length > 0){
+		addItems(unsortedFeeds);
+		if (sortedFeeds.length>0){
+			feedMenu.appendSeparator('sepSorted');
+		}
+	}
+	
+	if (sortedFeeds.length > 0){
+		addItems(sortedFeeds);
 	}
 	
 	// Clear badge when button clicked
@@ -203,7 +223,7 @@ function msgHandler(event){
 	switch (event.name){
    	
 	   	case "foundFeeds":
-	   		// event.message = {href1: title1, href2: title2...} found on page
+	   		// event.message = {href1: {sort:t/f, title:title1}, href2: {sort:t/f, title:title2}...}
 	   		
 	   		if (afeeds[event.target.url] === undefined){
 	   			afeeds[event.target.url] = {};

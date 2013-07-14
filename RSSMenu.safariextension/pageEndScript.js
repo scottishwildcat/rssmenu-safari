@@ -236,7 +236,7 @@ function findFeedsOnPage(){
 	// Look for feeds identified in <head> per the RSS autodiscovery spec:
 	// http://www.rssboard.org/rss-autodiscovery
 
-	var foundFeeds = {}; // will be populated as {href1: title1, href2: title2...}
+	var foundFeeds = {}; // will be populated as {href1:{sort:t/f, title:title1}, href2:{sort:t/f, title:title2}...}
 
 	var docHead = document.getElementsByTagName('head')[0];		
 	var headLinks = docHead.getElementsByTagName('link');
@@ -277,7 +277,8 @@ function findFeedsOnPage(){
 					var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
 										
 					if (href){
-						foundFeeds[href]=title;
+						// Autodiscovered feeds are listed on menu in order found, i.e. unsorted
+						foundFeeds[href]={sort:false, title:title};
 					}
 				
 				} // type === rss+xml/atom+xml/xml
@@ -306,7 +307,9 @@ function findYouTubePlaylistFeedsOnPage(){
 			for (var i=0; i < feeds.length; i++){
 				var plTitle = $('title', $('entry',data)[i]).text();
 				var plURL = $('content', $('entry',data)[i]).attr('src') + "&max-results=50"; //Max allowed by API v2.
-				foundFeeds[plURL] = plTitle;
+				
+				// YouTube feeds are sorted alphabetically on the menu
+				foundFeeds[plURL] = {sort:true, title:plTitle};
 				clog('l',plTitle+": "+plURL);
 			}
 			safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
