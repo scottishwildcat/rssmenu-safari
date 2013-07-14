@@ -29,6 +29,7 @@ JAtom.prototype = {
             item.updated = jQuery(this).find('updated').eq(0).text();
             item.published = jQuery(this).find('published').eq(0).text(); //CFB
             item.id = jQuery(this).find('id').eq(0).text();
+            item.author = jQuery(this).find('name').eq(0).text(); //CFB
             
             feed.items.push(item);
         });
