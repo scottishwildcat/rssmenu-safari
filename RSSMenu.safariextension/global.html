@@ -144,11 +144,10 @@ function cmdHandler(event){
 function validateHandler(event){
 // Called automatically when an extension component needs to revalidate itself, e.g. when tab re-gains focus.
 	
-	var url = event.target.browserWindow.activeTab.url;
-	
 	if (event.target.identifier == "feedMenuBtn"){
 		//Update button enabled/disabled state, badge count and badge visibility.
 		var btn = event.target;
+		var url = event.target.browserWindow.activeTab.url;
 		updateButton(event.target, url);
 	}
 }
