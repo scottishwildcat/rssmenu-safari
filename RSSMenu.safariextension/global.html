@@ -34,18 +34,21 @@ safari.application.addEventListener("navigate", navigateHandler, true);
 
 /* Utilities */
 
-function getToolbarBtnByID(id){
-// Return the toolbar object with the specified id.
-	var itemArray = safari.extension.toolbarItems;
-		for (var i = 0; i < itemArray.length; ++i) {
-    		var item = itemArray[i];
-		    if (item.identifier == id)
+function getToolbarBtn(id){
+// Return the toolbar item with the specified id in the active browser window
+
+	const toolbarItems = safari.extension.toolbarItems;
+	const activeBrowserWindow = safari.application.activeBrowserWindow;
+	
+	for (var i = 0; i < toolbarItems.length; ++i) {
+    		var item = toolbarItems[i];
+		    if (item.identifier == id && item.browserWindow == activeBrowserWindow)
 				return item;
-		}
+	}
 	return null;
 }
 
-function getMenuByID(id){
+function getMenu(id){
 // Return the menu object with the specified id.
 	var itemArray = safari.extension.menus;
 		for (var i = 0; i < itemArray.length; ++i) {
@@ -141,7 +144,7 @@ function cmdHandler(event){
 function validateHandler(event){
 // Called automatically when an extension component needs to revalidate itself, e.g. when tab re-gains focus.
 	
-	var url = safari.application.activeBrowserWindow.activeTab.url;
+	var url = event.target.browserWindow.activeTab.url;
 	
 	if (event.target.identifier == "feedMenuBtn"){
 		//Update button enabled/disabled state, badge count and badge visibility.
@@ -153,8 +156,8 @@ function validateHandler(event){
 function menuHandler(event){
 // Called when the toolbar button menu is about to be displayed.
 		
-	var btn = getToolbarBtnByID('feedMenuBtn');
-	var feedMenu = getMenuByID('feedMenu');
+	var btn = getToolbarBtn('feedMenuBtn');
+	var feedMenu = getMenu('feedMenu');
 	var feedsToAdd = afeeds[safari.application.activeBrowserWindow.activeTab.url];
 
 	// Must hide menu before making any dynamic changes
@@ -233,7 +236,7 @@ function msgHandler(event){
 	   		// second object arg with first object arg
 	   		$.extend(afeeds[event.target.url], event.message);
 	   		
-	   		updateButton(getToolbarBtnByID('feedMenuBtn'), event.target.url);
+	   		updateButton(getToolbarBtn('feedMenuBtn'), event.target.url);
 	   		
 	   		clog('d',"foundFeeds: added afeeds["+event.target.url+"]");
 			break;
@@ -293,7 +296,7 @@ function navigateHandler(event){
 		case "navigate":
 			// Check if we've already found some feeds on the URL we've
 			// landed on, and update button accordingly.
-			var btn = getToolbarBtnByID('feedMenuBtn');
+			var btn = getToolbarBtn('feedMenuBtn');
 			clog('d',"navigate: update button");
 			updateButton(btn, url);
 	}
@@ -313,7 +316,7 @@ function settingsChangeHandler(event){
 	
 		case "show_badge":
 			// If the show_badge setting is changed, show or hide the badge immediately.
-			var btn = getToolbarBtnByID('feedMenuBtn');
+			var btn = getToolbarBtn('feedMenuBtn');
 			var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
 			
 			if (safari.extension.settings.show_badge == true){
