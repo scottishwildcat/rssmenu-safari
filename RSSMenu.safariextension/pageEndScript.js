@@ -10,7 +10,12 @@ function isTopLevel(){
 
 if (isTopLevel()){
 	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
-	findFeedsOnPage(); // Run when any page or iframe on that page has finished loading
+	findFeedsOnPage();
+	
+	var urlRegExp = new RegExp("youtube.com\/","i");
+	if (urlRegExp.test(document.URL)){
+		findYouTubePlaylistFeedsOnPage();
+	}
 }
 
 function XFrameOptions(url){
@@ -231,7 +236,7 @@ function findFeedsOnPage(){
 	// Look for feeds identified in <head> per the RSS autodiscovery spec:
 	// http://www.rssboard.org/rss-autodiscovery
 
-	var foundFeeds = {}; // will be populated as {href1: title1, href2: title2...}
+	var foundFeeds = {}; // will be populated as {href1:{sort:t/f, title:title1}, href2:{sort:t/f, title:title2}...}
 
 	var docHead = document.getElementsByTagName('head')[0];		
 	var headLinks = docHead.getElementsByTagName('link');
@@ -272,7 +277,8 @@ function findFeedsOnPage(){
 					var href = fullyQualifiedURL(link.attributes.getNamedItem("href").value);
 										
 					if (href){
-						foundFeeds[href]=title;
+						// Autodiscovered feeds are listed on menu in order found, i.e. unsorted
+						foundFeeds[href]={sort:false, title:title};
 					}
 				
 				} // type === rss+xml/atom+xml/xml
@@ -282,4 +288,36 @@ function findFeedsOnPage(){
 		} // rel==alternate
 	}
 	safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
+}
+
+function findYouTubePlaylistFeedsOnPage(){
+	// Return a list of RSS feeds for YouTube playlists on this page.
+	// Uses Google API v2, see https://developers.google.com/youtube/2.0/reference#Playlists_Feeds.
+
+	var foundFeeds = {}; // will be populated as: {url1:title1, url2: title2...}
+	
+	// Use the YouTube userId embedded in the page's <meta> information.
+	var userId = $('meta[itemprop="channelId"]').attr('content');
+
+	function gotYouTubeFeeds(data, textStatus, jqXHR){
+		var foundFeeds =[];
+		
+		if (textStatus==="success"){
+			var feeds = $('entry',data);
+			for (var i=0; i < feeds.length; i++){
+				var plTitle = $('title', $('entry',data)[i]).text();
+				var plURL = $('content', $('entry',data)[i]).attr('src') + "&max-results=50"; //Max allowed by API v2.
+				
+				// YouTube feeds are sorted alphabetically on the menu
+				foundFeeds[plURL] = {sort:true, title:plTitle};
+				clog('l',plTitle+": "+plURL);
+			}
+			safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
+		}
+	}
+	
+	if (userId !== undefined){
+		var plAPI = "https://gdata.youtube.com/feeds/api/users/"+userId+"/playlists?v=2";
+		$.get(plAPI, gotYouTubeFeeds);
+	}
 }

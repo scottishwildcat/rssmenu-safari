@@ -168,12 +168,51 @@ function menuHandler(event){
 	
 	// Add the new feeds to the menu, if any
 	btn.menu = feedMenu;
-
-	if (feedsToAdd!==undefined && Object.keys(feedsToAdd).length > 0)
-		for (i in feedsToAdd){
-			feedMenu.appendMenuItem('feed'+i,feedsToAdd[i] ,i);
+	
+	var sortedFeeds = [];
+	var unsortedFeeds = [];
+	
+	if (feedsToAdd!==undefined && Object.keys(feedsToAdd).length > 0){
+		var menuId=0;
+		for (var i in feedsToAdd){
+			if (feedsToAdd[i].sort == true){
+				sortedFeeds.push (['feed'+ menuId, feedsToAdd[i].title, i]);
+			}
+			else{
+				unsortedFeeds.push(['feed'+ menuId, feedsToAdd[i].title, i]);
+			}
+			menuId++;
 		}
-			
+	}
+
+	// Sort feeds alphabetically
+	function compareMenuItems(m1,m2){
+		if (m1[1].toUpperCase() < m2[1].toUpperCase()) return -1;
+		if (m1[1].toUpperCase() > m2[1].toUpperCase()) return 1;
+		return 0;
+	}
+	sortedFeeds.sort(compareMenuItems);
+	
+	// Add items to menu, unsorted feeds first. If there are both
+	// sorted and unsorted feeds, put a separator between them.
+		
+	function addItems(items){
+		for (var i=0; i < items.length; i++){
+			feedMenu.appendMenuItem(items[i][0],items[i][1],items[i][2]);
+		}
+	}
+	
+	if (unsortedFeeds.length > 0){
+		addItems(unsortedFeeds);
+		if (sortedFeeds.length>0){
+			feedMenu.appendSeparator('sepSorted');
+		}
+	}
+	
+	if (sortedFeeds.length > 0){
+		addItems(sortedFeeds);
+	}
+	
 	// Clear badge when button clicked
 	btn.badge = 0;
 }
@@ -184,7 +223,7 @@ function msgHandler(event){
 	switch (event.name){
    	
 	   	case "foundFeeds":
-	   		// event.message = {href1: title1, href2: title2...} found on page
+	   		// event.message = {href1: {sort:t/f, title:title1}, href2: {sort:t/f, title:title2}...}
 	   		
 	   		if (afeeds[event.target.url] === undefined){
 	   			afeeds[event.target.url] = {};
@@ -193,6 +232,8 @@ function msgHandler(event){
 	   		// A neat jQuery function that merges all properties of 
 	   		// second object arg with first object arg
 	   		$.extend(afeeds[event.target.url], event.message);
+	   		
+	   		updateButton(getToolbarBtnByID('feedMenuBtn'), event.target.url);
 	   		
 	   		clog('d',"foundFeeds: added afeeds["+event.target.url+"]");
 			break;

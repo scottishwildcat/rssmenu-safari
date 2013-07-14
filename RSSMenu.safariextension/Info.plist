@@ -56,6 +56,10 @@
 				<string>common.js</string>
 				<string>pageEndScript.js</string>
 			</array>
+			<key>Start</key>
+			<array>
+				<string>jfeed/jquery.js</string>
+			</array>
 		</dict>
 		<key>Stylesheets</key>
 		<array>
