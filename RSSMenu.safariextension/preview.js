@@ -128,63 +128,67 @@ function displayFeed(feed, feedUrl){
 	};
 	
 	// Articles
-	// TODO: Display a message if feed.items.length == 0
 	
-	for(var j = 0; j < feed.items.length; j++) {
-		
-		var articleId = "article"+j;
-		var article = $("<article>").attr("id", articleId);
-		
-		var artheader = $('<header>').addClass('artheader');
-
-		var title = $('<h2>');
-		title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));
-
-		// If article content is empty, clicking title will link directly to original article
-		if (feed.items[j].description == ""){
-			$("a",title).addClass("ext");
-		}
-		
-		var l = feed.items[j].link;
-		title.click(t(articleId,l));
-
-		var author = "";
-		if (feed.items[j].author != ""){
-			author = $('<span class="elips author">').text(feed.items[j].author);
-		}
-		
-		// Show only time if article posted today, only date otherwise.
-		var today = new Date().toLocaleDateString();
-		var pubDate = new Date (Date.parse(feed.items[j].published));
-		var upDate = new Date (Date.parse(feed.items[j].updated));
-
-		var articleDate = (pubDate > upDate ? pubDate : upDate);
-		
-		var displayDate = "";
-		
-		if (articleDate!='Invalid Date'){
+	if (feed.items.length == 0){
+		list.text("No articles found.");
+	}
+	else {
+		for(var j = 0; j < feed.items.length; j++) {
 			
-			if (articleDate.toLocaleDateString() == today){
-				displayDate = articleDate.toLocaleTimeString();
+			var articleId = "article"+j;
+			var article = $("<article>").attr("id", articleId);
+			
+			var artheader = $('<header>').addClass('artheader');
+	
+			var title = $('<h2>');
+			title.append($('<a class="elips atitle" href="#">').text(feed.items[j].title));
+	
+			// If article content is empty, clicking title will link directly to original article
+			if (feed.items[j].description == ""){
+				$("a",title).addClass("ext");
 			}
-			else{
-				displayDate = articleDate.toLocaleDateString();
+			
+			var l = feed.items[j].link;
+			title.click(t(articleId,l));
+	
+			var author = "";
+			if (feed.items[j].author != ""){
+				author = $('<span class="elips author">').text(feed.items[j].author);
 			}
-		}
+			
+			// Show only time if article posted today, only date otherwise.
+			var today = new Date().toLocaleDateString();
+			var pubDate = new Date (Date.parse(feed.items[j].published));
+			var upDate = new Date (Date.parse(feed.items[j].updated));
+	
+			var articleDate = (pubDate > upDate ? pubDate : upDate);
+			
+			var displayDate = "";
+			
+			if (articleDate!='Invalid Date'){
 				
-		var date = $('<span class="elips adate">').text(displayDate);
-		artheader.append(title).append(author).append(date);
-		
-		artheader.append($("<a class='readorig alink ext'>")
-					.attr({"href":l, "target":"_blank"})
-					.text("Read article on "+l.split('/')[2]));
-		article.append(artheader);
-
-		h = $('<div class="abody">');
-		h.append(feed.items[j].description);
-		article.append(h);
-		
-		list.append(article);
+				if (articleDate.toLocaleDateString() == today){
+					displayDate = articleDate.toLocaleTimeString();
+				}
+				else{
+					displayDate = articleDate.toLocaleDateString();
+				}
+			}
+					
+			var date = $('<span class="elips adate">').text(displayDate);
+			artheader.append(title).append(author).append(date);
+			
+			artheader.append($("<a class='readorig alink ext'>")
+						.attr({"href":l, "target":"_blank"})
+						.text("Read article on "+l.split('/')[2]));
+			article.append(artheader);
+	
+			h = $('<div class="abody">');
+			h.append(feed.items[j].description);
+			article.append(h);
+			
+			list.append(article);
+		}
 	}
 	
 	body.append(list);
