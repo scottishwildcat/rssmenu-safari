@@ -173,24 +173,32 @@ function menuHandler(event){
 	
 	var sortedFeeds = [];
 	var unsortedFeeds = [];
+	var menulabel = "";
 	
+	if (feedsToAdd.menulabel != undefined){
+		menulabel = feedsToAdd.menulabel;
+	}
+		
 	if (feedsToAdd!==undefined && Object.keys(feedsToAdd).length > 0){
 		var menuId=0;
 		for (var i in feedsToAdd){
-			if (feedsToAdd[i].sort == true){
-				sortedFeeds.push (['feed'+ menuId, feedsToAdd[i].title, i]);
+		
+			if (feedsToAdd[i].sort != undefined){
+				if (feedsToAdd[i].sort == true){
+					sortedFeeds.push ({id:'feed'+ menuId, title:feedsToAdd[i].title, url:i, type:feedsToAdd[i].type});
+				}
+				else{
+					unsortedFeeds.push({id:'feed'+ menuId, title:feedsToAdd[i].title, url:i, type:feedsToAdd[i].type});
+				}
+				menuId++;
 			}
-			else{
-				unsortedFeeds.push(['feed'+ menuId, feedsToAdd[i].title, i]);
-			}
-			menuId++;
 		}
 	}
 
 	// Sort feeds alphabetically
 	function compareMenuItems(m1,m2){
-		if (m1[1].toUpperCase() < m2[1].toUpperCase()) return -1;
-		if (m1[1].toUpperCase() > m2[1].toUpperCase()) return 1;
+		if (m1.title.toUpperCase() < m2.title.toUpperCase()) return -1;
+		if (m1.title.toUpperCase() > m2.title.toUpperCase()) return 1;
 		return 0;
 	}
 	sortedFeeds.sort(compareMenuItems);
@@ -200,7 +208,7 @@ function menuHandler(event){
 		
 	function addItems(items){
 		for (var i=0; i < items.length; i++){
-			feedMenu.appendMenuItem(items[i][0],items[i][1],items[i][2]);
+			feedMenu.appendMenuItem(items[i].id, items[i].title, items[i].url);
 		}
 	}
 	
@@ -208,6 +216,8 @@ function menuHandler(event){
 		addItems(unsortedFeeds);
 		if (sortedFeeds.length>0){
 			feedMenu.appendSeparator('sepSorted');
+			var seplabel = feedMenu.appendMenuItem('sepLabel', menulabel+":");
+			seplabel.disabled = true;
 		}
 	}
 	
