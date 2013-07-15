@@ -1,3 +1,7 @@
+/** Safari RSS Feed Extension                     **/
+/** © 2012-13 Calum Benson                        **/
+/** Licence: None - public domain                 **/    
+
 function displayFeed(feed, feedUrl){
 
 	$("#loading").hide(); // Lose the progress indicator, we're done.

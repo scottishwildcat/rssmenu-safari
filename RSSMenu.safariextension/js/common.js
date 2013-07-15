@@ -1,3 +1,7 @@
+/** Injected Script for Safari RSS Feed Extension **/
+/** © 2012-13 Calum Benson                        **/
+/** Licence: None - public domain                 **/    
+
 var debug=true;
 function clog(level, msg){
 	

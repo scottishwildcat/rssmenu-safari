@@ -53,8 +53,8 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>common.js</string>
-				<string>pageEndScript.js</string>
+				<string>js/common.js</string>
+				<string>js/pageEndScript.js</string>
 			</array>
 			<key>Start</key>
 			<array>
