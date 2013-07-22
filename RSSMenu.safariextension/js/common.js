@@ -17,6 +17,10 @@ function clog(level, msg){
 	}
 }
 
+function isTopLevel(){
+	return (window.top === window);
+}
+
 function protocol(url){
 	// Return the URI protocol of the given url, up to but not including the colon.
 	// Likely return values are 'http', 'https', 'feed'.

@@ -5,10 +5,6 @@
 
 //"use strict";
 
-function isTopLevel(){
-	return (window.top === window);
-}
-
 if (isTopLevel()){
 	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 	findFeedsOnPage();
