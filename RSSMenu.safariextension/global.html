@@ -220,14 +220,12 @@ function menuHandler(event){
 	
 	if (unsortedFeeds.length > 0){
 		addItems(unsortedFeeds);
-		if (sortedFeeds.length>0){
-			feedMenu.appendSeparator('sepSorted');
-			var seplabel = feedMenu.appendMenuItem('sepLabel', menulabel+":");
-			seplabel.disabled = true;
-		}
 	}
 	
 	if (sortedFeeds.length > 0){
+		feedMenu.appendSeparator('sepSorted');
+		var seplabel = feedMenu.appendMenuItem('sepLabel', menulabel+":");
+		seplabel.disabled = true;
 		addItems(sortedFeeds);
 	}
 	
