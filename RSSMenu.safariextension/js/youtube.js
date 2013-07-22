@@ -2,6 +2,9 @@
 /** © 2012-13 Calum Benson                        **/
 /** Licence: None - public domain                 **/    
 
+if (isTopLevel()){
+	findYouTubePlaylistFeedsOnPage();
+}
 
 function findYouTubePlaylistFeedsOnPage(){
 	// Return a list of RSS feeds for YouTube playlists on this page.

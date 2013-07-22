@@ -8,13 +8,6 @@
 if (isTopLevel()){
 	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 	findFeedsOnPage();
-	
-	var urlRegExp = new RegExp("youtube.com\/","i");
-	if (urlRegExp.test(document.URL)){
-		$.getScript(safari.extension.baseURI+"js/youtube.js")
-			.done(function(script, textStatus){findYouTubePlaylistFeedsOnPage();})
-			.fail(function(jqxhr, settings, exception) {alert("Couldn't load script");});
-	}
 }
 
 function XFrameOptions(url){

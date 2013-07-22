@@ -31,6 +31,12 @@ safari.application.addEventListener("close", navigateHandler, true);
 safari.application.addEventListener("beforeNavigate", navigateHandler, true);
 safari.application.addEventListener("navigate", navigateHandler, true);
 
+safari.extension.addContentScriptFromURL(safari.extension.baseURI+"js/youtube.js", 
+											["http://*.youtube.com/*",
+											 "https://*.youtube.com/*"],/*whitelist*/
+											 [],		 				/*blacklist*/
+											 true 						/*runAtEnd*/
+										);
 
 /* Utilities */
 

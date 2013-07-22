@@ -53,7 +53,6 @@
 		<dict>
 			<key>End</key>
 			<array>
-				<string>js/common.js</string>
 				<string>js/pageEndScript.js</string>
 			</array>
 			<key>Start</key>
