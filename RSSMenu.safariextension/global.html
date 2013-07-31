@@ -16,9 +16,13 @@
 
 <script type="text/javascript">
 
-// Associative array used to store menus for each open tab. 
-// afeeds['url']=[['fname','furl'],['fname','furl'],...]]
-var afeeds = new Object();
+/* 	Associative array used to store feed details for all open tabs.
+	allFeeds[tabUrl]={ menulabel: <string>, // Shown as label between unsorted+sorted sections of menu
+					feed1Url:{title:<string> type:<plist/fav/sub/none> sort:<bool>}, 
+					feed2Url:{title:<string> type:<plist/fav/sub/none> sort:<bool>},
+					}
+*/
+var allFeeds = new Object();
 
 safari.application.addEventListener("validate", validateHandler, false);
 safari.application.addEventListener("menu", menuHandler, false); // Just before menu is displayed
@@ -96,12 +100,12 @@ function urlOpenInBrowser(url){
 function updateButton(btn, url)
 //Update btn enabled/disabled state, badge count and badge visibility for given url
 {
-	if (url in afeeds){
+	if (url in allFeeds){
 		// We have already scanned this page
 		clog('d',"Already scanned "+url);
 		
 		//Object.keys(x) returns no. of properties on object x
-		var numFeedsOnPage = Object.keys(afeeds[url]).length; 
+		var numFeedsOnPage = Object.keys(allFeeds[url]).length; 
 		if (numFeedsOnPage > 0){
 			// Set badge to number of feeds on page, if user preference dictates
 			btn.disabled = false;
@@ -173,7 +177,7 @@ function menuHandler(event){
 		
 	var btn = getToolbarBtn('feedMenuBtn');
 	var feedMenu = getMenu('feedMenu');
-	var feedsToAdd = afeeds[safari.application.activeBrowserWindow.activeTab.url];
+	var feedsToAdd = allFeeds[safari.application.activeBrowserWindow.activeTab.url];
 
 	// Must hide menu before making any dynamic changes
 	feedMenu.visible=false;
@@ -251,17 +255,17 @@ function msgHandler(event){
 	   	case "foundFeeds":
 	   		// event.message = {href1: {sort:t/f, title:title1}, href2: {sort:t/f, title:title2}...}
 	   		
-	   		if (afeeds[event.target.url] === undefined){
-	   			afeeds[event.target.url] = {};
+	   		if (allFeeds[event.target.url] === undefined){
+	   			allFeeds[event.target.url] = {};
 	   		}
 	   		
 	   		// A neat jQuery function that merges all properties of 
 	   		// second object arg with first object arg
-	   		$.extend(afeeds[event.target.url], event.message);
+	   		$.extend(allFeeds[event.target.url], event.message);
 	   		
 	   		updateButton(getToolbarBtn('feedMenuBtn'), event.target.url);
 	   		
-	   		clog('d',"foundFeeds: added afeeds["+event.target.url+"]");
+	   		clog('d',"foundFeeds: added allFeeds["+event.target.url+"]");
 			break;
 	   	
 	   	case "openFeedInTab":
@@ -289,7 +293,7 @@ function msgHandler(event){
 
 function navigateHandler(event){
 // Called when a close, navigate or beforeNavigate event is received.
-// Deletes afeeds[event.target.url], if that url no longer open in any tab.
+// Deletes allFeeds[event.target.url], if that url no longer open in any tab.
 
 	var url = event.target.url;
 
@@ -307,8 +311,8 @@ function navigateHandler(event){
 			
 				if (urlOpenInBrowser(url) == false){
 					clog('d',"Deleting menu for url '"+url+"' as not open elsewhere");
-					if (url in afeeds){
-						delete afeeds[url];
+					if (url in allFeeds){
+						delete allFeeds[url];
 						clog('d',"Delete menu for "+url);
 					}
 				}
@@ -343,7 +347,7 @@ function settingsChangeHandler(event){
 			var thisUrl = safari.application.activeBrowserWindow.activeTab.url;
 			
 			if (safari.extension.settings.show_badge == true){
-				btn.badge = Object.keys(afeeds[url]).length;
+				btn.badge = Object.keys(allFeeds[url]).length;
 			}
 			else{
 				btn.badge = 0;
