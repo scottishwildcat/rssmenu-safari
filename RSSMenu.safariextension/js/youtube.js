@@ -6,12 +6,26 @@ if (isTopLevel()){
 	findYouTubePlaylistFeedsOnPage();
 }
 
+function ytUserName(){
+	// Return the username of the YouTube account that owns this page. Currently, this 
+	// is found by looking for:
+	//
+	// <span itemprop="author">
+    //      <link itemprop="url" href="http://www.youtube.com/user/<username>">
+    // </span>
+    //
+    // in the HTML header.
+
+	const ytUserUrl = $('span[itemprop="author"] link[itemprop="url"]').attr('href');
+	
+	return ytUserUrl.split('/').slice(-1)[0];
+}
+
 function findYouTubePlaylistFeedsOnPage(){
 	// Return a list of RSS feeds for YouTube playlists on this page.
 	// Uses Google API v2, see https://developers.google.com/youtube/2.0/reference#Playlists_Feeds.
 
-	var foundFeeds = {}; // will be populated as: {url1:title1, url2: title2...}
-	var channelId = $('meta[itemprop="channelId"]').attr('content');
+	const username = ytUserName(); // Username to whom this youtube page belongs
 
 	function gotYouTubePlaylists(feedType){
 
@@ -43,11 +57,7 @@ function findYouTubePlaylistFeedsOnPage(){
 						plURL = $('link[href*="start-index"]',data).attr('href');
 						plTitle = ($('title',data)[0]).textContent;
 						
-						// Subs feed title is returned with channelId rather than display name,
-						// so replace it first.
-						var username = $('meta[itemprop="name"]').attr("content");
-						plTitle = plTitle.replace(channelId.substring(2),username);
-
+						// Favs and Subs feeds will be unsorted at the top of the menu
 						foundFeeds[plURL] = {sort:false, title:plTitle, type:feedType};
 						
 						break;		
@@ -59,14 +69,14 @@ function findYouTubePlaylistFeedsOnPage(){
 	}
 
 	
-	if (channelId !== undefined){
-		var plAPI = "https://gdata.youtube.com/feeds/api/users/"+channelId+"/playlists?v=2";
+	if (username !== undefined){
+		var plAPI = "https://gdata.youtube.com/feeds/api/users/"+username+"/playlists?v=2";
 		$.get(plAPI, gotYouTubePlaylists('plist'));
 		
-		plAPI = "https://gdata.youtube.com/feeds/api/users/"+channelId+"/favorites"
+		plAPI = "https://gdata.youtube.com/feeds/api/users/"+username+"/favorites"
 		$.get(plAPI, gotYouTubePlaylists('favs'));
 		
-		plAPI = "https://gdata.youtube.com/feeds/api/users/"+channelId+"/newsubscriptionvideos";
+		plAPI = "https://gdata.youtube.com/feeds/api/users/"+username+"/newsubscriptionvideos";
 		$.get(plAPI, gotYouTubePlaylists('subs'));
 		
 	}
