@@ -31,7 +31,17 @@ safari.application.addEventListener("close", navigateHandler, true);
 safari.application.addEventListener("beforeNavigate", navigateHandler, true);
 safari.application.addEventListener("navigate", navigateHandler, true);
 
+// We only use jQuery in youtube.js for now, so only load it then. If/when we port
+// pageEndScript.js to use jQuery, probably better to load jquery.js as a start script 
+// in Extension Builder instead.
 safari.extension.addContentScriptFromURL(safari.extension.baseURI+"js/youtube.js", 
+											["http://*.youtube.com/*",
+											 "https://*.youtube.com/*"],/*whitelist*/
+											 [],		 				/*blacklist*/
+											 true 						/*runAtEnd*/
+										);
+
+safari.extension.addContentScriptFromURL(safari.extension.baseURI+"jfeed/jquery.js", 
 											["http://*.youtube.com/*",
 											 "https://*.youtube.com/*"],/*whitelist*/
 											 [],		 				/*blacklist*/

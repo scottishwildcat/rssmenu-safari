@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Calum Benson</string>
 	<key>Builder Version</key>
-	<string>8537.48.2</string>
+	<string>8537.51.3</string>
 	<key>CFBundleDisplayName</key>
 	<string>RSS Menu</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0</string>
+	<string>2.1</string>
 	<key>CFBundleVersion</key>
-	<string>200</string>
+	<string>210</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Global Page</key>
@@ -57,7 +57,7 @@
 			</array>
 			<key>Start</key>
 			<array>
-				<string>jfeed/jquery.js</string>
+				<string>js/common.js</string>
 			</array>
 		</dict>
 		<key>Stylesheets</key>
