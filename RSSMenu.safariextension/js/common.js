@@ -5,7 +5,7 @@
 var debug=true;
 function clog(level, msg){
 	
-	var msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
+	const msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
 	
 	if (debug){
 		switch (level){ 

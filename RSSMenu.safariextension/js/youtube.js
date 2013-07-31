@@ -29,9 +29,26 @@ function findYouTubePlaylistFeedsOnPage(){
 
 	function gotYouTubePlaylists(feedType){
 
-		return function(data, textStatus, jqXHR){
+		var foundFeeds = {};
+		
+		/* foundFeeds will end up looking like:
+			{'<fullurl>': {sort:true/false, title:title, type:favs/subs}}
 			
-			var foundFeeds =[];
+			for favs or subs feed, or
+
+			{
+				'<fullurl1>': {sort:true/false, title:title1, type:plist},
+				'<fullurl2>': {sort:true/false, title:title2: type:plist},
+				'<fullurlN>': {sort:true/false, title:titleN: type:plist},
+				menulabel: label to show on menu
+			}
+			
+			for plist feed.
+		*/
+
+		return function(data, textStatus, jqXHR){
+			// If successful, data will be an XML response as documented at
+			// https://developers.google.com/youtube/2.0/developers_guide_protocol_understanding_video_feeds
 			
 			if (textStatus==="success"){
 			
@@ -40,14 +57,14 @@ function findYouTubePlaylistFeedsOnPage(){
 				switch (feedType){
 
 					case 'plist':
-						feeds = $('entry',data);
 						foundFeeds['menulabel'] = $('feed>title', data).text();
+						feeds = $('entry',data);						
 						
 						for (var i=0; i < feeds.length; i++){
 							plTitle = $('title', $('entry',data)[i]).text();							
 							plURL = $('content', $('entry',data)[i]).attr('src') + "&max-results=50"; //Max allowed by API v2.
 														
-							// Playlist feeds will be sorted alphabetically on the menu
+							// Playlist feeds will be sorted alphabetically at the bottom of the menu
 							foundFeeds[plURL] = {sort:true, title:plTitle, type:feedType};
 						}
 						break;
