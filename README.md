@@ -11,7 +11,7 @@
 
 ###Planned features
 
-* Subsscribe to feeds in Google Reader replacements like Feedly and Digg.
+* Subscribe to feeds in Google Reader replacements like Feedly and Digg.
 
 ###Notes
 
