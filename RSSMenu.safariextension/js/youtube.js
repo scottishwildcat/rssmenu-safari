@@ -18,7 +18,12 @@ function ytUserName(){
 
 	const ytUserUrl = $('span[itemprop="author"] link[itemprop="url"]').attr('href');
 	
-	return ytUserUrl.split('/').slice(-1)[0];
+	if (ytUserUrl != undefined){
+		return ytUserUrl.split('/').slice(-1)[0];
+	}
+	else {
+		return undefined;
+	}
 }
 
 function findYouTubePlaylistFeedsOnPage(){
