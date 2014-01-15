@@ -35,6 +35,17 @@ h2#feeddesc {
 	margin-top: 8px;
 }
 
+h2#feedurl {
+	clear:both;
+	float:left;
+	max-width: 80%;
+	font-weight: 100; 
+	font-size: 18px;	
+	font-family: serif;
+	color: #222;
+	margin-top: 8px;
+}
+
 button#show-all,
 button#hide-all,
 button#toggle-images {

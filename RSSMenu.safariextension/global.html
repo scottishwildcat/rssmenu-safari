@@ -158,7 +158,9 @@ function cmdHandler(event){
 				safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
 					("showFeedPopup",[event.command, // We previously set the command to the URL of the feed
 					safari.extension.settings.feed_action, // Which app to use to open the feed (or 'ask')
-					safari.extension.settings.banner_timeout * 1000]); // Only used if app to use is 'default app'
+					safari.extension.settings.banner_timeout * 1000, // Only used if app to use is 'default app'
+					safari.extension.settings.select_url // Whether to automatically select the feed URL for copying
+					]);
 				break;
 				
 			default:

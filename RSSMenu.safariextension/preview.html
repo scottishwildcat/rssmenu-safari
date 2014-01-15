@@ -20,29 +20,35 @@
 
 $(document).ready(function(){
 
-	var feedUrlStart = window.location.href.indexOf('?');
-	var feedUrl = decodeURIComponent(window.location.href.substr(feedUrlStart+1));
-	
+	//window.location.href is in format "safari-extension://<extensionID>/preview.html?<encodedfeedurl>&sel=<true|false>""
+	var u = window.location.href;
+	var feedUrl = u.substring(u.indexOf('?')+1, u.indexOf("&"));
+	feedUrl = decodeURIComponent(feedUrl);
+
+	var selectUrl = (u.split('&')[1]).split('=')[1];
+
 	$.getFeed({
-				url:feedUrl, 
-				success:function(feed){displayFeed(feed, feedUrl);},
-				error:function(e, error, reason){
-							$("#wait").hide();
-							$("#error").show();
-							$("#errormsg").text(error+": "+reason.split(':')[0]);
-							
-							switch(error){
-							
-								case "parsererror":
-									$("#errortext").html("<a href='"+httpToFeed(feedUrl)+"'>Open in Application</a> may still work.");
-									break;
-							
-								default:
-									$("#errortext").html("Sorry, this feed is not currently available.")
-									break;
-							
-							}
-						}	
+		url:feedUrl, 
+		
+		success:function(feed){displayFeed(feed, feedUrl, selectUrl);},
+		
+		error:	function(e, error, reason){
+					$("#wait").hide();
+					$("#error").show();
+					$("#errormsg").text(error+": "+reason.split(':')[0]);
+					
+					switch(error){
+					
+						case "parsererror":
+							$("#errortext").html("<a href='"+httpToFeed(feedUrl)+"'>Open in Application</a> may still work.");
+							break;
+					
+						default:
+							$("#errortext").html("Sorry, this feed is not currently available.")
+							break;
+					
+					}
+				}	
 			});
 });
 

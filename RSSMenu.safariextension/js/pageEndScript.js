@@ -64,10 +64,11 @@ function openFeedInBrowser(url){
 	safari.self.tab.dispatchMessage("openLocal",url);
 }
 
-function showPopup (url,content){
+function showPopup (url,content,selectUrl){
 	// Show a popup banner at the top of the web page.
 	// url = the url of the RSS feed for which the banner is being shown.
 	// content = action buttons or 'loading in default app' message, depending on current preferences.
+	// selectUrl = boolean indicating whether feed url should be automatically selected ready for copying
 
 	var popup = document.getElementById('rssmenu-popup'); // Will be 'null' if no existing popup being shown.
 		
@@ -89,7 +90,7 @@ function showPopup (url,content){
 		var innerHTML = [];
 		//innerHTML.push("<div class='rssmenu-urlicon'><img src='"+ safari.extension.baseURI +"img/RSS-20.png'/></div>");
 		innerHTML.push('<div class="rssmenu-icon"></div>');
-		innerHTML.push("<div class='rssmenu-url'><a href='"+url+"'>"+url+"</a></div>");
+		innerHTML.push("<div class='rssmenu-url'><a id='select-url' href='"+httpToFeed(url)+"'>"+httpToFeed(url)+"</a></div>");
 		innerHTML.push("<div class='rssmenu-action'>" + content + "</div>");
 		popup.innerHTML = innerHTML.join('');
 		
@@ -99,6 +100,10 @@ function showPopup (url,content){
 		// doesn't happen...
 		setTimeout(function(){popup.style['opacity']='1';},0);
 	}
+	
+	if (selectUrl==true)
+		selectText('select-url');
+	
 	return popup;
 }
 
@@ -126,6 +131,8 @@ function msgHandler(event){
 		var url = event.message[0]; // URL of feed to view
 		var action = event.message[1];
 		var timeout = event.message[2]; // Timeout (ms) before "adding feed" message disappears
+		var selectUrl = event.message[3]; 
+		
 		var popupContent = [];
 								
 		if (action == 'defaultapp'){
@@ -137,7 +144,7 @@ function msgHandler(event){
 			popupContent.push("<img id='spinner' src='"+safari.extension.baseURI+"img/progress_wheel.gif'></span></div>");
 			popupContent=popupContent.join('');
 			
-			var popup = showPopup(url,popupContent);
+			var popup = showPopup(url,popupContent, selectUrl);
 			if (popup !== null)
 				setTimeout(closePopup, timeout);
 
@@ -154,7 +161,7 @@ function msgHandler(event){
 			popupContent.push('<div class="rssmenu-closebtn" id="closeBtn"></div>');
 			popupContent = popupContent.join('');
 	        									
-			showPopup(url, popupContent);
+			showPopup(url, popupContent, selectUrl);
 			
 			// Not sure why the onclicks can't be set until this point, but here we go…			
 			document.getElementById('browserBtn').onclick = function(){openFeedInBrowser(url);closePopup();};

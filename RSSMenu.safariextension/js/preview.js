@@ -2,7 +2,7 @@
 /** © 2012-13 Calum Benson                        **/
 /** Licence: None - public domain                 **/    
 
-function displayFeed(feed, feedUrl){
+function displayFeed(feed, feedUrl, selectUrl){
 
 	$("#loading").hide(); // Lose the progress indicator, we're done.
 	
@@ -86,6 +86,10 @@ function displayFeed(feed, feedUrl){
 	h.text (h.text()); // Strip any html tags from feed description
 	d.append(h);
 	
+	// Feed URL
+	h = $("<h2 id='feedurl'>").text(httpToFeed(feedUrl)).attr('href', httpToFeed(feedUrl));
+	d.append(h);
+	
 	//Open in Application button
 	d.append($('<a class="linkbtn">').attr('id','subscribe')
 									.text('Open in Application')
@@ -94,6 +98,9 @@ function displayFeed(feed, feedUrl){
 	ph.append(d);
 		
 	body.append(ph);
+	
+	if (selectUrl === "true")
+		selectText('feedurl');
 
 	// Change opacity of button icons on mouseover
 	$('img','header').hover(
