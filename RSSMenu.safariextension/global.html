@@ -127,7 +127,15 @@ function updateButton(btn, url)
 	}
 }
 
+function openFeedInPreviewTab(unencodedUrl){
+// Open a feed url in a new preview tab
 
+	url = encodeURIComponent(unencodedUrl);
+	safari.application.activeBrowserWindow.openTab('foreground').url = 
+		   				safari.extension.baseURI+'preview.html?'+url+'&sel='+safari.extension.settings.select_url;
+	
+	clog('d',safari.extension.baseURI+'preview.html?'+url+'&sel='+safari.extension.settings.select_url);
+}
 
 /* Safari Extension message handlers */
 
@@ -140,9 +148,8 @@ function cmdHandler(event){
 		switch (safari.extension.settings.feed_action){
 		
 			case 'browser':
-			// Open feed URL in a new tab in Google Reader for now.
-				feedURL = encodeURIComponent(event.command);
-		   		safari.application.activeBrowserWindow.openTab('foreground').url = safari.extension.baseURI+'preview.html?'+feedURL;
+				// Open feed in a new tab using our own feed preview code.
+				openFeedInPreviewTab(event.command);
 				break;
 				
 			case 'defaultapp':
@@ -284,9 +291,7 @@ function msgHandler(event){
 	   		
 	   	case "openLocal":
 	   		// Use built-in RSS viewer to view the feed
-	   		var url = event.message;
-	   		safari.application.activeBrowserWindow.openTab('foreground').url = 
-	   				safari.extension.baseURI+'preview.html?'+encodeURIComponent(url);
+	   		openFeedInPreviewTab(event.message);
 			break;
 	}
 }
