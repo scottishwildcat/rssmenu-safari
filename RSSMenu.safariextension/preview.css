@@ -8,6 +8,14 @@ body {
 	padding: 24px;
 }
 
+#controls {
+	float:right;
+}
+
+#desc {
+	float:left;
+	width:75%;
+}
 
 h1 {
 	margin-top:0;
@@ -17,6 +25,10 @@ h1 {
 	font-size: 28px;
 	max-width:80%;
 	min-width:5%;
+}
+
+h1#feedtitle {
+	float:left;
 }
 
 h2#errormsg {
@@ -40,10 +52,10 @@ h2#feedurl {
 	float:left;
 	max-width: 80%;
 	font-weight: 100; 
-	font-size: 18px;	
-	font-family: serif;
+	font-size: 12px;	
+	font-family: sans-serif;
 	color: #222;
-	margin-top: 8px;
+	margin-top: 0px;
 }
 
 h2#feedurl::selection{
@@ -70,6 +82,11 @@ a#homepage {
 	padding-left: 12px;	
 	width: 24px;
 	height: 24px;
+}
+
+#open-in-app {
+	position: relative;
+	top: 8px;
 }
 
 #alist {

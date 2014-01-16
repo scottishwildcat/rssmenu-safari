@@ -11,9 +11,6 @@ function displayFeed(feed, feedUrl, selectUrl){
 	var ph = $("<header id='pageheader'>");
 	
 	var d = $("<div id='controls'>");
-	var h = $("<h1 id='feedtitle' class='elips'>");
-	h.text(feed.title);
-	d.append(h);
 		
 	// BUTTONS
 	var b1,b2,b3,b4;
@@ -42,6 +39,8 @@ function displayFeed(feed, feedUrl, selectUrl){
 	}
 	
 	// Expand all, collapse all, toggle image and visit homepage buttons
+	var bdiv = $("<div id='toolbuttons'>");
+	
 	b1 = $('<img>').attr('src','img/preview-show@2x.png')
 					.attr('width','24px')
 					.attr('height','24px')
@@ -58,15 +57,15 @@ function displayFeed(feed, feedUrl, selectUrl){
 					.attr('title','Toggle Images in Articles')
 					.attr('id','toggle-icon');
 	
-	d.append($('<button>').attr('id','show-all')
+	bdiv.append($('<button>').attr('id','show-all')
 						.click(function(){$(".readorig, .abody").show()})
 						.append(b1));
 							
-	d.append($('<button>').attr('id','hide-all')
+	bdiv.append($('<button>').attr('id','hide-all')
 						.click(function(){$(".readorig, .abody").hide()})
 						.append(b2));
 							
-	d.append($('<button>').attr('id','toggle-images')
+	bdiv.append($('<button>').attr('id','toggle-images')
 							.click(toggleImages()).append(b3));
 
 	b4 = $('<a>').attr('href',feed.link)
@@ -74,31 +73,42 @@ function displayFeed(feed, feedUrl, selectUrl){
 				.attr('title','Visit Feed Homepage');
 
 	if (feed.link!=""){
-		d.append(b4);
+		bdiv.append(b4);
 	}
 	
+	d.append(bdiv);
+	
+	//'Open in Application' button
+	var d1 = $("<div id='open-in-app'>");
+	d1.append($('<a class="linkbtn">').attr('id','subscribe')
+									.text('Open in Application')
+									.attr('href',httpToFeed(feedUrl)));
+	d.append(d1);
 	ph.append(d);
 	
 	
-	// Feed Description
-	d = $("<div 'desc'>");
+	// Feed Title + Description
+	d = $("<div id='desc'>");
+	
+	var h = $("<h1 id='feedtitle' class='elips'>");
+	h.text(feed.title);
+	d.append(h);
+
 	h = $("<h2 id='feeddesc'>").html(feed.description);
 	h.text (h.text()); // Strip any html tags from feed description
 	d.append(h);
-	
-	// Feed URL
-	h = $("<h2 id='feedurl'>").text(httpToFeed(feedUrl)).attr('href', httpToFeed(feedUrl));
-	d.append(h);
-	
-	//Open in Application button
-	d.append($('<a class="linkbtn">').attr('id','subscribe')
-									.text('Open in Application')
-									.attr('href',httpToFeed(feedUrl)));
 
+	// Only show feed URL if we're pre-selecting it
+	if (selectUrl === "true"){
+		h = $("<h2 id='feedurl'>").text(httpToFeed(feedUrl)).attr('href', httpToFeed(feedUrl));
+		d.append(h);
+	}
+	
 	ph.append(d);
 		
 	body.append(ph);
 	
+	// Pre-select URL if shown
 	if (selectUrl === "true")
 		selectText('feedurl');
 
