@@ -206,7 +206,7 @@ function displayFeed(feed, feedUrl, selectUrl){
 	
 	// jFeed acknowledgement
 	var ack = $('<div id="ack">');
-	ack.html("RSS Menu extension (c) 2012-2013 <a href='http://calum.me'>Calum Benson</a>. This page made with <a href='https://github.com/jfhovinne/jFeed'>jFeed</a> by Jean-Francois Hovinne.");
+	ack.html("RSS Menu extension Copyright (c) 2012-2014 <a href='http://calum.me'>Calum Benson</a>. This page made with <a href='https://github.com/jfhovinne/jFeed'>jFeed</a> by Jean-Francois Hovinne.");
 	body.append(ack);
 	
 	document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';
