@@ -35,6 +35,10 @@
 
 }
 
+.rssmenu-popup #select-url::selection{
+	background:#b0f5ff
+}
+
 .rssmenu-popup img {
 	/*vertical-align: middle !important;*/	
 	padding: 0px 8px !important;

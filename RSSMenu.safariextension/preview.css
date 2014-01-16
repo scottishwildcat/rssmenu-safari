@@ -46,6 +46,11 @@ h2#feedurl {
 	margin-top: 8px;
 }
 
+h2#feedurl::selection{
+	background:#b0f5ff
+}
+
+
 button#show-all,
 button#hide-all,
 button#toggle-images {
