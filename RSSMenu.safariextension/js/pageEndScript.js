@@ -64,6 +64,16 @@ function openFeedInBrowser(url){
 	safari.self.tab.dispatchMessage("openLocal",url);
 }
 
+function escKeypressHandler(evt) {
+	// Active only when popup window is visible. Closes the popup when Esc is pressed.
+    evt = evt || window.event;
+    if (evt.keyCode == 27) {
+        closePopup();
+        return false; /* Don't propagate to whatever control might have focus. */
+		}
+	return true;
+	};
+
 function showPopup (url,content,selectUrl){
 	// Show a popup banner at the top of the web page.
 	// url = the url of the RSS feed for which the banner is being shown.
@@ -104,6 +114,9 @@ function showPopup (url,content,selectUrl){
 	if (selectUrl==true)
 		selectText('select-url');
 	
+	/* OnKeyPress doesn't work for detecting Esc in WebKit... */
+	document.onkeyup = escKeypressHandler;
+	
 	return popup;
 }
 
@@ -117,8 +130,11 @@ function closePopup(){
 		setTimeout(function(){popup.style['opacity']='0';},0);
 		
 		// Don't remove the div immediately, or it will cut the fadeout short
-		setTimeout(function(){popup.parentElement.removeChild(popup);},1000);
+		setTimeout(function(){popup.parentElement.removeChild(popup);},500);
 	}
+	
+	/* Remove our Esc key listener */
+	document.onkeyup=null;
 }
 
 function msgHandler(event){
