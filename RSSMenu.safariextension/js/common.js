@@ -2,7 +2,7 @@
 /** © 2012-13 Calum Benson                        **/
 /** Licence: None - public domain                 **/    
 
-var debug=true;
+var debug=false;
 function clog(level, msg){
 	
 	const msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
