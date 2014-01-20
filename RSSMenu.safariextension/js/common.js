@@ -1,8 +1,8 @@
 /** Injected Script for Safari RSS Feed Extension **/
-/** © 2012-13 Calum Benson                        **/
+/** Â© 2012-14 Calum Benson                        **/
 /** Licence: None - public domain                 **/    
 
-var debug=false;
+var debug=true;
 function clog(level, msg){
 	
 	const msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
