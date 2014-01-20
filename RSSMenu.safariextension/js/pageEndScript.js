@@ -11,8 +11,10 @@ if (isTopLevel()){
 }
 
 function XFrameOptions(url){
-	// Return true if specified URL is allowed to be displayed in an iframe,
-	// false if its http headers specify 'X-Frame-Options: deny'.
+	// Return value of URL's 'X-Frame-Options' header. 
+	// 'sameorigin': URL is allowed to be displayed in [i]frame on a page of same origin,
+	// 'allow-from <uri>': URL only allowed to be displayed in [i]frame with specificed origin.
+	// 'deny': URL may not be displayed in an [i]frame.
 	
 	try {
 		var xhr = new XMLHttpRequest();
@@ -27,7 +29,7 @@ function XFrameOptions(url){
 	}
 
 	if (xhr.status === 200){
-		return xhr.getResponseHeader("X-Frame-Options"); // Poss. values: 'deny' or 'sameorigin'
+		return xhr.getResponseHeader("X-Frame-Options"); // Poss. values: 'deny', 'sameorigin' or 'allow-from <uri>'
 	}
 	else
 		return "deny"; // We couldn't access the http header, so assume the worst
