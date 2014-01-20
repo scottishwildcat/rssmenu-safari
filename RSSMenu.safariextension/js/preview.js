@@ -1,5 +1,5 @@
 /** Safari RSS Feed Extension                     **/
-/** © 2012-13 Calum Benson                        **/
+/** Â© 2012-14 Calum Benson                        **/
 /** Licence: None - public domain                 **/    
 
 function displayFeed(feed, feedUrl, selectUrl){
