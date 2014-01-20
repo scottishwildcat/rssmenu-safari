@@ -14,7 +14,7 @@ body {
 
 #desc {
 	float:left;
-	width:75%;
+	width:85%;
 }
 
 h1 {
@@ -47,7 +47,7 @@ h2#feeddesc {
 	margin-top: 8px;
 }
 
-h2#feedurl {
+a#feedurl {
 	clear:both;
 	float:left;
 	max-width: 80%;
@@ -58,8 +58,8 @@ h2#feedurl {
 	margin-top: 0px;
 }
 
-h2#feedurl::selection{
-	background:#b0f5ff
+a#feedurl::selection{
+	background:#99CCFF;
 }
 
 

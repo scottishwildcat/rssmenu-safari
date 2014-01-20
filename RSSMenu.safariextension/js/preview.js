@@ -9,7 +9,38 @@ function displayFeed(feed, feedUrl, selectUrl){
 	var body = $("body");
 	
 	var ph = $("<header id='pageheader'>");
+
+
+	// TITLE+DESCRIPTION DIV
+	d = $("<div id='desc'>");
 	
+	var h = $("<h1 id='feedtitle' class='elips'>");
+	h.text(feed.title);
+	d.append(h);
+
+	h = $("<h2 id='feeddesc'>").html(feed.description);
+	h.text (h.text()); // Strip any html tags from feed description
+	d.append(h);
+
+	// Only show feed URL if we're pre-selecting it
+	if (selectUrl === "true"){
+		h = $("<h2>");
+		h.append($("<a>").text(httpToFeed(feedUrl))
+						 .attr('href', httpToFeed(feedUrl))
+						 .attr('id','feedurl'));
+		d.append(h);
+	}
+	
+	ph.append(d);
+		
+	body.append(ph);
+	
+	// Pre-select URL if shown
+	if (selectUrl === "true")
+		selectText('feedurl');
+		
+	
+	//CONTROLS DIV
 	var d = $("<div id='controls'>");
 		
 	// BUTTONS
@@ -87,30 +118,7 @@ function displayFeed(feed, feedUrl, selectUrl){
 	ph.append(d);
 	
 	
-	// Feed Title + Description
-	d = $("<div id='desc'>");
-	
-	var h = $("<h1 id='feedtitle' class='elips'>");
-	h.text(feed.title);
-	d.append(h);
 
-	h = $("<h2 id='feeddesc'>").html(feed.description);
-	h.text (h.text()); // Strip any html tags from feed description
-	d.append(h);
-
-	// Only show feed URL if we're pre-selecting it
-	if (selectUrl === "true"){
-		h = $("<h2 id='feedurl'>").text(httpToFeed(feedUrl)).attr('href', httpToFeed(feedUrl));
-		d.append(h);
-	}
-	
-	ph.append(d);
-		
-	body.append(ph);
-	
-	// Pre-select URL if shown
-	if (selectUrl === "true")
-		selectText('feedurl');
 
 	// Change opacity of button icons on mouseover
 	$('img','header').hover(
