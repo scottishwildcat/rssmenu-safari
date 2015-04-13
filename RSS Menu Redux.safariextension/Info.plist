@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Calum Benson</string>
+	<key>Builder Version</key>
+	<string>9537.85.14.17</string>
+	<key>CFBundleDisplayName</key>
+	<string>RSS Menu Redux</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.scottishwildcat.feedmenu2</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>3.0</string>
+	<key>CFBundleVersion</key>
+	<string>300</string>
+	<key>Chrome</key>
+	<dict>
+		<key>Global Page</key>
+		<string>global.html</string>
+		<key>Menus</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>rssButtonMenu</string>
+				<key>Menu Items</key>
+				<array/>
+			</dict>
+		</array>
+		<key>Toolbar Items</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>rssButton</string>
+				<key>Image</key>
+				<string>img/toolbarBtn.png</string>
+				<key>Label</key>
+				<string>RSS Redux</string>
+				<key>Menu</key>
+				<string>rssButtonMenu</string>
+				<key>Palette Label</key>
+				<string>RSS Redux</string>
+				<key>Tool Tip</key>
+				<string>RSS Redux</string>
+			</dict>
+		</array>
+	</dict>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict>
+			<key>End</key>
+			<array>
+				<string>js/pageEnd.js</string>
+			</array>
+			<key>Start</key>
+			<array>
+				<string>js/jquery-2.1.1.min.js</string>
+				<string>js/blur.min.js</string>
+				<string>js/markup.min.js</string>
+				<string>js/Feed.js</string>
+				<string>js/util.js</string>
+			</array>
+		</dict>
+	</dict>
+	<key>Description</key>
+	<string>List RSS and Atom feeds available on the web page being viewed.</string>
+	<key>DeveloperIdentifier</key>
+	<string>U658JZ835M</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Include Secure Pages</key>
+			<true/>
+			<key>Level</key>
+			<string>All</string>
+		</dict>
+	</dict>
+	<key>Website</key>
+	<string>http://calum.me/safari</string>
+</dict>
+</plist>

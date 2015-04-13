@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>Title</key>
+		<string>RSS Account (Optional)</string>
+		<key>Type</key>
+		<string>Group</string>
+	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<string>none</string>
+		<key>Key</key>
+		<string>rssService</string>
+		<key>Title</key>
+		<string>Service</string>
+		<key>Titles</key>
+		<array>
+			<string>(None)</string>
+			<string>NewsBlur</string>
+			<string>The Old Reader</string>
+		</array>
+		<key>Type</key>
+		<string>PopUpButton</string>
+		<key>Values</key>
+		<array>
+			<string>none</string>
+			<string>newsblur</string>
+			<string>theoldreader</string>
+		</array>
+	</dict>
+</array>
+</plist>

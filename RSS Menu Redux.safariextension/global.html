@@ -1,0 +1,244 @@
+<!--------------------------------------------
+/* RSS Menu Extension - global page         */
+/* (c) Calum Benson 2013, 2014, 2015        */
+/-------------------------------------------->
+
+
+<html><head>
+
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/Feed.js"></script>
+<script src="js/FeedCache.js"></script>
+
+<script>
+	
+	$(document).ready(function(){
+		
+		// Set up the new feed cache, or re-use from previous sessions if exists
+		var feedCache = new FeedCache();
+		feedCache.initialize(EXTENSION_URI);
+		
+		/* Add Extension Event Listeners */
+		safari.application.addEventListener("command", commandListener, false);
+		safari.application.addEventListener("message", messageListener, false);
+		safari.application.addEventListener("validate", validateListener, false);
+		safari.application.addEventListener("menu", menuListener, false);
+
+
+		// These only work in Safari 5.1 and later. They don't bubble, hence last param=true.
+		safari.application.addEventListener("close", navigateListener, true);
+		safari.application.addEventListener("activate", navigateListener, true);
+		safari.application.addEventListener("beforeNavigate", navigateListener, true);
+		safari.application.addEventListener("navigate", navigateListener, true);
+		
+		
+		/*****************************/
+		/* Extension Event Listeners */
+		/*****************************/
+		
+		function menuListener(event){
+		// Called when the toolbar button menu is about to be displayed.
+		
+			const menu = event.target;
+			const win = event.currentTarget.activeBrowserWindow;
+
+			menu.visible = false; // Must hide menu before making any changes
+			
+			// This seems to be the only way to clear the menu...
+			while (menu.menuItems.length > 0){
+				menu.removeMenuItem(0);
+			}
+			
+			// Get the feeds for this tab and sort them by title
+			var feeds = feedCache.getFeedsForTab(win.activeTab.url);
+			
+			// Add the ungrouped feeds first
+			for (var f=0; f < feeds.length; f++){
+				if (feeds[f].group===GROUP_NONE){
+					menu.appendMenuItem(MENU_ID_PREFIX+feeds[f].uri, feeds[f].title);
+				}
+			}
+			
+			// Clear the badge and we're done
+			var btn = getToolbarButton(win, TOOLBAR_BUTTON_ID);
+			btn.badge=0;
+		}
+		
+		function commandListener(event){
+			// Received when toolbar button or menu item clicked
+			
+			//if (event.command===TOOLBAR_BUTTON_ID){
+			//	clog('d', 'Button clicked');
+			//}
+			//else 
+			if (event.command.indexOf(MENU_ID_PREFIX)===0){
+				// Menu item clicked, pass just the URI to openFeed()
+				openFeed(event.command.slice(MENU_ID_PREFIX.length));
+			}
+			else{
+				clog('w', 'Unrecognised command: '+event.command);
+			}
+		}
+		
+		function messageListener(event){
+			// Messages received from injected scripts.
+			
+			switch (event.name){
+				case "foundFeeds": 
+					// Injected script found feeds on its page
+					// TODO: Have a 'disable during private browsing' option?
+					feedCache.addTab(event.message.tabUrl, event.message.feeds);
+					
+					// Update the toolbar button now, rather than waiting on the tab to 
+					// fire a Navigate (page loaded) event.
+					updateToolbarButton(event.target.browserWindow, event.message.tabUrl);
+					break;
+					
+				default: 
+					break;
+			}
+		}
+		
+		function navigateListener(event){
+			// Received a Close or Activate (tab switch/focus) event.
+
+			const url = event.target.url;
+
+			switch (event.type){
+												
+				case "close":
+					// Tab is closing. Remove this tab's feed from cache if 
+					// its url not still open in any other tabs.
+				case "beforeNavigate":
+					// A new page is about to load in a tab. Remove the cache
+					// entry for the previous page.
+					if (!(isOpenInMultipleTabs(url))){
+						feedCache.removeTab(url);
+						clog('d',"Removed cache for "+url);
+					}
+					break;
+
+				case "activate":
+					// A tab or window gained focus. If it was a tab, 
+					// event.target.url will be set.
+					if (url !== undefined){
+						updateToolbarButton(event.target.browserWindow, url);
+					}
+					break;
+					
+				case "navigate":
+					break;
+					
+				default:
+					break;
+			}
+		}
+		
+		function validateListener(event){
+		// Safari has asked the toolbar button to validate itself, e.g. when dragging
+		// a tab in or out of a window.
+			if (event.target.identifier === TOOLBAR_BUTTON_ID){
+				updateToolbarButton(event.target.browserWindow, event.target.browserWindow.activeTab.url);
+			}
+		}
+		
+		/*****************************/
+		/* Everything Else...        */
+		/*****************************/
+		
+		function isOpenInMultipleTabs(url){
+		// Returns true if given url is open in more than one Safari tab,
+		// otherwise false.
+		
+			var wins = safari.application.browserWindows;
+			var count = 0;
+		
+			for (var i=0; i<wins.length; i++){
+
+				var tabs = wins[i].tabs;		
+
+				for (var j=0; j<tabs.length; j++){
+				
+					if (tabs[j].url===url){
+						count++;
+						if (count>1){return true};
+					}
+				}
+			}
+			return false;
+		}
+		
+		function getToolbarButton(window, id){
+		// Return the extension toolbar button with the specified id in the specified browser window.
+			
+			const toolbarItems = safari.extension.toolbarItems;
+			
+			for (var i = 0; i < toolbarItems.length; ++i) {
+	    		var item = toolbarItems[i];
+			    if (item.identifier===id && item.browserWindow===window){
+					return item;
+				}
+			}
+			return null;
+		}
+
+		//TODO: Remove, not needed?
+		function getMenu(id){
+		// Return the extension menu with the specified id.
+			const menus = safari.extension.menus;
+				for (var i = 0; i < menus.length; ++i) {
+		    		var menu = menus[i];
+				    if (menu.identifier===id){
+						return menu;
+					}
+				}
+			return null;
+		}
+
+		function updateToolbarButton(window, tabUrl){
+		// Update enabled state and badge count for button in given Safari window
+		// based on given url.
+
+			var button = getToolbarButton(window, TOOLBAR_BUTTON_ID);
+		
+			if (feedCache.tabExists(tabUrl)){
+				var feeds = feedCache.getFeedsForTab(tabUrl);
+				if (feeds.length > 0){
+					// Set badge to number of feeds
+					button.disabled = false;
+					button.badge = feeds.length; // TODO: Don't set it preference is off
+				}
+				else {
+					// No feeds, so disable button
+					button.disabled = true;
+					button.badge = 0;
+				}
+			}
+			else{
+				// This page has no feeds cached -- it was probably loaded while
+				// the extension was not enabled.
+				clog('w','Cache miss for '+tabUrl);
+				button.disabled = true;
+				button.badge = 0;
+			}
+		}
+		
+		function openFeed(uri){
+			// Open the feed with the given uri, according to user preference: either
+			// in an RSS app, in Safari, in a reader service, or always ask.
+			
+			//Always ask
+			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(
+				"showPopup", {uri: uri, app: 'ask', selectText: false} );
+				
+			//TODO: The other options...
+		}	
+		
+	});
+		
+</script>
+
+</head><body>
+<div id="template"></div>
+</body></html>
