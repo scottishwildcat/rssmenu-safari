@@ -325,5 +325,6 @@ function findFeedsOnPage(){
 	
 		} // rel==alternate
 	}
-	safari.self.tab.dispatchMessage("foundFeeds",foundFeeds);
+	glog('i','Feed search complete');
+	safari.self.tab.dispatchMessage("foundFeeds", {url:window.location.href, feeds:foundFeeds});
 }

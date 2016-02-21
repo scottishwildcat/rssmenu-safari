@@ -123,7 +123,7 @@ function updateButton(btn, url)
 			btn.disabled = false;
 			if (safari.extension.settings.show_badge === true){
 				btn.badge = numFeedsOnPage;
-		}
+			}
 			clog('d',"--- "+numFeedsOnPage+" feeds");
 		}
 		else{
@@ -168,7 +168,7 @@ function cmdHandler(event){
 				break;
 				
 			case 'defaultapp':
-			case 'alwaysask':				
+			case 'alwaysask':
 				// Open feed in default reader application, or ask the user
 				clog('d',"Showing popup for "+event.command);
 				safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
@@ -193,7 +193,8 @@ function validateHandler(event){
 		//Update button enabled/disabled state, badge count and badge visibility.
 		var btn = event.target;
 		var url = event.target.browserWindow.activeTab.url;
-		updateButton(event.target, url);
+		clog('d',"Revalidating '"+url+"'");
+		updateButton(btn, url);
 	}
 }
 
@@ -203,6 +204,8 @@ function menuHandler(event){
 	var btn = getToolbarBtn('feedMenuBtn');
 	var feedMenu = getMenu('feedMenu');
 	var feedsToAdd = allFeeds[safari.application.activeBrowserWindow.activeTab.url];
+	
+	clog('d','Showing menu for '+safari.application.activeBrowserWindow.activeTab.url);
 
 	// Must hide menu before making any dynamic changes
 	feedMenu.visible=false;
@@ -279,18 +282,22 @@ function msgHandler(event){
    	
 	   	case "foundFeeds":
 	   		// event.message = {href1: {sort:t/f, title:title1}, href2: {sort:t/f, title:title2}...}
+
+	   		// event.message = {url: <tab-url>, 
+	   		//					feeds: {href1: {sort:t/f, title:title1}, href2: {sort:t/f, title:title2}...} 
+			//					}
 	   		
-	   		if (allFeeds[event.target.url] === undefined){
-	   			allFeeds[event.target.url] = {};
+	   		if (allFeeds[event.message.url] === undefined){
+	   			allFeeds[event.message.url] = {};
 	   		}
 	   		
 	   		// A neat jQuery function that merges all properties of 
 	   		// second object arg with first object arg
-	   		$.extend(allFeeds[event.target.url], event.message);
+	   		$.extend(allFeeds[event.message.url], event.message.feeds);
 	   		
-	   		updateButton(getToolbarBtn('feedMenuBtn'), event.target.url);
+	   		updateButton(getToolbarBtn('feedMenuBtn'), event.message.url);
 	   		
-	   		clog('d',"foundFeeds: added allFeeds["+event.target.url+"]");
+	   		clog('d',"foundFeeds: "+Object.keys(event.message.feeds).length+" feeds added for "+event.message.url);
 			break;
 	   	
 	   	case "openFeedInTab":
@@ -368,8 +375,7 @@ function settingsChangeHandler(event){
 		case "feed_action":
 			// If 'default action' setting is changed, we inform the injected script so it can
 			// hide the popup banner if it's visible at the time.
-			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
-					("feedActionChanged", 0);
+			safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("feedActionChanged", 0);
 			break;
 	
 		case "show_badge":
