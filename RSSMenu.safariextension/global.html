@@ -107,8 +107,11 @@ function updateButton(btn, url)
 	}
 
 	if (url in allFeeds){
-		// We have already scanned this page
-		clog('d',"Already scanned "+url);
+			
+		if (url===''){
+			clog('e','Error: Empty URL'); 
+			return;
+		}
 		
 		//Object.keys(x) returns no. of properties on object x
 		var numFeedsOnPage = Object.keys(allFeeds[url]).length; 
