@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Calum Benson</string>
 	<key>Builder Version</key>
-	<string>9537.74.6</string>
+	<string>10601.5.13</string>
 	<key>CFBundleDisplayName</key>
 	<string>RSS Menu</string>
 	<key>CFBundleIdentifier</key>
@@ -13,11 +13,22 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.2.1</string>
+	<string>2.2.0-debug</string>
 	<key>CFBundleVersion</key>
 	<string>221</string>
 	<key>Chrome</key>
 	<dict>
+		<key>Context Menu Items</key>
+		<array>
+			<dict>
+				<key>Command</key>
+				<string></string>
+				<key>Identifier</key>
+				<string></string>
+				<key>Title</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>Global Page</key>
 		<string>global.html</string>
 		<key>Menus</key>
@@ -67,6 +78,8 @@
 	</dict>
 	<key>Description</key>
 	<string>List RSS and Atom feeds available on the web page being viewed.</string>
+	<key>DeveloperIdentifier</key>
+	<string>U658JZ835M</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
