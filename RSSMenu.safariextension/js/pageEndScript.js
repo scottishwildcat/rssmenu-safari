@@ -5,6 +5,24 @@
 
 //"use strict";
 
+function glog(level, msg){
+	
+	const funcName = arguments.callee.caller.name;
+
+	const msg = "RSSMenu: " + funcName + ': ' + msg;
+	
+	if (debug){
+		switch (level){ 
+			case 'l': console.log(msg); break;
+			case 'd': console.debug(msg); break;
+			case 'w': console.warn(msg); break;
+			default: console.log(msg); break;
+		}
+		safari.self.tab.dispatchMessage("addToDebugLog",msg);
+	}
+}
+
+
 if (isTopLevel()){
 	safari.self.addEventListener("message", msgHandler, false); // Listen for events sent by global.html
 	findFeedsOnPage();
@@ -24,7 +42,7 @@ function XFrameOptions(url){
 	catch(e){
 		//TODO: Assumes failure is due to cross-domain request, so returns "deny"
 		//to open the feed in a tab instead -- may not be the case.
-		clog('d',e.message);
+		glog('d',e.message);
 		return "deny";
 	}
 
@@ -39,7 +57,7 @@ function openFeedInApp(url){
 	// We open a feed in the default app by adding an invisible iframe to the page
 	// whose src is the feed URL.
 	
-	clog('d',url);
+	glog('d',"Opening "+url+" in application");
 	
 	if (XFrameOptions(url) != "deny"){
 		var appiframe = document.getElementById('appiframe');		
@@ -50,19 +68,20 @@ function openFeedInApp(url){
 			appiframe.style.height = 0+'px';
 			appiframe.setAttribute('id','appiframe');
 			document.body.appendChild(appiframe);
-			clog('l',"Appended hidden iframe to page");
+			glog('l',"Appended hidden iframe to page");
 		}
 		url = httpToFeed(url);
 		appiframe.src = url;
 	}
 	else{
-		clog('w',"iFrame denied, opening in tab");
+		glog('w',"iFrame denied, opening in tab");
 		safari.self.tab.dispatchMessage("openFeedInTab",url);
 	}
 	
 }
 
 function openFeedInBrowser(url){
+	glog('d',"Opening "+url+" in browser");
 	safari.self.tab.dispatchMessage("openLocal",url);
 }
 
@@ -252,6 +271,8 @@ function fullyQualifiedURL(h){
 function findFeedsOnPage(){
 	// Look for feeds identified in <head> per the RSS autodiscovery spec:
 	// http://www.rssboard.org/rss-autodiscovery
+
+	glog('i','Looking for feeds on '+window.location.hostname);
 
 	var foundFeeds = {}; // will be populated as {href1:{sort:t/f, title:title1}, href2:{sort:t/f, title:title2}...}
 

@@ -3,9 +3,36 @@
 /** Licence: None - public domain                 **/    
 
 var debug=true;
+var logfile = null;
+var msgId = 0;
+
+function makeLogFile (text) {
+// From http://stackoverflow.com/questions/8178825/create-text-file-in-javascript
+
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (logfile !== null) {
+      window.URL.revokeObjectURL(logfile);
+    }
+
+    logfile = window.URL.createObjectURL(data);
+
+    // returns a URL you can use as a href
+    return logfile;
+};
+
 function clog(level, msg){
 	
-	const msg = "RSSMenu:"+arguments.callee.caller.name+"() "+msg;
+	try {
+		const funcName = arguments.callee.caller.name;
+	}
+	catch (e) {
+		const funcName = '<global>';
+	}
+
+	const msg = "RSSMenu ("+msgId+"): " + funcName + ': ' + msg;
 	
 	if (debug){
 		switch (level){ 
@@ -14,6 +41,8 @@ function clog(level, msg){
 			case 'w': console.warn(msg); break;
 			default: console.log(msg); break;
 		}
+		msgId++;
+		logfile = logfile + msg + '\n';
 	}
 }
 

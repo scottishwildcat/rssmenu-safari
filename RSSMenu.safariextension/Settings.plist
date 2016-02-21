@@ -56,5 +56,13 @@
 		<key>Type</key>
 		<string>CheckBox</string>
 	</dict>
+	<dict>
+		<key>Key</key>
+		<string>show_log</string>
+		<key>Title</key>
+		<string>Click to download log</string>
+		<key>Type</key>
+		<string>CheckBox</string>
+	</dict>
 </array>
 </plist>
