@@ -39,6 +39,7 @@ JRss.prototype  = {
             item.updated = jQuery(this).find('pubDate').eq(0).text();
             item.published = jQuery(this).find('pubDate').eq(0).text(); //CFB
             item.id = jQuery(this).find('guid').eq(0).text();
+			item.enclosure = jQuery(this).find('enclosure').attr('url');
             item.author = jQuery(this).find('creator').eq(0).text(); //CFB
             
             feed.items.push(item);
