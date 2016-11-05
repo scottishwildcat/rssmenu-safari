@@ -52,7 +52,7 @@
 		<key>Key</key>
 		<string>select_url</string>
 		<key>Title</key>
-		<string>Auto-select feed URL in banner and preview for easier copying </string>
+		<string>Auto-select feed URL in banner and preview</string>
 		<key>Type</key>
 		<string>CheckBox</string>
 	</dict>

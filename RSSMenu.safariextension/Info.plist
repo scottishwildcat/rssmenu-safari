@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Calum Benson</string>
 	<key>Builder Version</key>
-	<string>10601.5.13</string>
+	<string>11602.2.14.0.7</string>
 	<key>CFBundleDisplayName</key>
 	<string>RSS Menu</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.2.0-debug</string>
+	<string>2.3.0-debug</string>
 	<key>CFBundleVersion</key>
-	<string>221</string>
+	<string>230</string>
 	<key>Chrome</key>
 	<dict>
 		<key>Global Page</key>
