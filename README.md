@@ -1,6 +1,8 @@
 #RSS Menu Extension for Safari
 ##(c) 2012-16 Calum Benson
 
+Note: Stable branch (and probably the only useful one, at this point) is rssfeed-2.
+
 ###What Does It Do?
 
 * Adds a menu button to your Safari toolbar that lists autodiscovered feeds (per the [RSS Autodiscovery Spec](http://www.rssboard.org/rss-autodiscovery))
