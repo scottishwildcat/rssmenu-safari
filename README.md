@@ -4,7 +4,7 @@
 ###What Does It Do?
 
 * Adds a menu button to your Safari toolbar that lists autodiscovered feeds (per the [RSS Autodiscovery Spec](http://www.rssboard.org/rss-autodiscovery))
-* Also lists public playlist, subscription and favourites feeds when browsing a YouTube user or channel homepage.
+* ~~Also lists public playlist, subscription and favourites feeds when browsing a YouTube user or channel homepage.~~ Obsoleted by YouTube API changes
 * Opens feeds either in your native news reader app (Vienna, Reeder, NetNewsWire etc.), or directly in Safari.
 * Toolbar button badge shows how many feeds available on current page.
  
