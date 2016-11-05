@@ -6,6 +6,7 @@ JFeedItem.prototype = {
     link: '',
     description: '',
     updated: '',
+	content: '',
     published: '', //CFB
     id: '',
     author: '' //CFB
