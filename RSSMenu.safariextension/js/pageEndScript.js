@@ -5,11 +5,11 @@
 
 //"use strict";
 
-function glog(level, msg){
+function glog(level, logMsg){
 	
 	const funcName = arguments.callee.caller.name;
 
-	const msg = "RSSMenu: " + funcName + ': ' + msg;
+	const msg = "RSSMenu: " + funcName + ': ' + logMsg;
 	
 	if (debug){
 		switch (level){ 

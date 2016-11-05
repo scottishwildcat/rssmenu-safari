@@ -23,16 +23,18 @@ function makeLogFile (text) {
     return logfile;
 };
 
-function clog(level, msg){
+function clog(level, logMsg){
 	
+	var funcName='';
+
 	try {
-		const funcName = arguments.callee.caller.name;
+		funcName = arguments.callee.caller.name;
 	}
 	catch (e) {
-		const funcName = '<global>';
+		funcName = '<global>';
 	}
 
-	const msg = "RSSMenu ("+msgId+"): " + funcName + ': ' + msg;
+	const msg = "RSSMenu ("+msgId+"): " + funcName + ': ' + logMsg;
 	
 	if (debug){
 		switch (level){ 
