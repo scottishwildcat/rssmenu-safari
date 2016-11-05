@@ -36,6 +36,15 @@ safari.application.addEventListener("close", navigateHandler, true);
 safari.application.addEventListener("beforeNavigate", navigateHandler, true);
 safari.application.addEventListener("navigate", navigateHandler, true);
 
+if (!safari.extension.settings.already_run) {
+	safari.extension.settings.already_run = 'yes';
+	safari.application.activeBrowserWindow.openTab('foreground').url = safari.extension.baseURI+'firstrun.html';
+	clog('i','First time this version has been run, showing intro message');
+}
+else {
+	clog('i','Extension run before, not showing intro message');
+}
+
 
 /* Utilities */
 
