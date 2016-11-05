@@ -1,5 +1,5 @@
 #RSS Menu Extension for Safari
-##(c) 2012-13 Calum Benson
+##(c) 2012-16 Calum Benson
 
 ###What Does It Do?
 
