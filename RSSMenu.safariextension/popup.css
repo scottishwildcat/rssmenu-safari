@@ -35,6 +35,10 @@
 
 }
 
+.rssmenu-popup * {
+	font-family: 'HelveticaNeue', 'Helvetica Neue', 'Helvetica' !important;
+}
+
 .rssmenu-popup #select-url::selection {
 	background:#99CCFF !important;
 }
@@ -83,8 +87,9 @@
 	white-space: nowrap !important;
 
 	-webkit-border-radius: 2px !important;
-	background-image: -webkit-linear-gradient(top, #fff, #ccc) !important; 
-	border: thin outset black !important;
+	background-image: -webkit-linear-gradient(top, #fdfdfd, #f3f3f3) !important; 
+	border: thin solid #d2d2d2 !important;
+	border-radius: 4px !important;
 
 	font: webkit-small-control !important;
 	font-weight: normal !important;
@@ -102,11 +107,11 @@
 
 /* Hover must come before active… */
 .rssmenu-button:hover {
-	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important; 
+	/* 	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important;  */
 }
 
 .rssmenu-button:active {
-	background-image: -webkit-linear-gradient(top, #ccc, #fff) !important; 
+	background-image: -webkit-linear-gradient(top, #e5e5e5, #ddd) !important; 
 }
 
 /* See http://coding.smashingmagazine.com/2012/08/20/towards-retina-web/ for retina-friendly tips */
