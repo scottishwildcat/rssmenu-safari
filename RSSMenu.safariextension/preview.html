@@ -56,14 +56,25 @@ $(document).ready(function(){
 </head>
 <body>
 
-<div id="loading">
-	<h1>Loading feed preview</h1>
-	<p id="wait"><img src="img/progress_wheel.gif">&nbsp;&nbsp;Please wait, could take up to 30 seconds...</p>
-	
-	<div id="error">
-		<h2 id="errormsg">Unknown error</h2>
-		<p id="errortext">Sorry, this feed is not currently available.</p>
+<div id="loading" style=" display: flex;
+     align-items: center;
+     justify-content: center;
+     height: 100vh;">
+
+	<div>
+		<div id="wait" style="display:flex; flex-direction: column; align-items: center;">
+			<img src="img/loading_spinner.gif" alt="loading_spinner" width="100" height="100" />
+			<p>Loading feed preview</p>
+		</div>
+
+		<div id="error">
+			<h2 id="errormsg">Unknown error</h2>
+			<p id="errortext">Sorry, this feed is not currently available.</p>
+			<a style="text-decoration: none; color:#74ade2" href='javascript:close();'>CLOSE</a>
+		</div>
+
 	</div>
+
 </div>
 
 </body>
