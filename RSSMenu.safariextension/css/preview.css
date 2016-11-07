@@ -9,16 +9,31 @@ html {
 }
 
 body {
-	padding: 24px;
+	margin:0;
 }
 
+#pageheader {
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	height: 80px;
+	padding-top: 24px;
+	background-color: white;
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+
 #controls {
-	float:right;
+/* 	float:right; */
+}
+
+#toolbuttons {
+	display:flex;
 }
 
 #desc {
-	float:left;
-	width:85%;
+	flex-grow:1;
 }
 
 h1 {
@@ -32,7 +47,7 @@ h1 {
 }
 
 h1#feedtitle {
-	float:left;
+/* 	float:left; */
 }
 
 h2#errormsg {
@@ -42,7 +57,7 @@ h2#errormsg {
 
 h2#feeddesc {
 	clear:both;
-	float:left;
+/* 	float:left; */
 	max-width: 80%;
 	font-weight: 100; 
 	font-size: 18px;	
@@ -53,7 +68,7 @@ h2#feeddesc {
 
 a#feedurl {
 	clear:both;
-	float:left;
+/* 	float:left; */
 	max-width: 80%;
 	font-weight: 100; 
 	font-size: 12px;	
@@ -74,15 +89,15 @@ button#toggle-images {
 	border:0; 
 	margin:0;
 	padding:0;
-	float:right;
+/* 	float:right; */
 	padding-left:12px;
 	background:none; 
 }
 
 a#homepage {
-    background: url(img/preview-webpage@2x.png) center right no-repeat;
+    background: url(../img/preview-webpage@2x.png) center right no-repeat;
     background-size: 24px 24px;
-	float:right;
+/* 	float:right; */
 	padding-left: 12px;	
 	width: 24px;
 	height: 24px;
@@ -96,6 +111,7 @@ a#homepage {
 #alist {
 	clear:both;
 	padding: 24px;
+	margin-top: 100px;
 }
 
 
@@ -132,7 +148,7 @@ a.atitle:hover{
 }
 
 a.ext {
-    background: url(img/external-link@2x.png) center right no-repeat;
+    background: url(../img/external-link@2x.png) center right no-repeat;
     background-size: 12px 12px;
     padding-right: 16px;
 }
@@ -208,39 +224,4 @@ a#subscribe {
 	text-decoration: none;
 	font-size: small;
 	
-}
-
-a.linkbtn {
-
-	padding: 2px 4px !important;
-	margin: 0px 0px 0px 4px !important;
-	float:right !important;
-	white-space: nowrap !important;
-
-	-webkit-border-radius: 2px !important;
-	background-image: -webkit-linear-gradient(top, #fdfdfd, #f3f3f3) !important; 
-	border: thin solid #d2d2d2 !important;
-	border-radius: 4px !important;
-
-	font: webkit-small-control !important;
-	font-weight: normal !important;
-	font-size: 14px !important;
-
-	height: auto !important;
-	line-height:normal !important;
-	text-indent: 0px !important;
-	color: #333 !important;
-	-webkit-user-select: none !important; /* So user can't select button text */
-	
-	cursor:pointer !important;
-}
-
-
-/* Hover must come before active… */
-a.linkbtn:hover {
-	/* 	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important;  */
-}
-
-a.linkbtn:active {
-	background-image: -webkit-linear-gradient(top, #e5e5e5, #ddd) !important; 
 }

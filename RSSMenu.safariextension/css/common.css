@@ -1,0 +1,42 @@
+a {
+	color:  #74ade2;
+}
+
+a:link {
+	text-decoration: none;
+}
+
+.pushbutton {
+
+	padding: 2px 4px !important;
+	margin: 0px 0px 0px 4px !important;
+	float:right !important;
+	white-space: nowrap !important;
+
+	-webkit-border-radius: 2px !important;
+	background-image: -webkit-linear-gradient(top, #fdfdfd, #f3f3f3) !important; 
+	border: thin solid #d2d2d2 !important;
+	border-radius: 4px !important;
+
+	font: webkit-small-control !important;
+	font-weight: normal !important;
+	font-size: 14px !important;
+
+	height: auto !important;
+	line-height:normal !important;
+	text-indent: 0px !important;
+	color: #333 !important;
+	-webkit-user-select: none !important; /* So user can't select button text */
+	
+	cursor:pointer !important;
+}
+
+
+/* Hover must come before active… */
+.pushbutton:hover {
+	/* 	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important;  */
+}
+
+.pushbutton:active {
+	background-image: -webkit-linear-gradient(top, #e5e5e5, #ddd) !important; 
+}

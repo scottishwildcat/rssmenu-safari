@@ -119,7 +119,7 @@
 
 	padding: 2px 4px !important;
 	
-	background-image: url(img/closeBtn@2x.png) !important;
+	background-image: url(../img/closeBtn@2x.png) !important;
 	background-size: 16px 16px !important;
 	height: 16px !important;
 	width: 16px !important;
@@ -128,7 +128,7 @@
 	}
 
 .rssmenu-closebtn:hover {
-	background-image: url(img/closeBtn-hover@2x.png) !important;
+	background-image: url(../img/closeBtn-hover@2x.png) !important;
 }
 
 .rssmenu-icon {
@@ -136,7 +136,7 @@
 	margin: 0 8px !important;
 	flex-shrink: 0 !important;
 
-	background-image: url(img/RSS-40.png) !important;
+	background-image: url(../img/RSS-40.png) !important;
 	background-size: 20px 20px !important;
 	height: 20px !important;
 	width: 20px !important;
