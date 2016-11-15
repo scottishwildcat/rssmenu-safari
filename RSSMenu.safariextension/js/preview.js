@@ -24,7 +24,7 @@ function displayFeed(feed, feedUrl, selectUrl){
 
 	// Only show feed URL if we're pre-selecting it
 	if (selectUrl === "true"){
-		h = $("<h2>");
+		h = $("<p>");
 		h.append($("<a>").text(httpToFeed(feedUrl))
 						 .attr('href', httpToFeed(feedUrl))
 						 .attr('id','feedurl'));
@@ -71,47 +71,47 @@ function displayFeed(feed, feedUrl, selectUrl){
 	
 	// Expand all, collapse all, toggle image and visit homepage buttons
 	var bdiv = $("<div id='toolbuttons'>");
-	
-	b1 = $('<img>').attr('src','img/preview-show@2x.png')
-					.attr('width','24px')
-					.attr('height','24px')
-					.attr('title','Expand All Articles');
-					
-	b2 = $('<img>').attr('src','img/preview-hide@2x.png')
-					.attr('width','24px')
-					.attr('height','24px')
-					.attr('title','Collapse All Articles');
-					
-	b3 = $('<img>').attr('src','img/preview-images-on@2x.png')
+
+	btnFeedHomepage = $('<a>').attr('href',feed.link)
+				.attr('id','homepage')
+				.attr('title','Visit Feed Homepage');
+
+	btnToggleImages = $('<img>').attr('src','img/preview-images-on@2x.png')
 					.attr('width','24px')
 					.attr('height','24px')
 					.attr('title','Toggle Images in Articles')
 					.attr('id','toggle-icon');
 	
+	btnExpand = $('<img>').attr('src','img/preview-show@2x.png')
+					.attr('width','24px')
+					.attr('height','24px')
+					.attr('title','Expand All Articles');
+					
+	btnCollapse = $('<img>').attr('src','img/preview-hide@2x.png')
+					.attr('width','24px')
+					.attr('height','24px')
+					.attr('title','Collapse All Articles');					
+
+	if (feed.link!=""){
+		bdiv.append(btnFeedHomepage);
+	}
+
+	bdiv.append($('<button>').attr('id','toggle-images')
+							.click(toggleImages()).append(btnToggleImages));
+	
 	bdiv.append($('<button>').attr('id','show-all')
 						.click(function(){$(".readorig, .abody").show()})
-						.append(b1));
+						.append(btnExpand));
 							
 	bdiv.append($('<button>').attr('id','hide-all')
 						.click(function(){$(".readorig, .abody").hide()})
-						.append(b2));
-							
-	bdiv.append($('<button>').attr('id','toggle-images')
-							.click(toggleImages()).append(b3));
-
-	b4 = $('<a>').attr('href',feed.link)
-				.attr('id','homepage')
-				.attr('title','Visit Feed Homepage');
-
-	if (feed.link!=""){
-		bdiv.append(b4);
-	}
-	
+						.append(btnCollapse));
+								
 	d.append(bdiv);
 	
 	//'Open in Application' button
 	var d1 = $("<div id='open-in-app'>");
-	d1.append($('<a class="linkbtn">').attr('id','subscribe')
+	d1.append($('<a class="pushbutton">').attr('id','subscribe')
 									.text('Open in Application')
 									.attr('href',httpToFeed(feedUrl)));
 	d.append(d1);
