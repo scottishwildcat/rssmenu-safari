@@ -1,5 +1,5 @@
 /** Injected Script for Safari RSS Feed Extension **/
-/** © 2012-14 Calum Benson                        **/
+/** © 2012-16 Calum Benson                        **/
 /** Licence: None - public domain                 **/    
   
 
