@@ -18,7 +18,7 @@ function displayFeed(feed, feedUrl, selectUrl){
 	h.text(feed.title);
 	d.append(h);
 
-	h = $("<h2 id='feeddesc'>").html(feed.description);
+	h = $("<h2 id='feeddesc' class='elips'>").html(feed.description);
 	h.text (h.text()); // Strip any html tags from feed description
 	d.append(h);
 

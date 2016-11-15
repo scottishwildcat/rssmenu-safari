@@ -16,16 +16,21 @@ body {
 	position: fixed;
 	width: 100%;
 	top: 0px;
-	height: 80px;
+	height: auto;
 	padding-top: 24px;
 	background-color: white;
 	display: flex;
 	flex-wrap: nowrap;
 }
 
+#wait {
+	display:flex; 
+	flex-direction: column; 
+	align-items: center;
+}
 
 #controls {
-/* 	float:right; */
+	padding-right: 24px;
 }
 
 #toolbuttons {
@@ -34,6 +39,7 @@ body {
 
 #desc {
 	flex-grow:1;
+	padding-left: 24px;
 }
 
 h1 {
@@ -196,7 +202,7 @@ a.alink:hover{
 	font-size:10px;
 	color:#999;
 	float:right;
-	padding: 0 24px 24px 0;
+	padding: 0 24px 24px 24px;
 
 }
 
