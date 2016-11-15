@@ -26,12 +26,15 @@ var allFeeds = new Object();
 clog('d','New allFeeds created');
 
 safari.application.addEventListener("validate", validateHandler, false);
-safari.application.addEventListener("menu", menuHandler, false); // Just before menu is displayed
 safari.application.addEventListener("command", cmdHandler, false); // Clicked on menu item
 safari.application.addEventListener("message", msgHandler, false); // Received list of feeds from web page
 safari.extension.settings.addEventListener("change", settingsChangeHandler, false); // Settings changed in prefs window
 
-// These two only work in Safari 5.1 and later. They don't bubble, hence second param=true.
+// Commented out for now -- docs say should only be needed if menu changes dynamically, which ours doesn't once created
+//safari.application.addEventListener("menu", menuHandler, false); // Just before menu is displayed
+
+
+// These only work in Safari 5.1 and later. They don't bubble, hence second param=true.
 safari.application.addEventListener("close", navigateHandler, true);
 safari.application.addEventListener("beforeNavigate", navigateHandler, true);
 safari.application.addEventListener("navigate", navigateHandler, true);
@@ -73,154 +76,31 @@ function getMenu(id){
 	return null;
 }
 
-function urlOpenInBrowser(url){
-// Return true if url is open in any tab in any window,
-// otherwise false.
-
-	var w = safari.application.browserWindows;
-	
-	for (var i=0; i<w.length; w++){
-		var t = w[i].tabs;		
-		for (i=0; i < t.length; i++){
-		
-			if (t[i].url === url){
-				return true;		
-			}
-		}
-	}
-	return false;
-}
-
-function updateButton(btn, url)
-//Update btn enabled/disabled state, badge count and badge visibility for given url
-{
-	if (url  !== safari.application.activeBrowserWindow.activeTab.url){
-		clog('e','Not updating button for inactive tab '+url);
-		return;
-	}
-
-	if (url in allFeeds){
-			
-		if (url===''){
-			clog('e','Error: Empty URL'); 
-			return;
-		}
-		
-		//Object.keys(x) returns no. of properties on object x
-		var numFeedsOnPage = Object.keys(allFeeds[url]).length; 
-
-		clog('d',"Cache hit for "+url);
-
-		if (numFeedsOnPage > 0){
-			// Set badge to number of feeds on page, if user preference dictates
-			btn.disabled = false;
-			if (safari.extension.settings.show_badge === true){
-				btn.badge = numFeedsOnPage;
-			}
-			clog('d',"--- "+numFeedsOnPage+" feeds");
-		}
-		else{
-			// No feeds found on this page
-			clog('d',"--- 0 feeds");
-			btn.disabled = true;
-			btn.badge = 0;
-		}
-	}
-	else{
-		// Tab contains blank page
-		clog('d', url + " not in cache");
-		btn.disabled = true;
-		btn.badge = 0;
-	}
-}
-
-function openFeedInPreviewTab(unencodedUrl){
-// Open a feed url in a new preview tab
-
-	url = encodeURIComponent(unencodedUrl);
-	safari.application.activeBrowserWindow.openTab('foreground').url = 
-		   				safari.extension.baseURI+'preview.html?'+url+'&sel='+safari.extension.settings.select_url;
-	
-	clog('d',safari.extension.baseURI+'preview.html?'+url+'&sel='+safari.extension.settings.select_url);
-}
-
-/* Safari Extension message handlers */
-
-function cmdHandler(event){
-// Called when user clicks a toolbar button or menu item.
-
-	if (event.command.substr(0,4)=="http"){
-		// Menu item clicked.
-		
-		switch (safari.extension.settings.feed_action){
-		
-			case 'browser':
-				// Open feed in a new tab using our own feed preview code.
-				clog('d','Opening in browser: '+event.command);
-				openFeedInPreviewTab(event.command);
-				break;
-				
-			case 'defaultapp':
-			case 'alwaysask':
-				// Open feed in default reader application, or ask the user
-				clog('d',"Showing popup for "+event.command);
-				safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
-					("showFeedPopup",[event.command, // We previously set the command to the URL of the feed
-					safari.extension.settings.feed_action, // Which app to use to open the feed (or 'ask')
-					safari.extension.settings.banner_timeout * 1000, // Only used if app to use is 'default app'
-					safari.extension.settings.select_url // Whether to automatically select the feed URL for copying
-					]);
-				break;
-				
-			default:
-				clog('e','Unrecognised feed action: '+safari.extension.settings.feed_action);
-				break;
-		}
-	}
-}
-
-function validateHandler(event){
-// Called automatically when an extension component needs to revalidate itself, e.g. when tab re-gains focus.
-	
-	if (event.target.identifier == "feedMenuBtn"){
-		//Update button enabled/disabled state, badge count and badge visibility.
-		var btn = event.target;
-		var url = event.target.browserWindow.activeTab.url;
-		clog('d',"Revalidating '"+url+"'");
-		updateButton(btn, url);
-	}
-}
-
-function menuHandler(event){
-// Called when the toolbar button menu is about to be displayed.
-		
-	var btn = getToolbarBtn('feedMenuBtn');
-	var feedMenu = getMenu('feedMenu');
-	var feedsToAdd = allFeeds[safari.application.activeBrowserWindow.activeTab.url];
-	
-	clog('d','Showing menu for '+safari.application.activeBrowserWindow.activeTab.url);
-
-	// Must hide menu before making any dynamic changes
-	feedMenu.visible=false;
-	
-	// Clear the existing menu
-	var l = feedMenu.menuItems.length;
+function clearMenu(menu){	
+// Clear the specified extension toolbar menu
+	var l = menu.menuItems.length;
 	if (l>0)
 		for (var i=0; i<l; i++)
-			feedMenu.removeMenuItem(0);
-	
-	// Add the new feeds to the menu, if any
-	btn.menu = feedMenu;
-	
+			menu.removeMenuItem(0);
+}
+
+function createMenu(feedMenu, url){
+// Create the menu for the specified url
+
+	clog('d','start');
+
+	var feedsToAdd = allFeeds[url];	
 	var sortedFeeds = [];
 	var unsortedFeeds = [];
 	var menulabel = "";
 	
-	if (feedsToAdd.menulabel != undefined){
+	if (feedsToAdd !== undefined && feedsToAdd.menulabel !== undefined){
+		clog('d','--> Setting menu label to '+feedsToAdd.menulabel);
 		menulabel = feedsToAdd.menulabel;
 	}
 		
 	if (feedsToAdd!==undefined && Object.keys(feedsToAdd).length > 0){
+		clog('d', '--> Splitting into sorted and unsorted');
 		var menuId=0;
 		for (var i in feedsToAdd){
 		
@@ -254,22 +134,210 @@ function menuHandler(event){
 	}
 	
 	if (unsortedFeeds.length > 0){
+		clog('d', '--> Adding '+unsortedFeeds.length+' unsorted feeds');
 		addItems(unsortedFeeds);
 	}
 	
 	if (sortedFeeds.length > 0){
+		clog('d', '--> Adding '+sortedFeeds.length+' sorted feeds');
 		feedMenu.appendSeparator('sepSorted');
 		var seplabel = feedMenu.appendMenuItem('sepLabel', menulabel+":");
 		seplabel.disabled = true;
 		addItems(sortedFeeds);
 	}
+
+	clog('d','end');
+
+}
+
+function urlOpenInBrowser(url){
+// Return true if url is open in any tab in any window,
+// otherwise false.
+
+	var w = safari.application.browserWindows;
+	
+	for (var i=0; i<w.length; w++){
+		var t = w[i].tabs;		
+		for (i=0; i < t.length; i++){
+		
+			if (t[i].url === url){
+				return true;		
+			}
+		}
+	}
+	return false;
+}
+
+function updateButton(btn, url){
+//Update btn enabled/disabled state, badge count and badge visibility for given url
+
+	clog('d','start');
+
+	if (url  !== safari.application.activeBrowserWindow.activeTab.url){
+		clog('d','--> Not updating button for inactive tab '+url);
+		clog('d','end');
+		return;
+	}
+
+	if (url !== undefined && url.indexOf('safari-extension')===0){
+		btn.disabled = true;
+		btn.badge = 0;
+		clog('d','--> Not updating button for preview tab');
+		clog('d','end');
+		return;
+	}
+
+	if (url in allFeeds){
+			
+		if (url===''){
+			clog('e','--> Error: Empty URL'); 
+			clog('d','end');
+			return;
+		}
+		
+		//Object.keys(x) returns no. of properties on object x
+		var numFeedsOnPage = Object.keys(allFeeds[url]).length; 
+
+		clog('d',"--> Cache hit for "+url);
+
+		clearMenu(btn.menu);
+
+		if (numFeedsOnPage > 0){
+			// Set badge to number of feeds on page, if user preference dictates
+			btn.disabled = false;
+			if (safari.extension.settings.show_badge === true){
+				btn.badge = numFeedsOnPage;
+			}
+			createMenu(btn.menu, url);
+
+			clog('d',"--> "+numFeedsOnPage+" feeds now on menu");
+		}
+		else{
+			// No feeds found on this page
+			clog('d',"--> 0 feeds on this page");
+			btn.disabled = true;
+			btn.badge = 0;
+			createMenu(btn.menu, url);
+
+		}
+	}
+	else{
+		// Tab contains blank page
+		clog('d', "--> "+ url + " not in cache, disabling button");
+		btn.disabled = true;
+		btn.badge = 0;
+	}
+
+	clog('d','end');
+
+}
+
+function openFeedInPreviewTab(unencodedUrl){
+// Open a feed url in a new preview tab
+
+	url = encodeURIComponent(unencodedUrl);
+	safari.application.activeBrowserWindow.openTab('foreground').url = 
+		   				safari.extension.baseURI+'preview.html?'+url+'&sel='+safari.extension.settings.select_url;
+	
+	clog('d',safari.extension.baseURI+'preview.html?'+url+'&sel='+safari.extension.settings.select_url);
+}
+
+
+/* Safari Extension message handlers */
+
+function cmdHandler(event){
+// Called when user clicks a toolbar button or menu item.
+
+	clog('d','Command Handler');
+
+	if (event.command.substr(0,4)=="http"){
+		// Menu item clicked.
+		
+		switch (safari.extension.settings.feed_action){
+		
+			case 'browser':
+				// Open feed in a new tab using our own feed preview code.
+				clog('d','--> Opening in browser: '+event.command);
+				openFeedInPreviewTab(event.command);
+				break;
+				
+			case 'defaultapp':
+			case 'alwaysask':
+				// Open feed in default reader application, or ask the user
+				clog('d',"Showing popup for "+event.command);
+				safari.application.activeBrowserWindow.activeTab.page.dispatchMessage
+					("showFeedPopup",[event.command, // We previously set the command to the URL of the feed
+					safari.extension.settings.feed_action, // Which app to use to open the feed (or 'ask')
+					safari.extension.settings.banner_timeout * 1000, // Only used if app to use is 'default app'
+					safari.extension.settings.select_url // Whether to automatically select the feed URL for copying
+					]);
+				break;
+				
+			default:
+				clog('e','--> Unrecognised feed action: '+safari.extension.settings.feed_action);
+				break;
+		}
+	}
+}
+
+function validateHandler(event){
+// Called automatically when an extension component needs to revalidate itself, e.g. when tab re-gains focus.
+	
+	clog('d', 'Validating target: "'+event.target.identifier+'", command: "'+event.target.command+'"');
+
+	if (event.target.identifier == "feedMenuBtn"){
+		//Update button enabled/disabled state, badge count and badge visibility.
+		var btn = event.target;
+		var url = event.target.browserWindow.activeTab.url;
+		clog('d',"--> Updating button for '"+url+"'");
+		updateButton(btn, url);
+	}
+	else {
+		clog('d','--> No action for '+event.target.identifier);
+	}
+}
+
+function menuHandler(event){
+// Called when the toolbar button is being hidden or shown (e.g. due to window resize), or menu is about to be displayed.
+// NOTE: Not currently used as of 2.3.0.
+	
+	clog('d','Menu Handler');
+
+	var btn = getToolbarBtn('feedMenuBtn');
+	var feedMenu = getMenu('feedMenu');
+
+	var url= safari.application.activeBrowserWindow.activeTab.url;
+
+	if (url.indexOf('safari-extension')===0){
+		clog('d','--> Bypassed for preview tab');
+		clog('d','end');
+		return;
+	}
+		
+	clog('d','--> Called for '+ url);
+
+	// Must hide menu before making any dynamic changes
+	feedMenu.visible=false;
+
+	clearMenu(feedMenu);
+
+	// Add the new feeds to the menu, if any
+	btn.menu = feedMenu;
+
+	createMenu(feedMenu, url);
 	
 	// Clear badge when button clicked
+	// TODO: Check event type to see if due to click or visibility event
 	btn.badge = 0;
+
+	clog('d','end');
+
 }
 
 function msgHandler(event){
 // Called when the pageEndScript has something to tell us.
+
+	clog('d', "start");
 
 	switch (event.name){
    	
@@ -290,19 +358,19 @@ function msgHandler(event){
 	   		
 	   		updateButton(getToolbarBtn('feedMenuBtn'), event.message.url);
 	   		
-	   		clog('d',"foundFeeds: "+Object.keys(event.message.feeds).length+" feeds added for "+event.message.url);
+	   		clog('d',"--> foundFeeds: "+Object.keys(event.message.feeds).length+" feeds added for "+event.message.url);
 			break;
 	   	
 	   	case "openFeedInTab":
 	   		// Couldn't use iframe method to load feed in external app, so need to do it in a new tab
 	   		var url = event.message;
-	   		clog('d',"Opening temporary tab");
+	   		clog('d',"--> Opening temporary tab");
 	   		safari.application.activeBrowserWindow.openTab('background').url = httpToFeed(url);
 	   		// Close the tab again after a short delay
 	   		var closetab = function(){
 	   			var t = safari.application.activeBrowserWindow.tabs;
 	   			t[(t.length)-1].close();
-	   			clog('d',"Closed temporary tab");
+	   			clog('d',"--> Closed temporary tab");
 	   		}
 	   		setTimeout(closetab,3000);
 	   		break;
@@ -317,6 +385,9 @@ function msgHandler(event){
 			break;
 
 	}
+
+	clog('d', "end");
+
 }
 
 function navigateHandler(event){
@@ -325,10 +396,12 @@ function navigateHandler(event){
 
 	var url = event.target.url;
 
+	clog("d","start");
+
 	switch(event.type){
 
 		case "close":
-			clog('d',"close:");
+			clog('d',"--> close "+url);
 			
 		//case "beforeNavigate":
 			// Check if the URL being vacated is still open in some other tab.
@@ -338,13 +411,13 @@ function navigateHandler(event){
 			setTimeout(function(){
 			
 				if (urlOpenInBrowser(url) == false){
-					clog('d',"---Deleting menu for '"+url+"' as not open elsewhere");
+					clog('d',"--> Deleting menu for '"+url+"' as not open elsewhere");
 					if (url in allFeeds){
 						delete allFeeds[url];
-						clog('d',"------ Deleted");
+						clog('d',"--> Deleted");
 					}
 					else {
-						clog('e',"------ '"+url+"' not found in cache");
+						clog('e',"--> '"+url+"' not found in cache");
 					}
 				}
 			},500);
@@ -355,9 +428,12 @@ function navigateHandler(event){
 			// Check if we've already found some feeds on the URL we've
 			// landed on, and update button accordingly.
 			var btn = getToolbarBtn('feedMenuBtn');
-			clog('d',"navigate: update button");
+			clog('d',"--> update button");
 			updateButton(btn, url);
 	}
+
+	clog("d","end");
+
 }
 
 function settingsChangeHandler(event){
