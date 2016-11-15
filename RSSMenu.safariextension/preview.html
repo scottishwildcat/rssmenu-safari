@@ -31,7 +31,12 @@ $(document).ready(function(){
 	$.getFeed({
 		url:feedUrl, 
 		
-		success:function(feed){displayFeed(feed, feedUrl, selectUrl);},
+		success:function(feed){
+			// Show the articles
+			displayFeed(feed, feedUrl, selectUrl);
+			// Adjust top margin of list area to accommodate height of fixed header area
+			$('#alist').css('margin-top', ($('#pageheader').height()+24) + 'px');
+		},
 		
 		error:	function(e, error, reason){
 					$("#wait").hide();
