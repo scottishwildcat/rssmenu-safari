@@ -2,7 +2,7 @@
 /** © 2012-2016 Calum Benson                      **/
 /** Licence: None - public domain                 **/    
 
-var debug=true;
+var debug = false;
 var logfile = null;
 var msgId = 0;
 

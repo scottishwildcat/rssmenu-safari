@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Calum Benson</string>
 	<key>Builder Version</key>
-	<string>11602.2.14.0.7</string>
+	<string>11602.3.7</string>
 	<key>CFBundleDisplayName</key>
 	<string>RSS Menu</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.3.0-debug</string>
+	<string>2.3.0</string>
 	<key>CFBundleVersion</key>
 	<string>230</string>
 	<key>Chrome</key>
@@ -62,7 +62,8 @@
 		</dict>
 		<key>Stylesheets</key>
 		<array>
-			<string>popup.css</string>
+			<string>css/popup.css</string>
+			<string>css/common.css</string>
 		</array>
 	</dict>
 	<key>Description</key>

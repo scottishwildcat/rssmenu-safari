@@ -62,7 +62,7 @@
 		<key>Title</key>
 		<string>Click to download log</string>
 		<key>Type</key>
-		<string>CheckBox</string>
+		<string>Hidden</string>
 	</dict>
 </array>
 </plist>
