@@ -63,7 +63,7 @@ $(document).ready(function(){
      height: 100vh;">
 
 	<div>
-		<div id="wait" style="display:flex; flex-direction: column; align-items: center;">
+		<div id="wait">
 			<img src="img/loading_spinner.gif" alt="loading_spinner" width="100" height="100" />
 			<p>Loading feed preview</p>
 		</div>
@@ -71,7 +71,9 @@ $(document).ready(function(){
 		<div id="error">
 			<h2 id="errormsg">Unknown error</h2>
 			<p id="errortext">Sorry, this feed is not currently available.</p>
-			<a style="text-decoration: none; color:#74ade2" href='javascript:close();'>CLOSE</a>
+			<p style="padding-top:36px">
+				<a href='javascript:close();'>CLOSE TAB</a>
+			</p>
 		</div>
 
 	</div>

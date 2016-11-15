@@ -105,11 +105,6 @@
 }
 
 
-/* Hover must come before active… */
-.rssmenu-button:hover {
-	/* 	background-image: -webkit-linear-gradient(top, #eee, #bbb) !important;  */
-}
-
 .rssmenu-button:active {
 	background-image: -webkit-linear-gradient(top, #e5e5e5, #ddd) !important; 
 }

@@ -57,7 +57,6 @@ h2#errormsg {
 
 h2#feeddesc {
 	clear:both;
-/* 	float:left; */
 	max-width: 80%;
 	font-weight: 100; 
 	font-size: 18px;	
@@ -68,7 +67,6 @@ h2#feeddesc {
 
 a#feedurl {
 	clear:both;
-/* 	float:left; */
 	max-width: 80%;
 	font-weight: 100; 
 	font-size: 12px;	
@@ -89,7 +87,6 @@ button#toggle-images {
 	border:0; 
 	margin:0;
 	padding:0;
-/* 	float:right; */
 	padding-left:12px;
 	background:none; 
 }
@@ -97,7 +94,6 @@ button#toggle-images {
 a#homepage {
     background: url(../img/preview-webpage@2x.png) center right no-repeat;
     background-size: 24px 24px;
-/* 	float:right; */
 	padding-left: 12px;	
 	width: 24px;
 	height: 24px;
@@ -200,14 +196,8 @@ a.alink:hover{
 	font-size:10px;
 	color:#999;
 	float:right;
-}
+	padding: 0 24px 24px 0;
 
-#ack a {
-	color:#999;
-}
-
-#ack a:hover {
-	color:purple;
 }
 
 #error{
