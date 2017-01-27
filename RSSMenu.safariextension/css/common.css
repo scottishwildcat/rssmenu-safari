@@ -1,18 +1,18 @@
 /** Sylesheet for Safari RSS Feed Extension           **/
-/** © 2012-2016 Calum Benson                          **/
+/** © 2012-2017 Calum Benson                          **/
 /** Licence: None - public domain                     **/ 
 
-a {
+[class^='rssmenu-'] a {
 	color: #3c94b4;
 	text-decoration: none;
 }
 
-a:hover {
+[class^='rssmenu-'] a:hover {
 	color: #de7105;
 	text-decoration: underline;
 }
 
-.pushbutton {
+[class^='rssmenu-'] .pushbutton {
 
 	padding: 2px 4px !important;
 	margin: 0px 0px 0px 4px !important;
@@ -38,6 +38,6 @@ a:hover {
 }
 
 
-.pushbutton:active {
+[class^='rssmenu-'] .pushbutton:active {
 	background-image: -webkit-linear-gradient(top, #e5e5e5, #ddd) !important; 
 }
