@@ -1,5 +1,5 @@
 /** Safari RSS Feed Extension                     **/
-/** © 2012-2016 Calum Benson                      **/
+/** © 2012-2017 Calum Benson                      **/
 /** Licence: None - public domain                 **/    
 
 function displayFeed(feed, feedUrl, selectUrl){
@@ -224,7 +224,7 @@ function displayFeed(feed, feedUrl, selectUrl){
 	
 	// jFeed acknowledgement
 	var ack = $('<div id="ack">');
-	ack.html("RSS Menu extension Copyright (c) 2012-2016 <a href='http://calum.me'>Calum Benson</a>. This page made with <a href='https://github.com/jfhovinne/jFeed'>jFeed</a> by Jean-Francois Hovinne.");
+	ack.html("RSS Menu extension Copyright (c) 2012-2017 <a href='http://calum.me'>Calum Benson</a>. This page made with <a href='https://github.com/jfhovinne/jFeed'>jFeed</a> by Jean-Francois Hovinne.");
 	body.append(ack);
 	
 	document.title = feed.title + ' [' + feed.type.toUpperCase() + ' '+ feed.version + ']';
