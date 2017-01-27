@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
 <!-- RSS Feed Page for Safari RSS Feed Extension
-     © 2012-2016 Calum Benson
+     © 2012-2017 Calum Benson
      Licence: None - public domain -->
 
 <html><head>
@@ -34,7 +34,8 @@ $(document).ready(function(){
 		success:function(feed){
 			// Show the articles
 			displayFeed(feed, feedUrl, selectUrl);
-			// Adjust top margin of list area to accommodate height of fixed header area
+			// Adjust top margin of list area to accommodate height of fixed header area,
+			// which varies according to whether auto-select URL preference is set.
 			$('#alist').css('margin-top', ($('#pageheader').height()+24) + 'px');
 		},
 		
